@@ -1,0 +1,24 @@
+# .Net Core
+**/bin/**
+**/logs/
+**/obj/**
+appsettings.**.json
+appsettings.json
+
+# User-specific files
+.vs/
+.vscode/
+.idea/
+.vs2019/
+.vs2017/
+.DS_Store
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+[Dd]evelopment/
+[D]ebug/
+[D]ebugPublic/
+[D]ist/
+[D]evelopment/
