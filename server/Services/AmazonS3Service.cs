@@ -34,7 +34,7 @@ namespace server.Services
                 try
                 {
                     // Generate a unique file name for the file
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    var fileName = "cloud/" + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
                     // Create a new TransferUtility instance to upload the file
                     using (var newMemoryStream = new MemoryStream())

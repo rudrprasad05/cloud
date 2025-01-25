@@ -39,6 +39,38 @@ namespace server.Controllers
 
             return Ok(new { FileUrl = fileUrl });
         }
+
+        [HttpPost("many")]  
+        [Consumes("multipart/form-data")]
+        [RequestFormLimits(MultipartBodyLengthLimit = long.MaxValue)]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> UploadManyFile(List<IFormFile> files)
+        {
+            if (files == null || files.Count == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var fileUrls = new List<string>();
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var fileUrl = await _amazonS3Service.UploadFileAsync(file);
+                    if (fileUrl != null)
+                    {
+                        fileUrls.Add(fileUrl);
+                    }
+                    else
+                    {
+                        return BadRequest($"Failed to upload file: {file.FileName}");
+                    }
+                }
+            }
+
+            return Ok(new { FileUrls = fileUrls });
+        }
         
     }
 }

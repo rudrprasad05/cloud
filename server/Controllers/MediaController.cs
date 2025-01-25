@@ -15,15 +15,18 @@ namespace server.Controllers
     public class MediaController : ControllerBase
     {
         IMediaRepository _mediaRepository;
+        IAmazonS3Service _amazonS3Service;
 
-        public MediaController(IMediaRepository mediaRepository) 
+        public MediaController(IMediaRepository mediaRepository, IAmazonS3Service amazonS3Service) 
         {
             _mediaRepository = mediaRepository;
+            _amazonS3Service = amazonS3Service;
         }
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateMedia([FromBody] NewMediaRequest request)
         {
+
             var media = request.MapToMedia();
             if (media == null)
             {

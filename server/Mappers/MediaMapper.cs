@@ -17,7 +17,7 @@ namespace server.Mappers
             {
                 FolderId = request.FolderId,
                 Type = request.Type,
-                Source = request.Source
+                Source = string.Empty
             };
         }
 

@@ -8,5 +8,6 @@ namespace server.Interfaces
     public interface IAmazonS3Service
     {
         Task<string> UploadFileAsync(IFormFile file);
+
     }
 }
