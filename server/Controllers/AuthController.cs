@@ -24,6 +24,7 @@ namespace server.Controllers
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(typeof(LoginResponse), 200)]
         public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
             try

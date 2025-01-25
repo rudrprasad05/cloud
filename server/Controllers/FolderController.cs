@@ -29,20 +29,48 @@ namespace server.Controllers
                 return BadRequest();
             }
 
-            var newFolder = await _folderRepository.CreateAsync(dto);
-            if (newFolder == null)
+            try
             {
-                return BadRequest();
+                var newFolder = await _folderRepository.CreateAsync(dto);
+                if (newFolder == null)
+                {
+                    return BadRequest(new { message = "Failed to create folder." });
+                }
+
+                return Ok(newFolder.FromFolderToDTO());
             }
-            return Ok(newFolder);
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("same name"))
+                {
+                    // Handle duplicate folder name exception
+                    return Conflict(new { message = "A folder with the same name already exists." });
+                }
+
+                // Handle generic exceptions
+                return StatusCode(500, new { message = "An unexpected error occurred.", details = ex.Message });
+            }
         }
 
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAllFolders()
         {
             var folders = await _folderRepository.GetAllWithoutAssociations();
-            var dtos = folders.Select(f => f.FromFolderListToDTO()).ToList();
+            var dtos = folders.Select(f => f.FromFolderToDTO()).ToList();
             return Ok(dtos);
+        }
+
+        [HttpGet("get-one/{id}")]
+        public async Task<IActionResult> GetAllFolders([FromRoute] string id)
+        {
+            var folder = await _folderRepository.GetOneWithMedia(id);
+            if (folder == null)
+            {
+                return NotFound();
+            }
+
+            var dto = folder.FromFolderToDTOWithMedia();
+            return Ok(dto);
         }
     }
 }

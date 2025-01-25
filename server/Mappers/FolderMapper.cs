@@ -20,13 +20,24 @@ namespace server.Mappers
             };
         }
 
-        public static GetOnlyFoldersReponse FromFolderListToDTO(this Folder folders)
+        public static GetOnlyFoldersReponse FromFolderToDTO(this Folder folders)
         {
             return new GetOnlyFoldersReponse
             {
                 Id = folders.Id,
                 Name = folders.Name,
                 UserId = folders.UserId
+            };
+        }
+
+        public static GetFolderWithMedia FromFolderToDTOWithMedia(this Folder folders)
+        {
+            return new GetFolderWithMedia
+            {
+                Id = folders.Id,
+                Name = folders.Name,
+                UserId = folders.UserId,
+                Medias = folders.Medias.Select(media => media.FromMediaToDTO()).ToList()
             };
         }
     }

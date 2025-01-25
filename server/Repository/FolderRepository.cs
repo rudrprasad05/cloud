@@ -25,10 +25,23 @@ namespace server.Repository
 
                 return newFolder.Entity;
             }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException?.Message.Contains("Duplicate entry") == true || 
+                    ex.InnerException?.Message.Contains("UNIQUE constraint failed") == true)
+                {
+                    throw new Exception("A folder with the same name already exists.");
+                }
+                else
+                {
+                    Console.WriteLine("Database error: " + ex.Message);
+                    throw;
+                }
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return null;
+                throw;
             }
             
         }
@@ -37,6 +50,16 @@ namespace server.Repository
             var folders = await _context.Folders.ToListAsync();
 
             return folders; 
+        }
+
+        public Task<Folder?> GetOneWithMedia(string id)
+        {
+            var folder = _context.Folders
+                .Include(f => f.Medias)
+                .FirstOrDefaultAsync(f => f.Id == id);
+                
+            
+            return folder;
         }
     }
 }
