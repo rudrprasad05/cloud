@@ -12,7 +12,7 @@ namespace server.Config
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Cloud API", Version = "v1" });
 
                 // Add file upload operation filter
                 options.OperationFilter<SwaggerFileUploadOperationFilter>();

@@ -71,6 +71,5 @@ namespace server.Controllers
 
             return Ok(new { FileUrls = fileUrls });
         }
-        
     }
 }

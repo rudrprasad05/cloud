@@ -1,3 +1,5 @@
+
+using AspNetCore.Swagger.Themes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +32,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(Style.Dark);
 }
 app.UseAuthentication();
 app.UseAuthorization();
