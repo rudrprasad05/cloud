@@ -61,7 +61,7 @@ namespace server.Controllers
         }
 
         [HttpGet("get-one/{id}")]
-        public async Task<IActionResult> GetAllFolders([FromRoute] string id)
+        public async Task<IActionResult> GetOneFolder([FromRoute] string id)
         {
             var folder = await _folderRepository.GetOneWithMedia(id);
             if (folder == null)

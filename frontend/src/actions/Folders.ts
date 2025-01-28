@@ -8,3 +8,9 @@ export async function GetFolder() {
 
   return res.data;
 }
+
+export async function GetOneFolder(id: string) {
+  const res = await axios.get<Partial<Folder>>(API + "folder/get-one/" + id);
+
+  return res.data;
+}
