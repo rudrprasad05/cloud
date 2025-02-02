@@ -1,3 +1,5 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +11,7 @@ using server.Models.Responses;
 
 namespace server.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/auth")]
     public class AuthController : ControllerBase
@@ -32,7 +35,7 @@ namespace server.Controllers
             {
                 if(!ModelState.IsValid) return BadRequest(ModelState);
 
-                var user = new User { UserName = model.Username,Email = model.Email };
+                var user = new User { UserName = model.Username, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 
                 if (result.Succeeded)
@@ -85,8 +88,9 @@ namespace server.Controllers
                 return Ok(
                     new LoginResponse
                     {
-                        Username = user.UserName,
-                        Email = user.Email,
+                        Username = user.UserName ?? string.Empty,
+                        Email = user.Email ?? string.Empty,
+                        Id = user.Id,
                         Token = _tokenService.CreateToken(user),
                     }
                 );
@@ -98,11 +102,49 @@ namespace server.Controllers
             }
         }
 
-        [HttpGet("secure")]
-        [Authorize]
-        public IActionResult GetSecureData()
+        [HttpGet("me")]
+        [Authorize] // Requires Authentication
+        public async Task<IActionResult> GetCurrentUser()
         {
-            return Ok("This is a secure endpoint!");
+            try
+            {
+                // 🔹 Get token from Authorization header
+                var authHeader = Request.Headers["Authorization"].FirstOrDefault();
+                if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                {
+                    return Unauthorized(new { message = "Token missing or invalid" });
+                }
+
+                var token = authHeader.Substring(7); // Remove "Bearer " prefix
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+
+                // 🔹 Extract email from token claims
+                var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+                if (string.IsNullOrEmpty(email))
+                {
+                    return Unauthorized(new { message = "Invalid token" });
+                }
+
+                // 🔹 Find user by email
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return NotFound(new { message = "User not found" });
+                }
+
+                // 🔹 Return user details
+                return Ok(new
+                {
+                    id = user.Id,
+                    email = user.Email,
+                    username = user.UserName
+                });
+            }
+            catch
+            {
+                return Unauthorized(new { message = "Invalid or expired token" });
+            }
         }
     
     }

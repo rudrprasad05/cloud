@@ -19,13 +19,13 @@ namespace server.Services
         public AmazonS3Service(IConfiguration configuration)
         {
             // Initialize the S3 client
-            var awsOptions = configuration.GetSection("AWS");
+            var awsOptions = configuration.GetSection("AWS:S3");
             var accessKey = awsOptions["AccessKey"];
             var secretKey = awsOptions["SecretKey"];
             var region = RegionEndpoint.GetBySystemName(awsOptions["Region"]);
 
             _s3Client = new AmazonS3Client(accessKey, secretKey, region);
-            _bucketName = awsOptions["BucketName"];
+            _bucketName = awsOptions["BucketName"] ?? throw new InvalidOperationException("bucket name");
         }
         public async Task<string> UploadFileAsync(IFormFile file)
         {

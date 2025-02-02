@@ -34,9 +34,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(Style.Dark);
 }
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
+app
+.UseCors("allowSpecificOrigin")
+.UseHttpsRedirection()
+.UseAuthentication()
+.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

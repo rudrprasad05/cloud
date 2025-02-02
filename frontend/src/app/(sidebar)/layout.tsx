@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import '../globals.css';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import Navbar from '@/components/global/Navbar';
 import { ThemeProvider } from '@/theme/ThemeProvider';
+import '../globals.css';
 import { SessionProvider } from '@/context/useSession';
 import { Toaster } from '@/components/ui/sonner';
 
@@ -34,8 +34,14 @@ export default function RootLayout({
             >
                 <SessionProvider>
                     <ThemeProvider attribute="class" defaultTheme="dark">
-                        <Toaster />
-                        <main className="grow min-h-screen">{children}</main>
+                        <SidebarProvider>
+                            <Navbar />
+                            <Toaster />
+                            <main className="grow w-full">
+                                <SidebarTrigger />
+                                {children}
+                            </main>
+                        </SidebarProvider>
                     </ThemeProvider>
                 </SessionProvider>
             </body>

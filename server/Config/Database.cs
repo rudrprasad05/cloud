@@ -11,10 +11,11 @@ namespace server.Config
     {
         public static void AddDatabaseContext(this IServiceCollection services, IConfiguration configuration)
         {
+            var conn = configuration["AWS:RDS:ConnectionString"] ?? throw new InvalidOperationException("Invlaid");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection"))
+                    conn,
+                    ServerVersion.AutoDetect(conn)
                 )
             );
         }
