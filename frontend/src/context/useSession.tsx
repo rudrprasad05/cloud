@@ -5,6 +5,7 @@ import { setCookie, destroyCookie, parseCookies } from 'nookies';
 import { axiosGlobal } from '@/lib/axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
+import { LoginResponse } from '@/types/schema';
 
 interface User {
     id: string;
@@ -31,38 +32,24 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
     // 🔹 Load session from cookies on mount
     useEffect(() => {
-        const cookies = parseCookies();
-        console.log('cookie', cookies);
-        if (cookies.token) {
-            axiosGlobal
-                .get('auth/me')
-                .then((res) => setUser(res.data))
-                .catch(() => logout())
-                .finally(() => setIsLoading(false));
-        } else {
-            logout();
-            setIsLoading(false);
-            router.push('/');
-        }
-    }, []);
-
-    useEffect(() => {
+        checkAuth();
         console.log('user', user);
     }, []);
 
-    /**
-     *
-     * @param email
-     * @param password
-     */
     const login = async (username: string, password: string) => {
         try {
-            const res = await axiosGlobal.post('auth/login', {
+            const res = await axiosGlobal.post<LoginResponse>('auth/login', {
                 username,
                 password,
             });
-            setCookie(null, 'token', res.data.token, { path: '/' }); // Save token in cookies
-            setUser(res.data.user); // Update user state
+            localStorage.setItem('token', res.data.token);
+            let tempUser: User = {
+                id: res.data.id,
+                username: res.data.username,
+                email: res.data.email,
+                token: res.data.token,
+            };
+            setUser(tempUser);
             toast.success('Successfully logged in');
             router.push(redirect || '/home');
         } catch (error) {
@@ -72,10 +59,48 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     };
 
     // 🔹 Logout function
-    const logout = () => {
-        destroyCookie(null, 'token'); // Remove token
-        setUser(null); // Clear user state
+    const logout = (unAuth = false) => {
+        destroyCookie(null, 'token');
+        localStorage.removeItem('token');
+        setUser(null);
+
+        unAuth && toast.error('403 Unauthorised');
+
         router.push('/');
+    };
+
+    const checkAuth = async () => {
+        let token = localStorage.getItem('token');
+        console.log('tolen', token);
+        if (token && token?.length > 0) {
+            let res = await axiosGlobal
+                .get<LoginResponse>('auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((res) => {
+                    if (res.status == 200) {
+                        let tempUser: User = {
+                            id: res.data.id,
+                            username: res.data.username,
+                            email: res.data.email,
+                            token: res.data.token,
+                        };
+                        setUser(tempUser);
+                        router.push('/home');
+                    }
+                })
+                .catch(() => {
+                    logout(true);
+                })
+                .finally(() => setIsLoading(false));
+        } else {
+            console.log('no token');
+            logout();
+            setIsLoading(false);
+            router.push('/');
+        }
     };
 
     return (

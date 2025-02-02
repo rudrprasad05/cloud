@@ -1,6 +1,5 @@
 import axios from 'axios';
 import https from 'https';
-import { cookies } from 'next/headers';
 
 const agent = new https.Agent({
     rejectUnauthorized: false,
@@ -20,9 +19,8 @@ export const axiosGlobal = axios.create({
 
 axiosGlobal.interceptors.request.use(
     async (config) => {
-        // const cookieStore = await cookies();
-        // const token = cookieStore.get('token');
-        // console.log(token);
+        // const token = localStorage.getItem('token');
+        // console.log('lcs', token);
 
         // if (token) {
         //     config.headers.Authorization = `Bearer ${token}`;

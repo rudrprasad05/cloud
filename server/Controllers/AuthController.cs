@@ -79,11 +79,22 @@ namespace server.Controllers
                 {
                     return Unauthorized("Invalud username");
                 }
+                
                 var result = await _signInManager.CheckPasswordSignInAsync (user, model.Password, false);
                 if(!result.Succeeded)
                 {
                     return Unauthorized("Username or password is incorrect");
                 }
+
+                var tokenString = _tokenService.CreateToken(user);
+
+                Response.Cookies.Append("token", tokenString, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,  // Set to false for local development
+                    SameSite = SameSiteMode.Lax,
+                    Expires = DateTime.UtcNow.AddHours(1)
+                });
                 
                 return Ok(
                     new LoginResponse
@@ -91,7 +102,7 @@ namespace server.Controllers
                         Username = user.UserName ?? string.Empty,
                         Email = user.Email ?? string.Empty,
                         Id = user.Id,
-                        Token = _tokenService.CreateToken(user),
+                        Token = tokenString,
                     }
                 );
 
@@ -134,11 +145,12 @@ namespace server.Controllers
                 }
 
                 // 🔹 Return user details
-                return Ok(new
+                return Ok(new LoginResponse
                 {
-                    id = user.Id,
-                    email = user.Email,
-                    username = user.UserName
+                    Id = user.Id,
+                    Email = user.Email ?? string.Empty,
+                    Username = user.UserName ?? string.Empty,
+                    Token = token
                 });
             }
             catch

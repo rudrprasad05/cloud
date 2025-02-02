@@ -53,9 +53,9 @@ namespace server.Controllers
         }
 
         [HttpGet("get-all")]
-        public async Task<IActionResult> GetAllFolders()
+        public async Task<IActionResult> GetAllFolders([FromQuery] QueryObject queryObject)
         {
-            var folders = await _folderRepository.GetAllWithoutAssociations();
+            var folders = await _folderRepository.GetAllWithoutAssociations(queryObject);
             var dtos = folders.Select(f => f.FromFolderToDTO()).ToList();
             return Ok(dtos);
         }

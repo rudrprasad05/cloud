@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using server.Context;
 using server.Interfaces;
 using server.Models;
+using server.Models.Requests;
 
 namespace server.Repository
 {
@@ -45,11 +46,26 @@ namespace server.Repository
             }
             
         }
-        public async Task<List<Folder>> GetAllWithoutAssociations()
+        public async Task<List<Folder>> GetAllWithoutAssociations(QueryObject queryObject)
         {
-            var folders = await _context.Folders.ToListAsync();
+            var folders = _context.Folders.AsQueryable();
 
-            return folders; 
+            if(!string.IsNullOrWhiteSpace(queryObject.UserId))
+            {
+                folders = folders.Where(s => s.UserId.Equals(queryObject.UserId));
+            }
+
+            if(!string.IsNullOrWhiteSpace(queryObject.FolderName))
+            {
+                folders = folders.Where(s => s.Name.Contains(queryObject.FolderName));
+            }
+            
+            var pageSize = queryObject.PageSize;
+            var skipNumber = (queryObject.PageNumber - 1) * pageSize;
+
+            // return await folders.Skip(skipNumber).Take(pageSize).ToListAsync();
+            return await folders.ToListAsync();
+
         }
 
         public Task<Folder?> GetOneWithMedia(string id)
