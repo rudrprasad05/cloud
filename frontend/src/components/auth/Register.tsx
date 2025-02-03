@@ -1,7 +1,13 @@
 'use client';
 
-import { SignInForm, SignInFormType } from '@/types/zod';
 import React, { Dispatch, SetStateAction, useState } from 'react';
+
+import {
+    RegisterForm,
+    RegisterFormType,
+    SignInForm,
+    SignInFormType,
+} from '@/types/zod';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -22,7 +28,7 @@ import { SetCookie } from '@/lib/cookie';
 import { useSession } from '@/context/useSession';
 import { LoginState } from '@/types/enums';
 
-export default function Login({
+export default function Register({
     setState,
 }: {
     setState: Dispatch<SetStateAction<LoginState>>;
@@ -30,19 +36,20 @@ export default function Login({
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
-    const { login } = useSession();
+    const { register } = useSession();
 
-    const form = useForm<SignInFormType>({
-        resolver: zodResolver(SignInForm),
+    const form = useForm<RegisterFormType>({
+        resolver: zodResolver(RegisterForm),
         defaultValues: {
             username: '',
             password: '',
+            email: '',
         },
     });
-    const onSubmit: SubmitHandler<SignInFormType> = async (data) => {
+    const onSubmit: SubmitHandler<RegisterFormType> = async (data) => {
         setIsLoading(true);
         try {
-            await login(data.username, data.password);
+            await register(data);
         } catch (error) {
             toast.error('Failed login');
         }
@@ -51,8 +58,7 @@ export default function Login({
     return (
         <div className="max-w-lg mx-auto min-h-screen grid place-items-center">
             <div className="space-y-3 w-full">
-                <div className="mb-2 text-3xl text-center">Login</div>
-
+                <div className="mb-2 text-3xl text-center">Register</div>
                 <Form {...form}>
                     <form
                         className="space-y-3"
@@ -61,6 +67,23 @@ export default function Login({
                         <FormField
                             control={form.control}
                             name="username"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            autoComplete="off"
+                                            placeholder="enter username"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="email"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
@@ -130,12 +153,12 @@ export default function Login({
                     </form>
                 </Form>
                 <div className="justify-center flex gap-2 text-sm items-center text-muted-foreground">
-                    <div className="">Not a member?</div>
+                    <div className="">Already a member?</div>
                     <div
                         className="text-primary cursor-pointer"
-                        onClick={() => setState(LoginState.REGISTER)}
+                        onClick={() => setState(LoginState.LOGIN)}
                     >
-                        Register Now
+                        Login
                     </div>
                 </div>
             </div>

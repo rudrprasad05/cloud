@@ -119,32 +119,28 @@ namespace server.Controllers
         {
             try
             {
-                // 🔹 Get token from Authorization header
                 var authHeader = Request.Headers["Authorization"].FirstOrDefault();
                 if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
                 {
                     return Unauthorized(new { message = "Token missing or invalid" });
                 }
 
-                var token = authHeader.Substring(7); // Remove "Bearer " prefix
+                var token = authHeader.Substring(7); 
                 var handler = new JwtSecurityTokenHandler();
                 var jwtToken = handler.ReadJwtToken(token);
 
-                // 🔹 Extract email from token claims
                 var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
                 if (string.IsNullOrEmpty(email))
                 {
                     return Unauthorized(new { message = "Invalid token" });
                 }
 
-                // 🔹 Find user by email
                 var user = await _userManager.FindByEmailAsync(email);
                 if (user == null)
                 {
                     return NotFound(new { message = "User not found" });
                 }
 
-                // 🔹 Return user details
                 return Ok(new LoginResponse
                 {
                     Id = user.Id,

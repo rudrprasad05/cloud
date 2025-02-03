@@ -8,6 +8,5 @@ namespace server.Models.Requests
     public class NewFolderRequest
     {
         public string Name { get; set; } = null!;
-        public string UserId { get; set; } = null!;
     }
 }

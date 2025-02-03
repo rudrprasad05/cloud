@@ -14,10 +14,14 @@ namespace server.Controllers
     public class FolderController : ControllerBase
     {
         IFolderRepository _folderRepository;
+        ITokenService _tokenService;
 
-        public FolderController(IFolderRepository folderRepository) 
+
+        public FolderController(IFolderRepository folderRepository, ITokenService tokenService) 
         {
             _folderRepository = folderRepository;
+            _tokenService = tokenService;
+
         }
 
         [HttpPost("create")]
@@ -31,6 +35,14 @@ namespace server.Controllers
 
             try
             {
+                var userId = _tokenService.GetUserIdFromToken(HttpContext);
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized(new { message = "Invalid token or user ID missing." });
+                }
+
+                dto.UserId = userId;
+
                 var newFolder = await _folderRepository.CreateAsync(dto);
                 if (newFolder == null)
                 {
@@ -72,5 +84,7 @@ namespace server.Controllers
             var dto = folder.FromFolderToDTOWithMedia();
             return Ok(dto);
         }
+
+        
     }
 }

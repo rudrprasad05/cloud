@@ -10,5 +10,6 @@ namespace server.Interfaces
     public interface ITokenService
     {
         string CreateToken(User user); 
+        public string? GetUserIdFromToken(HttpContext httpContext);
     }
 }

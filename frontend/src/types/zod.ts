@@ -11,4 +11,29 @@ export const SignInForm = z.object({
         .max(50, { message: 'Should have less than 50 characters' }),
 });
 
+export const RegisterForm = z.object({
+    username: z
+        .string()
+        .min(2, { message: 'Should have more than 2 characters' })
+        .max(50, { message: 'Should have less than 50 characters' }),
+    email: z
+        .string()
+        .email()
+        .min(2, { message: 'Should have more than 2 characters' })
+        .max(50, { message: 'Should have less than 50 characters' }),
+    password: z
+        .string()
+        .min(2, { message: 'Should have more than 2 characters' })
+        .max(50, { message: 'Should have less than 50 characters' }),
+});
+
+export const NewFolderForm = z.object({
+    name: z
+        .string()
+        .min(2, { message: 'Should have more than 2 characters' })
+        .max(50, { message: 'Should have less than 50 characters' }),
+});
+
 export type SignInFormType = z.infer<typeof SignInForm>;
+export type RegisterFormType = z.infer<typeof RegisterForm>;
+export type NewFolderFormType = z.infer<typeof NewFolderForm>;

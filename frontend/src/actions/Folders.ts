@@ -13,7 +13,23 @@ export async function GetFolder() {
 }
 
 export async function GetOneFolder(id: string) {
-    const res = await axios.get<Partial<Folder>>(API + 'folder/get-one/' + id);
+    const res = await axiosGlobal.get<Partial<Folder>>(
+        API + 'folder/get-one/' + id
+    );
+
+    return res.data;
+}
+
+export async function CreateFolder(name: string, token: string) {
+    const res = await axiosGlobal.post<Partial<Folder>>(
+        API + 'folder/create',
+        { name },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
 
     return res.data;
 }

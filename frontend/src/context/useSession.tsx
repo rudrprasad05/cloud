@@ -6,6 +6,7 @@ import { axiosGlobal } from '@/lib/axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { LoginResponse } from '@/types/schema';
+import { RegisterFormType } from '@/types/zod';
 
 interface User {
     id: string;
@@ -17,6 +18,7 @@ interface User {
 interface SessionContextType {
     user: User | null;
     login: (email: string, password: string) => Promise<void>;
+    register: (data: RegisterFormType) => Promise<void>;
     logout: () => void;
     isLoading: boolean;
 }
@@ -58,6 +60,29 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
+    const register = async (data: RegisterFormType) => {
+        try {
+            const res = await axiosGlobal.post<LoginResponse>('auth/register', {
+                email: data.email,
+                username: data.username,
+                password: data.password,
+            });
+            localStorage.setItem('token', res.data.token);
+            let tempUser: User = {
+                id: res.data.id,
+                username: res.data.username,
+                email: res.data.email,
+                token: res.data.token,
+            };
+            setUser(tempUser);
+            toast.success('Successfully registered');
+            router.push(redirect || '/home');
+        } catch (error) {
+            console.error('Login failed:', error);
+            throw new Error('Invalid credentials');
+        }
+    };
+
     // 🔹 Logout function
     const logout = (unAuth = false) => {
         destroyCookie(null, 'token');
@@ -71,7 +96,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
     const checkAuth = async () => {
         let token = localStorage.getItem('token');
-        console.log('tolen', token);
         if (token && token?.length > 0) {
             let res = await axiosGlobal
                 .get<LoginResponse>('auth/me', {
@@ -104,7 +128,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     };
 
     return (
-        <SessionContext.Provider value={{ user, login, logout, isLoading }}>
+        <SessionContext.Provider
+            value={{ user, login, logout, isLoading, register }}
+        >
             {children}
         </SessionContext.Provider>
     );

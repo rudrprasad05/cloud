@@ -12,6 +12,14 @@ interface IFolderList {
 export default function FolderList({ folders }: IFolderList) {
     const session = useSession();
     console.log(session.user);
+
+    if (folders.length === 0) {
+        return (
+            <div className="w-full h-48 border-dashed rounded border p-2 text-border grid place-items-center">
+                <h1>No folders found</h1>
+            </div>
+        );
+    }
     return (
         <div className="grid grid-cols-3 gap-4 w-full">
             {folders.map((folder) => (

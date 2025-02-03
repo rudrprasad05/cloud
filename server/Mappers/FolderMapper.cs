@@ -16,7 +16,6 @@ namespace server.Mappers
             return new Folder
             {
                 Name = request.Name,
-                UserId = request.UserId
             };
         }
 

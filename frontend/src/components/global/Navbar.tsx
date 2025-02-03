@@ -13,8 +13,12 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { useSession } from '@/context/useSession';
-import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
+import { Calendar, Home, Inbox, Plus, Search, Settings } from 'lucide-react';
 import React from 'react';
+import { GoogleDriveSVG } from '../svg';
+import { Button } from '../ui/button';
+import UserIcon from './UserIcon';
+import NewFolderModal from '../dialog/NewFolderModal';
 
 const items = [
     {
@@ -50,9 +54,12 @@ export default function Navbar() {
         <Sidebar>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
+                    <div className="p-2 text-2xl flex gap-2 items-center">
+                        <GoogleDriveSVG /> Cloud
+                    </div>
                     <SidebarGroupContent>
                         <SidebarMenu>
+                            <NewFolderModal />
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
@@ -66,9 +73,10 @@ export default function Navbar() {
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
-                <SidebarFooter>
-                    {user && <>{user.username}</>}
-                    {!user && <>Login</>}
+                <SidebarFooter className="mt-auto">
+                    <div className="p-2">
+                        <UserIcon src="" name={user?.username} />
+                    </div>
                 </SidebarFooter>
             </SidebarContent>
         </Sidebar>
