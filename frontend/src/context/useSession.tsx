@@ -112,7 +112,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
                             token: res.data.token,
                         };
                         setUser(tempUser);
-                        router.push('/home');
                     }
                 })
                 .catch(() => {

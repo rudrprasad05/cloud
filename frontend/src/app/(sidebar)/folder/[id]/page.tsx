@@ -1,8 +1,10 @@
 import { GetOneFolder } from '@/actions/Folders';
 import NewFolderWithParentModal from '@/components/dialog/NewFolderWithParentModal';
-import FolderCard from '@/components/folder/FolderCard';
+import NewMediaModal from '@/components/dialog/NewMediaModal';
+import ChildrenFolders from '@/components/folder/ChildrenFolders';
+
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { ChevronRight, Plus } from 'lucide-react';
 import React from 'react';
 
 interface IPage {
@@ -21,12 +23,18 @@ export default async function page({ params }: IPage) {
 async function FolderData({ id }: { id: string }) {
     const folder = await GetOneFolder(id);
     return (
-        <div>
+        <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-                <div className="text-xl">{folder.name}</div>
-                <NewFolderWithParentModal />
+                <div className="text-2xl flex items-center gap-2">
+                    Cloud <ChevronRight />
+                    {folder.name}
+                </div>
+                <div className="flex gap-2 items-center">
+                    <NewMediaModal />
+                    <NewFolderWithParentModal />
+                </div>
             </div>
-            <FolderCard folders={folder.children} />
+            <ChildrenFolders folders={folder.children} />
         </div>
     );
 }
