@@ -8,5 +8,7 @@ namespace server.Models.Requests
     public class NewFolderRequest
     {
         public string Name { get; set; } = null!;
+        public string? ParentId { get; set; }
+
     }
 }

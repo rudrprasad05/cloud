@@ -16,6 +16,7 @@ namespace server.Mappers
             return new Folder
             {
                 Name = request.Name,
+                ParentId = request.ParentId ?? null
             };
         }
 
@@ -36,7 +37,8 @@ namespace server.Mappers
                 Id = folders.Id,
                 Name = folders.Name,
                 UserId = folders.UserId,
-                Medias = folders.Medias.Select(media => media.FromMediaToDTO()).ToList()
+                Medias = folders.Medias.Select(media => media.FromMediaToDTO()).ToList(),
+                Children = folders.Children.Select(child => child.FromFolderToDTO()).ToList()
             };
         }
     }

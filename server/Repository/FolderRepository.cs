@@ -59,6 +59,12 @@ namespace server.Repository
             {
                 folders = folders.Where(s => s.Name.Contains(queryObject.FolderName));
             }
+
+            if(queryObject.IsParent == true)
+            {
+                folders = folders.Where(s => s.ParentId.Equals(null));
+            }
+            
             
             var pageSize = queryObject.PageSize;
             var skipNumber = (queryObject.PageNumber - 1) * pageSize;
@@ -72,6 +78,7 @@ namespace server.Repository
         {
             var folder = _context.Folders
                 .Include(f => f.Medias)
+                .Include(f => f.Children)
                 .FirstOrDefaultAsync(f => f.Id == id);
                 
             

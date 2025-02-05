@@ -9,6 +9,8 @@ namespace server.Models.Requests
     {
         public string? UserId { get; set; } = null;
         public string? FolderName { get; set;} = null;
+        public string? ParentId { get; set;} = string.Empty;
+        public bool? IsParent { get; set;} = false;
         public string? SortBy { get; set; } = null;
         public bool IsDescending { get; set; } = false;
         public int PageNumber { get; set; } = 1;

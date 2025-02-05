@@ -10,10 +10,10 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 
-import { NewFolderForm, NewFolderType } from '@/types/zod';
+import { NewFolderWithParentForm, NewFolderWithParentType } from '@/types/zod';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
     Form,
     FormControl,
@@ -26,27 +26,29 @@ import { Button, buttonVariants } from '../ui/button';
 import { Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '../ui/input';
-import { CreateFolder } from '@/actions/Folders';
+import { CreateFolder, CreateFolderWithParent } from '@/actions/Folders';
 
-export default function NewFolderModal() {
+export default function NewFolderWithParentModal() {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const { id } = useParams();
 
     const router = useRouter();
-    const form = useForm<NewFolderType>({
-        resolver: zodResolver(NewFolderForm),
+    const form = useForm<NewFolderWithParentType>({
+        resolver: zodResolver(NewFolderWithParentForm),
         defaultValues: {
             name: '',
+            parentId: '',
         },
     });
-    const onSubmit: SubmitHandler<NewFolderType> = async (data) => {
+    const onSubmit: SubmitHandler<NewFolderWithParentType> = async (data) => {
         setIsLoading(true);
         try {
             let token = localStorage.getItem('token');
             if (!token) {
                 throw new Error();
             }
-            await CreateFolder(data.name, token);
+            await CreateFolderWithParent(data.name, id as string, token);
             toast.success('Folder Created');
             router.refresh();
         } catch (error) {
@@ -62,7 +64,7 @@ export default function NewFolderModal() {
                 <div
                     className={`${buttonVariants({
                         variant: 'secondary',
-                    })} w-full text-start justify-start px-2 my-2`}
+                    })}`}
                 >
                     <Plus />
                     New

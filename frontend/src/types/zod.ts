@@ -34,6 +34,15 @@ export const NewFolderForm = z.object({
         .max(50, { message: 'Should have less than 50 characters' }),
 });
 
+export const NewFolderWithParentForm = z.object({
+    name: z
+        .string()
+        .min(2, { message: 'Should have more than 2 characters' })
+        .max(50, { message: 'Should have less than 50 characters' }),
+    parentId: z.string(),
+});
+
 export type SignInFormType = z.infer<typeof SignInForm>;
 export type RegisterFormType = z.infer<typeof RegisterForm>;
-export type NewFolderFormType = z.infer<typeof NewFolderForm>;
+export type NewFolderType = z.infer<typeof NewFolderForm>;
+export type NewFolderWithParentType = z.infer<typeof NewFolderWithParentForm>;

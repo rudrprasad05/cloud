@@ -11,5 +11,7 @@ namespace server.Models.Responses
         public string Name { get; set; } = string.Empty;
         public string UserId { get; set; } = null!;
         public List<GetOnlyMediaResponse> Medias { get; set; } = [];
+        public List<GetOnlyFoldersReponse> Children { get; set; } = [];
+
     }
 }
