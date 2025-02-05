@@ -8,7 +8,7 @@ export default async function Home() {
     const media = await GetMedia();
 
     return (
-        <main className="px-6 py-4 flex flex-col gap-6">
+        <main className="flex flex-col gap-6">
             <section>
                 <h1 className="text-2xl mb-2">Folders</h1>
                 <FolderList folders={folders} />

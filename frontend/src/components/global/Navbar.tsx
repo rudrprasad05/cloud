@@ -73,11 +73,6 @@ export default function Navbar() {
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
-                <SidebarFooter className="mt-auto">
-                    <div className="p-2">
-                        <UserIcon src="" name={user?.username} />
-                    </div>
-                </SidebarFooter>
             </SidebarContent>
         </Sidebar>
     );

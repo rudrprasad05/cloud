@@ -29,7 +29,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Button } from '../ui/button';
+import { Button, buttonVariants } from '../ui/button';
 import { Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '../ui/input';
@@ -66,13 +66,14 @@ export default function NewFolderModal() {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger>
-                <Button
-                    className="w-full text-start justify-start px-2 my-2"
-                    variant={'secondary'}
+                <div
+                    className={`${buttonVariants({
+                        variant: 'secondary',
+                    })} w-full text-start justify-start px-2 my-2`}
                 >
                     <Plus />
                     New
-                </Button>
+                </div>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

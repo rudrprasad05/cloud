@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/theme/ThemeProvider';
 import '../globals.css';
 import { SessionProvider } from '@/context/useSession';
 import { Toaster } from '@/components/ui/sonner';
+import SearchBox from '@/components/global/SearchBox';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -37,9 +38,9 @@ export default function RootLayout({
                         <SidebarProvider>
                             <Navbar />
                             <Toaster />
-                            <main className="grow w-full">
-                                <SidebarTrigger />
-                                {children}
+                            <main className="grow w-full flex flex-col gap-2 p-8">
+                                <SearchBox />
+                                <div className="py-4">{children}</div>
                             </main>
                         </SidebarProvider>
                     </ThemeProvider>

@@ -12,7 +12,7 @@ const agent = new https.Agent({
 });
 
 export async function GetUser() {
-    const res = await axiosGlobal.get(API + 'account/google/user', {
+    const res = await axiosGlobal.get('account/google/user', {
         withCredentials: true,
         httpAgent: agent,
     });
