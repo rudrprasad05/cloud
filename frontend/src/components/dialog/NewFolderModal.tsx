@@ -101,7 +101,7 @@ export default function NewFolderModal() {
                             {isLoading && (
                                 <Loader2 className={'animate-spin mr-3'} />
                             )}
-                            Login
+                            Create
                         </Button>
                     </form>
                 </Form>

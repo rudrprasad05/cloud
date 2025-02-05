@@ -23,13 +23,15 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Button, buttonVariants } from '../ui/button';
-import { CloudUpload, Loader2, Plus } from 'lucide-react';
+import { CloudUpload, Image, Loader2, Plus, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '../ui/input';
 import { CreateFolder } from '@/actions/Folders';
+import { cn } from '@/lib/utils';
 
 export default function NewMediaModal() {
     const [isLoading, setIsLoading] = useState(false);
+    const [file, setFile] = useState<File | undefined>();
     const [isOpen, setIsOpen] = useState(false);
 
     const router = useRouter();
@@ -39,6 +41,50 @@ export default function NewMediaModal() {
             name: '',
         },
     });
+    function handleImageUpload(file: File) {
+        setFile(file);
+    }
+    function HandleAfterImageSelect() {
+        if (!file) {
+            return (
+                <label
+                    htmlFor="file"
+                    className={cn(
+                        'cursor-pointer',
+                        file && 'opacity-50 cursor-not-allowed'
+                    )}
+                >
+                    <div className="items-center rounded-md p-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 flex gap-3">
+                        <Upload />
+                        <h2 className="text-sm">Upload Image</h2>
+                    </div>
+                    <input
+                        id="file"
+                        type="file"
+                        accept='accept="image/png, image/gif, image/jpeg, image/jpg"'
+                        name="file"
+                        disabled={file}
+                        hidden
+                        onChange={(e) => {
+                            handleImageUpload(e.target.files?.[0] as File);
+                        }}
+                    />
+                </label>
+            );
+        }
+        return (
+            <div>
+                <div className="flex">
+                    <Image />
+                    <div>{file.name}</div>
+                </div>
+                <Button className="w-full" type="submit">
+                    {isLoading && <Loader2 className={'animate-spin mr-3'} />}
+                    Upload
+                </Button>
+            </div>
+        );
+    }
     const onSubmit: SubmitHandler<NewFolderType> = async (data) => {
         setIsLoading(true);
         try {
@@ -70,41 +116,12 @@ export default function NewMediaModal() {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Create a New Folder</DialogTitle>
+                    <DialogTitle>Create a New Media Upload</DialogTitle>
                     <DialogDescription>
-                        Create a folder to store your files
+                        Upload a file to cloud
                     </DialogDescription>
                 </DialogHeader>
-                <Form {...form}>
-                    <form
-                        className="space-y-3"
-                        onSubmit={form.handleSubmit(onSubmit)}
-                    >
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            autoComplete="off"
-                                            placeholder="enter name"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button className="w-full" type="submit">
-                            {isLoading && (
-                                <Loader2 className={'animate-spin mr-3'} />
-                            )}
-                            Login
-                        </Button>
-                    </form>
-                </Form>
+                <HandleAfterImageSelect />
             </DialogContent>
         </Dialog>
     );
