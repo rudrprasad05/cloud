@@ -11,5 +11,7 @@ namespace server.Models.Requests
         public MediaType Type { get; set; }
         public string Source { get; set; } = string.Empty;
         public string FolderId { get; set; } = null!;
+        public string Name { get; set; } = null!;
+
     }
 }

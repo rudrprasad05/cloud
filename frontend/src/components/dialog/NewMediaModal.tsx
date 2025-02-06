@@ -13,7 +13,7 @@ import {
 import { NewFolderForm, NewFolderType } from '@/types/zod';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
     Form,
     FormControl,
@@ -23,16 +23,19 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Button, buttonVariants } from '../ui/button';
-import { CloudUpload, Image, Loader2, Plus, Upload } from 'lucide-react';
+import { CloudUpload, Image, Loader2, Plus, Trash, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '../ui/input';
 import { CreateFolder } from '@/actions/Folders';
 import { cn } from '@/lib/utils';
+import HandleImageTypeIcon from '@/services/HandleImageTypeIcon';
+import { UploadOneFile } from '@/actions/File';
 
 export default function NewMediaModal() {
     const [isLoading, setIsLoading] = useState(false);
     const [file, setFile] = useState<File | undefined>();
     const [isOpen, setIsOpen] = useState(false);
+    const { id: folderId } = useParams();
 
     const router = useRouter();
     const form = useForm<NewFolderType>({
@@ -41,8 +44,25 @@ export default function NewMediaModal() {
             name: '',
         },
     });
-    function handleImageUpload(file: File) {
-        setFile(file);
+    async function handleImageUpload() {
+        if (!file) {
+            toast.error('No file to upload');
+            return;
+        }
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('id', folderId as string);
+
+        setIsLoading(true);
+
+        try {
+            const res = await UploadOneFile(formData);
+            if (!res) throw new Error();
+            toast.success('Media Uploaded');
+        } catch (error) {
+            toast.error('Error uploading media');
+        }
+        setIsLoading(false);
     }
     function HandleAfterImageSelect() {
         if (!file) {
@@ -64,21 +84,36 @@ export default function NewMediaModal() {
                         accept='accept="image/png, image/gif, image/jpeg, image/jpg"'
                         name="file"
                         disabled={file}
+                        value={file}
                         hidden
                         onChange={(e) => {
-                            handleImageUpload(e.target.files?.[0] as File);
+                            setFile(e.target.files?.[0] as File);
                         }}
                     />
                 </label>
             );
         }
         return (
-            <div>
-                <div className="flex">
-                    <Image />
-                    <div>{file.name}</div>
+            <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-2">
+                    <Image className="w-6 h-6" />
+                    <div className="truncate w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                        {file.name}
+                    </div>
+
+                    <Button
+                        className="ml-auto"
+                        variant={'destructive'}
+                        onClick={() => setFile(undefined)}
+                    >
+                        <Trash className="w-6 h-6" />
+                    </Button>
                 </div>
-                <Button className="w-full" type="submit">
+                <Button
+                    onClick={() => handleImageUpload()}
+                    className="w-full"
+                    type="submit"
+                >
                     {isLoading && <Loader2 className={'animate-spin mr-3'} />}
                     Upload
                 </Button>

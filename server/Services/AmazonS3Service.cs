@@ -27,7 +27,7 @@ namespace server.Services
             _s3Client = new AmazonS3Client(accessKey, secretKey, region);
             _bucketName = awsOptions["BucketName"] ?? throw new InvalidOperationException("bucket name");
         }
-        public async Task<string> UploadFileAsync(IFormFile file)
+        public async Task<string?> UploadFileAsync(IFormFile file)
         {
             if (file.Length > 0)
             {

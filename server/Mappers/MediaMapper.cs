@@ -17,7 +17,8 @@ namespace server.Mappers
             {
                 FolderId = request.FolderId,
                 Type = request.Type,
-                Source = string.Empty
+                Source = request.Source,
+                Name = request.Name
             };
         }
 
@@ -26,6 +27,7 @@ namespace server.Mappers
             ArgumentNullException.ThrowIfNull(request);
             return new GetOnlyMediaResponse
             {
+                Id = request.Id,
                 FolderId = request.FolderId,
                 Type = request.Type,
                 Source = request.Source,

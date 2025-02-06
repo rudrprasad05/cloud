@@ -14,6 +14,7 @@ namespace server.Models
         [Column(TypeName = "varchar(20)")]
         public MediaType Type { get; set; }
         public string Source { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public Folder Folder { get; set; } = null!;
         public string FolderId { get; set; } = null!;
         

@@ -10,7 +10,7 @@ export type Folder = {
     updatedAt: string | null;
 };
 
-type Media = {
+export type Media = {
     id: string;
     type: MediaType;
     source: string;

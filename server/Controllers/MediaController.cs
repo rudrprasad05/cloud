@@ -14,8 +14,8 @@ namespace server.Controllers
     [Route("api/media")]
     public class MediaController : ControllerBase
     {
-        IMediaRepository _mediaRepository;
-        IAmazonS3Service _amazonS3Service;
+        private readonly IMediaRepository _mediaRepository;
+        private readonly IAmazonS3Service _amazonS3Service;
 
         public MediaController(IMediaRepository mediaRepository, IAmazonS3Service amazonS3Service) 
         {
@@ -24,23 +24,17 @@ namespace server.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateMedia([FromBody] NewMediaRequest request)
+        public async Task<IActionResult> CreateMedia([FromForm] string id, IFormFile file)
         {
-
-            var media = request.MapToMedia();
-            if (media == null)
+            var res = await _mediaRepository.CreateAsync(file, id);
+            if(res == null)
             {
-                return BadRequest();
+                return BadRequest("Media not Created");
             }
 
-            var newMedia = await _mediaRepository.CreateAsync(media);
-            if (newMedia == null)
-            {
-                return BadRequest(new { message = "Failed to create media." });
-            }
+            res.FromMediaToDTO();
 
-            var dto = newMedia.FromMediaToDTO();
-            return Ok(dto);
+            return Ok(res);
         }
 
         [HttpGet("get-all")]

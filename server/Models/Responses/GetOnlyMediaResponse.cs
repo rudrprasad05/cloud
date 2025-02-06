@@ -9,6 +9,8 @@ namespace server.Models.Responses
     public class GetOnlyMediaResponse
     {
         public MediaType Type { get; set; }
+        public string Id { get; set; } = null!;
+
         public string Source { get; set; } = string.Empty;
         public string FolderId { get; set; } = null!;
         public DateTime CreatedAt { get; set; }

@@ -8,7 +8,7 @@ namespace server.Interfaces
 {
     public interface IMediaRepository
     {
-        public Task<Media?> CreateAsync(Media media);
+        public Task<Media?> CreateAsync(IFormFile file, string id);
 
         public Task<List<Media>> GetAll();
 

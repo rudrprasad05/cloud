@@ -2,6 +2,7 @@
 
 import { API } from '@/constants';
 import { axiosGlobal } from '@/lib/axios';
+import { Media } from '@/types';
 import axios from 'axios';
 
 export async function GetMedia() {
