@@ -10,7 +10,8 @@ namespace server.Models.Responses
     {
         public MediaType Type { get; set; }
         public string Id { get; set; } = null!;
-
+        public string Name { get; set; } = null!;
+        public double? Size { get; set; } = null;
         public string Source { get; set; } = string.Empty;
         public string FolderId { get; set; } = null!;
         public DateTime CreatedAt { get; set; }

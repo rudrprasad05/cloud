@@ -59,6 +59,8 @@ export default function NewMediaModal() {
             const res = await UploadOneFile(formData);
             if (!res) throw new Error();
             toast.success('Media Uploaded');
+            setIsOpen(false);
+            router.refresh();
         } catch (error) {
             toast.error('Error uploading media');
         }
@@ -94,10 +96,10 @@ export default function NewMediaModal() {
             );
         }
         return (
-            <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-4 w-full flex-1 min-w-0">
+                <div className="flex items-center gap-2 w-full flex-1 min-w-0">
                     <Image className="w-6 h-6" />
-                    <div className="truncate w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                    <div className="truncate  w-full overflow-hidden text-ellipsis whitespace-nowrap">
                         {file.name}
                     </div>
 

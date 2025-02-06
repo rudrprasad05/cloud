@@ -40,7 +40,8 @@ namespace server.Repository
                 Type = Constants.Enum.MediaType.IMAGE,
                 Source = fileUrl, 
                 FolderId = id,
-                Name = file.FileName
+                Name = file.FileName,
+                Size = file.Length
             };
 
             var newMedia = await _context.Medias.AddAsync(req.MapToMedia());

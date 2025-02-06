@@ -18,7 +18,8 @@ namespace server.Mappers
                 FolderId = request.FolderId,
                 Type = request.Type,
                 Source = request.Source,
-                Name = request.Name
+                Name = request.Name,
+                Size = request.Size
             };
         }
 
@@ -31,7 +32,9 @@ namespace server.Mappers
                 FolderId = request.FolderId,
                 Type = request.Type,
                 Source = request.Source,
-                CreatedAt = request.CreatedAt
+                CreatedAt = request.CreatedAt,
+                Name = request.Name,
+                Size = request.Size,
             };
         }
     }

@@ -12,12 +12,14 @@ export type Folder = {
 
 export type Media = {
     id: string;
+    name: string;
     type: MediaType;
     source: string;
     folder: Folder;
     folderId: string;
     createdAt: string;
     updatedAt: string | null;
+    size?: number;
 };
 
 type MediaType = 0 | 1;
