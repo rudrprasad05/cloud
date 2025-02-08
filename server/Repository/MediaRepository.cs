@@ -54,10 +54,17 @@ namespace server.Repository
             return newMedia.Entity;   
         }
 
-        public async Task<List<Media>> GetAll()
+        public async Task<List<Media>> GetAll(MediaQueryObject queryObject)
         {
-            var media = await _context.Medias.Include(m => m.Folder).ToListAsync();
-            return media;
+            var media = _context.Medias.Include(m => m.Folder).AsQueryable();
+
+            if(queryObject.IsStarred.HasValue)
+            {
+                media = media.Where(s => s.Star.Equals(queryObject.IsStarred));
+            }
+            
+            var res = await media.ToListAsync();
+            return res; 
         }
 
         public async Task<Media?> Star(string id, bool star)

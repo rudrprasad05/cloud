@@ -39,9 +39,9 @@ namespace server.Controllers
         }
 
         [HttpGet("get-all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] MediaQueryObject queryObject)
         {
-            var media = await _mediaRepository.GetAll();
+            var media = await _mediaRepository.GetAll(queryObject);
             var dtos = media.Select(m => m.FromMediaWithFolderToDTO()).ToList();
             return Ok(dtos);
         }

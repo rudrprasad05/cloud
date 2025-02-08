@@ -10,3 +10,11 @@ export async function GetMedia() {
 
     return res.data;
 }
+
+export async function GetStarMedia() {
+    const res = await axiosGlobal.get<Partial<Media>[]>(
+        'media/get-all?IsStarred=true'
+    );
+
+    return res.data;
+}
