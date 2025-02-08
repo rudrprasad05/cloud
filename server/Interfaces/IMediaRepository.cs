@@ -12,6 +12,9 @@ namespace server.Interfaces
 
         public Task<List<Media>> GetAll();
 
+        public Task<Media?> Star(string id, bool star);
+
+
         
     }
 }

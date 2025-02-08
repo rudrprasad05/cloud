@@ -13,7 +13,15 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { useSession } from '@/context/useSession';
-import { Calendar, Home, Inbox, Plus, Search, Settings } from 'lucide-react';
+import {
+    Calendar,
+    Home,
+    Inbox,
+    Plus,
+    Search,
+    Settings,
+    Star,
+} from 'lucide-react';
 import React from 'react';
 import { GoogleDriveSVG } from '../svg';
 import { Button } from '../ui/button';
@@ -23,13 +31,13 @@ import NewFolderModal from '../dialog/NewFolderModal';
 const items = [
     {
         title: 'Home',
-        url: '#',
+        url: '/',
         icon: Home,
     },
     {
-        title: 'Inbox',
-        url: '#',
-        icon: Inbox,
+        title: 'Starred',
+        url: '/starred',
+        icon: Star,
     },
     {
         title: 'Calendar',

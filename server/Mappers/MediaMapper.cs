@@ -19,7 +19,8 @@ namespace server.Mappers
                 Type = request.Type,
                 Source = request.Source,
                 Name = request.Name,
-                Size = request.Size
+                Size = request.Size,
+
             };
         }
 
@@ -35,7 +36,8 @@ namespace server.Mappers
                 CreatedAt = request.CreatedAt,
                 Name = request.Name,
                 Size = request.Size,
-                Folder = request.Folder.FromFolderToFolderName()
+                Folder = request.Folder.FromFolderToFolderName(),
+                Star = request.Star
             };
         }
 
@@ -51,6 +53,7 @@ namespace server.Mappers
                 CreatedAt = request.CreatedAt,
                 Name = request.Name,
                 Size = request.Size,
+                Star = request.Star
             };
         }
     }

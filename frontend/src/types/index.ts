@@ -20,6 +20,7 @@ export type Media = {
     createdAt: string;
     updatedAt: string | null;
     size?: number;
+    star: boolean;
 };
 
 type MediaType = 0 | 1;

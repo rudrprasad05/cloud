@@ -18,7 +18,6 @@ namespace server.Controllers
     {
         private readonly IMediaRepository _mediaRepository;
         private readonly IAmazonS3Service _amazonS3Service;
-
         public MediaController(IMediaRepository mediaRepository, IAmazonS3Service amazonS3Service) 
         {
             _mediaRepository = mediaRepository;
@@ -45,6 +44,14 @@ namespace server.Controllers
             var media = await _mediaRepository.GetAll();
             var dtos = media.Select(m => m.FromMediaWithFolderToDTO()).ToList();
             return Ok(dtos);
+        }
+
+        [HttpPatch("star/{id}")]
+        public async Task<IActionResult> Star([FromRoute] string id, [FromBody] StartMediaRequest request)
+        {
+            var media = await _mediaRepository.Star(id, request.Star);
+
+            return Ok(media);
         }
         
         [HttpGet("download")]

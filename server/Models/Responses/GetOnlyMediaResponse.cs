@@ -16,7 +16,6 @@ namespace server.Models.Responses
         public string FolderId { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public Folder Folder { get; set; } = null!;
-
-        
+        public bool Star { get; set; } = false;
     }
 }

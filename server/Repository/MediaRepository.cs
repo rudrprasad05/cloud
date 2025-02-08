@@ -59,5 +59,19 @@ namespace server.Repository
             var media = await _context.Medias.Include(m => m.Folder).ToListAsync();
             return media;
         }
+
+        public async Task<Media?> Star(string id, bool star)
+        {
+            var media = await _context.Medias.FirstOrDefaultAsync((m) => m.Id == id);
+            if(media == null)
+            {
+                return null;
+            }
+            
+            media.Star = star;
+
+            await _context.SaveChangesAsync();
+            return media;
+        }
     }
 }
