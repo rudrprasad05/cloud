@@ -2,6 +2,10 @@ import { Media } from '@/types';
 import { format } from 'date-fns';
 import { FileImage, Folder, Image, Video } from 'lucide-react';
 import React from 'react';
+import LayoutCard from '../folder/LayoutCard';
+import HandleSizeCalculation from '@/services/HandleSizeCalculation';
+import Settings from '../folder/Settings';
+import ImageModal from '../dialog/ImageModal';
 
 interface IRecentList {
     media: Partial<Media>[];
@@ -18,22 +22,32 @@ export default function RecentList({ media }: IRecentList) {
     return (
         <div className="grid grid-cols-1 gap-4 w-full">
             {media.map((m) => (
-                <div className="grid grid-cols-12 w-full bg-sidebar rounded p-4 items-center gap-4">
-                    <div className="flex gap-4 items-center col-span-6">
-                        {m.type === 0 && <FileImage />}
-                        {m.type === 1 && <Video />}
-                        <div className="truncate w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                            {m.name}
+                <LayoutCard>
+                    <ImageModal
+                        className="grid grid-cols-10 w-full col-span-10"
+                        media={m}
+                    >
+                        <div className="flex items-center gap-4 col-span-6 flex-1 min-w-0 mr-4">
+                            <FileImage className="w-5 h-5 text-muted-foreground" />
+                            <div className="flex items-center flex-1 min-w-0 ml-0 text-left">
+                                <div className="w-full flex items-center">
+                                    <p className="truncate w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                                        {m.name}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+                        <div className="col-span-2">
+                            {format(m.createdAt as string, 'dd MMM yyyy')}
+                        </div>
+                        <div className="col-span-2">
+                            {<HandleSizeCalculation size={m.size} />}
+                        </div>
+                    </ImageModal>
+                    <div className="col-span-2 group-hover:flex hidden flex-row-reverse">
+                        <Settings media={m} />
                     </div>
-                    <div className="flex gap-4 items-center col-span-3">
-                        <Folder className="w-6 h-6" />
-                        {m.folder?.name}
-                    </div>
-                    <div className="ml-auto col-span-3">
-                        {format(m.createdAt || Date.now(), 'dd MMM yyy')}
-                    </div>
-                </div>
+                </LayoutCard>
             ))}
         </div>
     );
