@@ -24,7 +24,7 @@ export default function RecentList({ media }: IRecentList) {
             {media.map((m) => (
                 <LayoutCard>
                     <ImageModal
-                        className="grid grid-cols-10 w-full col-span-10"
+                        className="p-2 grid grid-cols-10 w-full col-span-10 text-left"
                         media={m}
                     >
                         <div className="flex items-center gap-4 col-span-6 flex-1 min-w-0 mr-4">
@@ -37,14 +37,14 @@ export default function RecentList({ media }: IRecentList) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-2 text-right">
                             {format(m.createdAt as string, 'dd MMM yyyy')}
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-2 text-right">
                             {<HandleSizeCalculation size={m.size} />}
                         </div>
                     </ImageModal>
-                    <div className="col-span-2 group-hover:flex hidden flex-row-reverse">
+                    <div className="p-2 col-span-2 group-hover:flex hidden flex-row-reverse">
                         <Settings media={m} />
                     </div>
                 </LayoutCard>

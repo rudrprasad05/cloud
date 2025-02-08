@@ -69,7 +69,7 @@ export default function Settings({
                 <Star
                     onClick={handleStar}
                     className={cn(
-                        'w-4 h-4',
+                        'w-4 h-4 transition',
                         tempMedia?.star ? 'fill-white' : 'fill-none'
                     )}
                 />
