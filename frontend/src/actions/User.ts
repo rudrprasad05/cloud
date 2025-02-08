@@ -21,6 +21,6 @@ export async function GetUser() {
 
 export async function LoginUser(data: SignInFormType): Promise<LoginResponse> {
     const res = await axiosGlobal.post<LoginResponse>('auth/login', data);
-    console.log(res);
+
     return res.data;
 }

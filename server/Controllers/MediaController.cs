@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.S3;
+using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using server.Interfaces;
@@ -26,24 +28,52 @@ namespace server.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateMedia([FromForm] string id, IFormFile file)
         {
-            var res = await _mediaRepository.CreateAsync(file, id);
-            if(res == null)
+            var req = await _mediaRepository.CreateAsync(file, id);
+            if(req == null)
             {
                 return BadRequest("Media not Created");
             }
 
-            res.FromMediaToDTO();
+            var resp = req.FromMediaToDTO();
 
-            return Ok(res);
+            return Ok(resp);
         }
 
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
             var media = await _mediaRepository.GetAll();
-            var dtos = media.Select(m => m.FromMediaToDTO()).ToList();
+            var dtos = media.Select(m => m.FromMediaWithFolderToDTO()).ToList();
             return Ok(dtos);
         }
         
+        [HttpGet("download")]
+        public async Task<IActionResult> DownloadFile([FromQuery] string fileName)
+        {
+            try
+            {
+                var fileStream = await _amazonS3Service.GetObjectAsync(fileName);
+
+                if (fileStream == null)
+                {
+                    return BadRequest("File not found or error retrieving file.");
+                }
+
+                using var responseStream = fileStream.ResponseStream;
+                using var memoryStream = new MemoryStream();
+                await responseStream.CopyToAsync(memoryStream);
+                
+                var contentType = fileStream.Headers["Content-Type"];
+                return File(memoryStream.ToArray(), contentType, fileName);
+            }
+            catch (AmazonS3Exception ex)
+            {
+                return BadRequest($"S3 error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server error: {ex.Message}");
+            }
+        }
     }
 }

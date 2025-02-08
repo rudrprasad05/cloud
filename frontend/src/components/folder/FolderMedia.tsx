@@ -36,7 +36,7 @@ export default function FolderMedia({
                         {<HandleSizeCalculation size={med.size} />}
                     </div>
                     <div className="col-span-2 group-hover:flex hidden flex-row-reverse">
-                        <Settings />
+                        <Settings media={med} />
                     </div>
                 </LayoutCard>
             ))}

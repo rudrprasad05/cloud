@@ -14,9 +14,7 @@ export async function GetFolder() {
 }
 
 export async function GetOneFolder(id: string) {
-    console.log(id);
     const res = await axiosGlobal.get<Partial<Folder>>('folder/get-one/' + id);
-    console.log(res.data);
     return res.data;
 }
 

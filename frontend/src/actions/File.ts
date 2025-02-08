@@ -12,5 +12,7 @@ export async function UploadOneFile(form: FormData) {
         },
     });
 
+    console.log(res);
+
     return res.data;
 }

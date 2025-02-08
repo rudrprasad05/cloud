@@ -11,7 +11,6 @@ interface IFolderList {
 
 export default function FolderList({ folders }: IFolderList) {
     const session = useSession();
-    console.log(session.user);
 
     if (folders.length === 0) {
         return (

@@ -15,7 +15,7 @@ namespace server.Models.Responses
         public string Source { get; set; } = string.Empty;
         public string FolderId { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
-        public string FolderName { get; set; } = null!;
+        public Folder Folder { get; set; } = null!;
 
         
     }

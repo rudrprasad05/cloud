@@ -20,7 +20,7 @@ export const axiosGlobal = axios.create({
 axiosGlobal.interceptors.request.use(
     async (config) => {
         // const token = localStorage.getItem('token');
-        // console.log('lcs', token);
+        //
 
         // if (token) {
         //     config.headers.Authorization = `Bearer ${token}`;

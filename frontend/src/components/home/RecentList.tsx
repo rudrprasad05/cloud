@@ -1,10 +1,10 @@
-import { Media, MediaWithFolderName } from '@/types';
+import { Media } from '@/types';
 import { format } from 'date-fns';
 import { FileImage, Folder, Image, Video } from 'lucide-react';
 import React from 'react';
 
 interface IRecentList {
-    media: Partial<MediaWithFolderName>[];
+    media: Partial<Media>[];
 }
 
 export default function RecentList({ media }: IRecentList) {
@@ -28,7 +28,7 @@ export default function RecentList({ media }: IRecentList) {
                     </div>
                     <div className="flex gap-4 items-center col-span-3">
                         <Folder className="w-6 h-6" />
-                        {m.folderName}
+                        {m.folder?.name}
                     </div>
                     <div className="ml-auto col-span-3">
                         {format(m.createdAt || Date.now(), 'dd MMM yyy')}

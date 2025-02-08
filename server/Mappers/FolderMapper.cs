@@ -37,7 +37,7 @@ namespace server.Mappers
                 Id = folders.Id,
                 Name = folders.Name,
                 UserId = folders.UserId,
-                Medias = folders.Medias.Select(media => media.FromMediaToDTO()).ToList(),
+                Medias = folders.Medias.Select(media => media.FromMediaWithFolderToDTO()).ToList(),
                 Children = folders.Children.Select(child => child.FromFolderToDTO()).ToList()
             };
         }
@@ -49,6 +49,10 @@ namespace server.Mappers
                 Id = folders.Id,
                 Name = folders.Name,
                 UserId = folders.UserId,
+                Children = [],
+                Medias = [],
+                ParentId = string.Empty,
+
             };
         }
     }

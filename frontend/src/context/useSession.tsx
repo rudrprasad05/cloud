@@ -35,7 +35,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     // 🔹 Load session from cookies on mount
     useEffect(() => {
         checkAuth();
-        console.log('user', user);
     }, []);
 
     const login = async (username: string, password: string) => {
@@ -119,7 +118,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
                 })
                 .finally(() => setIsLoading(false));
         } else {
-            console.log('no token');
             logout();
             setIsLoading(false);
             router.push('/');

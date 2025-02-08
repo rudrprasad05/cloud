@@ -23,6 +23,22 @@ namespace server.Mappers
             };
         }
 
+        public static GetOnlyMediaResponse FromMediaWithFolderToDTO(this Media request)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+            return new GetOnlyMediaResponse
+            {
+                Id = request.Id,
+                FolderId = request.FolderId,
+                Type = request.Type,
+                Source = request.Source,
+                CreatedAt = request.CreatedAt,
+                Name = request.Name,
+                Size = request.Size,
+                Folder = request.Folder.FromFolderToFolderName()
+            };
+        }
+
         public static GetOnlyMediaResponse FromMediaToDTO(this Media request)
         {
             ArgumentNullException.ThrowIfNull(request);
@@ -35,7 +51,6 @@ namespace server.Mappers
                 CreatedAt = request.CreatedAt,
                 Name = request.Name,
                 Size = request.Size,
-                FolderName = request.Folder.Name
             };
         }
     }

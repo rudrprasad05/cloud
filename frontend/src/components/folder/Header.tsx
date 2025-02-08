@@ -3,7 +3,7 @@ import { Images } from 'lucide-react';
 import React from 'react';
 
 export default function Header({ folders }: { folders: Partial<Folder> }) {
-    // console.log(folders.children?.length);
+    //
     // return <></>;
     if (
         (folders.children && folders.children.length > 0) ||

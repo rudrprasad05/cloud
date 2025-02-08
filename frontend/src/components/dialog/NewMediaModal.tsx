@@ -62,6 +62,7 @@ export default function NewMediaModal() {
             setIsOpen(false);
             router.refresh();
         } catch (error) {
+            console.log(error);
             toast.error('Error uploading media');
         }
         setIsLoading(false);
