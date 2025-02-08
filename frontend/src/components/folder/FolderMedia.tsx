@@ -4,6 +4,8 @@ import { Media } from '@/types';
 import { format } from 'date-fns';
 import { FileImage, Minus } from 'lucide-react';
 import React from 'react';
+import LayoutCard from './LayoutCard';
+import Settings from './Settings';
 
 export default function FolderMedia({
     media,
@@ -16,7 +18,7 @@ export default function FolderMedia({
     return (
         <div className="grid gap-2">
             {media.map((med) => (
-                <div className="grid grid-cols-12 items-center flex-1 min-w-0">
+                <LayoutCard>
                     <div className="flex items-center gap-4 col-span-6 flex-1 min-w-0 mr-4">
                         <FileImage className="w-5 h-5 text-muted-foreground" />
                         <div className="flex items-center flex-1 min-w-0">
@@ -27,13 +29,16 @@ export default function FolderMedia({
                             </div>
                         </div>
                     </div>
-                    <div className="col-span-3">
+                    <div className="col-span-2">
                         {format(med.createdAt as string, 'dd MMM yyyy')}
                     </div>
-                    <div className="col-span-3">
+                    <div className="col-span-2">
                         {<HandleSizeCalculation size={med.size} />}
                     </div>
-                </div>
+                    <div className="col-span-2 group-hover:flex hidden flex-row-reverse">
+                        <Settings />
+                    </div>
+                </LayoutCard>
             ))}
         </div>
     );

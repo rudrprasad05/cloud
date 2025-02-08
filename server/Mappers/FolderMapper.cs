@@ -41,5 +41,15 @@ namespace server.Mappers
                 Children = folders.Children.Select(child => child.FromFolderToDTO()).ToList()
             };
         }
+
+        public static Folder FromFolderToFolderName(this Folder folders)
+        {
+            return new Folder
+            {
+                Id = folders.Id,
+                Name = folders.Name,
+                UserId = folders.UserId,
+            };
+        }
     }
 }

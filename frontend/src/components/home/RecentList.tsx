@@ -1,9 +1,10 @@
-import { Folder, Image, Video } from 'lucide-react';
+import { Media, MediaWithFolderName } from '@/types';
 import { format } from 'date-fns';
+import { FileImage, Folder, Image, Video } from 'lucide-react';
 import React from 'react';
 
 interface IRecentList {
-    media: Partial<Media>[];
+    media: Partial<MediaWithFolderName>[];
 }
 
 export default function RecentList({ media }: IRecentList) {
@@ -17,17 +18,19 @@ export default function RecentList({ media }: IRecentList) {
     return (
         <div className="grid grid-cols-1 gap-4 w-full">
             {media.map((m) => (
-                <div className="flex w-full bg-sidebar rounded p-4 items-center gap-4">
-                    <div>
-                        {m.type === 0 && <Image />}
+                <div className="grid grid-cols-12 w-full bg-sidebar rounded p-4 items-center gap-4">
+                    <div className="flex gap-4 items-center col-span-6">
+                        {m.type === 0 && <FileImage />}
                         {m.type === 1 && <Video />}
+                        <div className="truncate w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                            {m.name}
+                        </div>
                     </div>
-                    <div>{m.source}</div>
-                    <div className="flex gap-4 items-center">
-                        <Folder className="w-4 h-4" />
-                        {m.folderId}
+                    <div className="flex gap-4 items-center col-span-3">
+                        <Folder className="w-6 h-6" />
+                        {m.folderName}
                     </div>
-                    <div className="ml-auto">
+                    <div className="ml-auto col-span-3">
                         {format(m.createdAt || Date.now(), 'dd MMM yyy')}
                     </div>
                 </div>

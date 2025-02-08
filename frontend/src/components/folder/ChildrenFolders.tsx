@@ -1,6 +1,9 @@
 import { Folder } from '@/types';
 import { Folder as FolderIcon } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
+
+import LayoutCard from './LayoutCard';
 
 export default function ChildrenFolders({ folders }: { folders?: Folder[] }) {
     if (!folders || folders.length === 0) {
@@ -9,10 +12,14 @@ export default function ChildrenFolders({ folders }: { folders?: Folder[] }) {
     return (
         <div className="grid gap-2">
             {folders.map((folder) => (
-                <div className="flex gap-4 items-center ">
-                    <FolderIcon className="w-5 h-5 text-muted-foreground" />
-                    <div>{folder.name}</div>
-                </div>
+                <Link href={'/folder/' + folder.id}>
+                    <LayoutCard>
+                        <div className="flex col-span-6 items-center gap-4">
+                            <FolderIcon className="w-5 h-5 text-muted-foreground" />
+                            <div>{folder.name}</div>
+                        </div>
+                    </LayoutCard>
+                </Link>
             ))}
         </div>
     );

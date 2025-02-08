@@ -40,7 +40,9 @@ export default function RootLayout({
                             <Toaster />
                             <main className="grow w-full flex flex-col gap-2 p-8">
                                 <SearchBox />
-                                <div className="py-4">{children}</div>
+                                <div className="py-4 grow flex flex-col©">
+                                    {children}
+                                </div>
                             </main>
                         </SidebarProvider>
                     </ThemeProvider>

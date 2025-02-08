@@ -56,7 +56,7 @@ namespace server.Repository
 
         public async Task<List<Media>> GetAll()
         {
-            var media = await _context.Medias.ToListAsync();
+            var media = await _context.Medias.Include(m => m.Folder).ToListAsync();
             return media;
         }
     }

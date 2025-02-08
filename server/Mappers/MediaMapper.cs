@@ -35,6 +35,7 @@ namespace server.Mappers
                 CreatedAt = request.CreatedAt,
                 Name = request.Name,
                 Size = request.Size,
+                FolderName = request.Folder.Name
             };
         }
     }

@@ -22,6 +22,19 @@ export type Media = {
     size?: number;
 };
 
+export type MediaWithFolderName = {
+    id: string;
+    name: string;
+    type: MediaType;
+    source: string;
+    folderName: string;
+    folder: Folder;
+    folderId: string;
+    createdAt: string;
+    updatedAt: string | null;
+    size?: number;
+};
+
 type MediaType = 0 | 1;
 
 type User = {};
