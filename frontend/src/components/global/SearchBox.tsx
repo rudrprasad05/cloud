@@ -23,7 +23,7 @@ export default function SearchBox() {
             </div>
             <div className="flex items-center gap-3">
                 <Cog className="h-6 w-6" />
-                <UserIcon src="" name={user?.username} />
+                <UserIcon />
             </div>
         </div>
     );

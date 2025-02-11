@@ -11,16 +11,10 @@ import {
 import { Button } from '../ui/button';
 import { useSession } from '@/context/useSession';
 
-export default function UserIcon({
-    name,
-    src,
-}: {
-    name?: string;
-    src?: string;
-}) {
+export default function UserIcon() {
     const [isLoading, setIsLoading] = useState(true);
     const { logout } = useSession();
-
+    const { user } = useSession();
     useEffect(() => {
         setIsLoading(false);
     }, []);
@@ -35,11 +29,14 @@ export default function UserIcon({
         <Popover>
             <PopoverTrigger>
                 <Avatar>
-                    <AvatarImage src={src || 'https://github.com/shadcn.png'} />
-                    <AvatarFallback>{name?.slice(0, 1) || 'AZ'}</AvatarFallback>
+                    <AvatarImage src={'https://github.com/shadcn.png'} />
+                    <AvatarFallback>
+                        {user?.username?.slice(0, 1) || 'AZ'}
+                    </AvatarFallback>
                 </Avatar>
             </PopoverTrigger>
             <PopoverContent>
+                <h1>{user?.username}</h1>
                 <Button onClick={() => logout()}>Logout</Button>
             </PopoverContent>
         </Popover>

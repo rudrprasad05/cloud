@@ -11,10 +11,11 @@ namespace server.Interfaces
     {
         public Task<Media?> CreateAsync(IFormFile file, string id);
 
-        public Task<List<Media>> GetAll(MediaQueryObject queryObject);
+        public Task<List<Media>?> GetAll(MediaQueryObject queryObject, string? token);
 
         public Task<Media?> Star(string id, bool star);
 
+        public Task<Media?> Rename(string id, string name);
 
         
     }

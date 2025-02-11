@@ -1,11 +1,17 @@
 import { GetFolder } from '@/actions/Folders';
 import { GetMedia } from '@/actions/Media';
 import FolderList from '@/components/home/FolderList';
-import RecentList from '@/components/home/RecentList';
+import MediaList from '@/components/home/MediaList';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export default async function Home() {
-    const folders = await GetFolder();
-    const media = await GetMedia();
+    const token = (await cookies()).get('token')?.value;
+    if (!token) {
+        return redirect('/');
+    }
+    const folders = await GetFolder(token);
+    const media = await GetMedia(token);
 
     return (
         <main className="flex flex-col gap-6">
@@ -15,7 +21,7 @@ export default async function Home() {
             </section>
             <section>
                 <h1 className="text-2xl mb-2">Recent</h1>
-                <RecentList media={media} />
+                <MediaList media={media} />
             </section>
         </main>
     );

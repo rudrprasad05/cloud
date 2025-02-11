@@ -14,7 +14,7 @@ export default function ChildrenFolders({ folders }: { folders?: Folder[] }) {
             {folders.map((folder) => (
                 <Link href={'/folder/' + folder.id}>
                     <LayoutCard>
-                        <div className="flex col-span-6 items-center gap-4">
+                        <div className="p-2 flex col-span-6 items-center gap-4">
                             <FolderIcon className="w-5 h-5 text-muted-foreground" />
                             <div>{folder.name}</div>
                         </div>

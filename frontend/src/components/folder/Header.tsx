@@ -3,8 +3,6 @@ import { Images } from 'lucide-react';
 import React from 'react';
 
 export default function Header({ folders }: { folders: Partial<Folder> }) {
-    //
-    // return <></>;
     if (
         (folders.children && folders.children.length > 0) ||
         (folders.medias && folders.medias.length > 0)
@@ -12,8 +10,8 @@ export default function Header({ folders }: { folders: Partial<Folder> }) {
         return (
             <div className="grid grid-cols-12 text-muted-foreground">
                 <div className="col-span-6">Name</div>
-                <div className="col-span-2">Uploaded</div>
-                <div className="col-span-2">Size</div>
+                <div className="col-span-2 text-left">Uploaded</div>
+                <div className="col-span-2 text-left">Size</div>
             </div>
         );
     else {

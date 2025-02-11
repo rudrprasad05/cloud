@@ -1,7 +1,5 @@
-import { GetFolder } from '@/actions/Folders';
-import { GetMedia, GetStarMedia } from '@/actions/Media';
-import FolderList from '@/components/home/FolderList';
-import RecentList from '@/components/home/RecentList';
+import { GetStarMedia } from '@/actions/Media';
+import RecentList from '@/components/home/MediaList';
 
 export default async function Home() {
     const media = await GetStarMedia();

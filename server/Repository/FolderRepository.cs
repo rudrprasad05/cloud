@@ -13,9 +13,12 @@ namespace server.Repository
     public class FolderRepository : IFolderRepository
     {
         private readonly ApplicationDbContext _context;
-        public FolderRepository(ApplicationDbContext context)
+        private readonly IUserContextService _userContext;
+
+        public FolderRepository(ApplicationDbContext context, IUserContextService userContext)
         {
             _context = context;
+            _userContext = userContext;
         }
         public async Task<Folder?> CreateAsync(Folder folder)
         {
@@ -46,13 +49,19 @@ namespace server.Repository
             }
             
         }
-        public async Task<List<Folder>> GetAllWithoutAssociations(QueryObject queryObject)
+        public async Task<List<Folder>?> GetAllWithoutAssociations(QueryObject queryObject)
         {
+            var userId = _userContext.GetUserId();
             var folders = _context.Folders.AsQueryable();
 
-            if(!string.IsNullOrWhiteSpace(queryObject.UserId))
+            if(userId == null)
             {
-                folders = folders.Where(s => s.UserId.Equals(queryObject.UserId));
+                return null;
+            }
+
+            if(!string.IsNullOrWhiteSpace(userId))
+            {
+                folders = folders.Where(s => s.UserId.Equals(userId));
             }
 
             if(!string.IsNullOrWhiteSpace(queryObject.FolderName))
@@ -62,7 +71,7 @@ namespace server.Repository
 
             if(queryObject.IsParent == true)
             {
-                folders = folders.Where(s => s.ParentId.Equals(null));
+                folders = folders.Where(s => s.ParentId == null);
             }
             
             

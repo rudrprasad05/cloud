@@ -9,6 +9,7 @@ import { API } from '@/constants';
 import { cn } from '@/lib/utils';
 import { axiosGlobal } from '@/lib/axios';
 import { toast } from 'sonner';
+import RenameModal from '../dialog/RenameModal';
 
 export default function Settings({
     media,
@@ -61,7 +62,7 @@ export default function Settings({
         }
     };
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 px-2">
             <button className="rounded-full hover:bg-background/50 text-white transition p-1">
                 <Download onClick={handleDownload} className="w-4 h-4" />
             </button>
@@ -74,9 +75,12 @@ export default function Settings({
                     )}
                 />
             </button>
-            <button className="rounded-full hover:bg-background/50 text-white transition p-1">
+            <RenameModal
+                media={media}
+                className="rounded-full hover:bg-background/50 text-white transition p-1"
+            >
                 <Pen className="w-4 h-4" />
-            </button>
+            </RenameModal>
             <button className="rounded-full hover:bg-background/50 text-white transition p-1">
                 <UserPlus className="w-4 h-4" />
             </button>

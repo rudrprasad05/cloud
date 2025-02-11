@@ -14,14 +14,18 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("api/media")]
-    public class MediaController : ControllerBase
+    public class MediaController : BaseController
     {
         private readonly IMediaRepository _mediaRepository;
         private readonly IAmazonS3Service _amazonS3Service;
-        public MediaController(IMediaRepository mediaRepository, IAmazonS3Service amazonS3Service) 
+
+        private readonly ITokenService _tokenService;
+
+        public MediaController(IMediaRepository mediaRepository, IAmazonS3Service amazonS3Service, ITokenService tokenService) 
         {
             _mediaRepository = mediaRepository;
             _amazonS3Service = amazonS3Service;
+            _tokenService = tokenService;
         }
 
         [HttpPost("create")]
@@ -41,7 +45,11 @@ namespace server.Controllers
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll([FromQuery] MediaQueryObject queryObject)
         {
-            var media = await _mediaRepository.GetAll(queryObject);
+            var media = await _mediaRepository.GetAll(queryObject, UserId);
+            if(media == null)
+            {
+                return BadRequest();
+            }
             var dtos = media.Select(m => m.FromMediaWithFolderToDTO()).ToList();
             return Ok(dtos);
         }
@@ -50,6 +58,18 @@ namespace server.Controllers
         public async Task<IActionResult> Star([FromRoute] string id, [FromBody] StartMediaRequest request)
         {
             var media = await _mediaRepository.Star(id, request.Star);
+
+            return Ok(media);
+        }
+
+        [HttpPatch("rename/{id}")]
+        public async Task<IActionResult> Rename([FromRoute] string id, [FromBody] RenameMediaRequest request)
+        {
+            var media = await _mediaRepository.Rename(id, request.Name);
+            if(media == null)
+            {
+                return BadRequest();
+            }
 
             return Ok(media);
         }

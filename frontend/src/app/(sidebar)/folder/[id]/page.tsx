@@ -7,6 +7,7 @@ import Header from '@/components/folder/Header';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, Plus } from 'lucide-react';
 import React from 'react';
+import MediaList from '@/components/home/MediaList';
 
 interface IPage {
     params: { id: string };
@@ -33,7 +34,7 @@ async function FolderData({ id }: { id: string }) {
             </div>
             <Header folders={folder} />
             <ChildrenFolders folders={folder.children} />
-            <FolderMedia media={folder.medias} />
+            <MediaList media={folder.medias} />
         </div>
     );
 }

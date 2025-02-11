@@ -8,11 +8,11 @@ import Settings from '../folder/Settings';
 import ImageModal from '../dialog/ImageModal';
 
 interface IRecentList {
-    media: Partial<Media>[];
+    media: Partial<Media>[] | undefined;
 }
 
-export default function RecentList({ media }: IRecentList) {
-    if (media.length === 0) {
+export default function MediaList({ media }: IRecentList) {
+    if (!media || media.length === 0) {
         return (
             <div className="w-full h-48 border-dashed rounded border p-2 text-border grid place-items-center">
                 <h1>No media found</h1>
@@ -37,10 +37,10 @@ export default function RecentList({ media }: IRecentList) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-2 text-right">
+                        <div className="col-span-2 text-left">
                             {format(m.createdAt as string, 'dd MMM yyyy')}
                         </div>
-                        <div className="col-span-2 text-right">
+                        <div className="col-span-2 text-left">
                             {<HandleSizeCalculation size={m.size} />}
                         </div>
                     </ImageModal>

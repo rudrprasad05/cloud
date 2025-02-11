@@ -43,12 +43,22 @@ namespace server.Controllers
                     var role = await _userManager.AddToRoleAsync(user, "User");
                     if (role.Succeeded)
                     {
+                        var token = _tokenService.CreateToken(user);
+                        var cookieOptions = new CookieOptions
+                        {
+                            HttpOnly = true,
+                            Secure = true, // Ensure secure transmission over HTTPS
+                            SameSite = SameSiteMode.None,
+                            Expires = DateTime.UtcNow.AddDays(7) // Set expiration
+                        };
+
+                        Response.Cookies.Append("token", token, cookieOptions);
                         return Ok(
                             new LoginResponse
                             {
                                 Username = user.UserName,
                                 Email = user.Email,
-                                Token = _tokenService.CreateToken(user) 
+                                Token = token
                             }
                         );
                     }
@@ -92,7 +102,7 @@ namespace server.Controllers
                 {
                     HttpOnly = true,
                     Secure = true,  // Set to false for local development
-                    SameSite = SameSiteMode.Lax,
+                    SameSite = SameSiteMode.None,
                     Expires = DateTime.UtcNow.AddHours(1)
                 });
                 

@@ -54,10 +54,16 @@ namespace server.Repository
             return newMedia.Entity;   
         }
 
-        public async Task<List<Media>> GetAll(MediaQueryObject queryObject)
+        public async Task<List<Media>?> GetAll(MediaQueryObject queryObject, string? userId)
         {
-            var media = _context.Medias.Include(m => m.Folder).AsQueryable();
+            if(string.IsNullOrEmpty(userId))
+            {
+                return null;
+            }
 
+            var media = _context.Medias.Include(m => m.Folder).AsQueryable();
+            media = media.Where(m => m.Folder.UserId == userId);
+            
             if(queryObject.IsStarred.HasValue)
             {
                 media = media.Where(s => s.Star.Equals(queryObject.IsStarred));
@@ -66,7 +72,19 @@ namespace server.Repository
             var res = await media.ToListAsync();
             return res; 
         }
+        public async Task<Media?> Rename(string id, string name)
+        {
+            var media = await _context.Medias.FirstOrDefaultAsync((m) => m.Id == id);
+            if(media == null)
+            {
+                return null;
+            }
+            
+            media.Name = name;
 
+            await _context.SaveChangesAsync();
+            return media;
+        }
         public async Task<Media?> Star(string id, bool star)
         {
             var media = await _context.Medias.FirstOrDefaultAsync((m) => m.Id == id);

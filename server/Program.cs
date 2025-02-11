@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using server.Config;
 using server.Context;
 using server.Interfaces;
+using server.Middleware;
 using server.Models;
 using server.Repository;
 using server.Services;
@@ -23,6 +24,8 @@ builder.Services.AddIdentityService();
 
 builder.Services.AddSingleton<IAmazonS3Service, AmazonS3Service>();
 builder.Services.AddSingleton<ITokenService, TokenService>();
+builder.Services.AddSingleton<IUserContextService, UserContextService>();
+
 
 builder.Services.AddScoped<IFolderRepository, FolderRepository>();
 builder.Services.AddScoped<IMediaRepository, MediaRepository>();
@@ -40,6 +43,7 @@ app
 .UseAuthentication()
 .UseAuthorization();
 
+app.UseMiddleware<TokenMiddleware>();
 app.MapControllers();
 
 app.Run();

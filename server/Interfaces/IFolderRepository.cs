@@ -10,8 +10,7 @@ namespace server.Interfaces
     public interface IFolderRepository
     {
         public Task<Folder?> CreateAsync(Folder folder);
-        public Task<List<Folder>> GetAllWithoutAssociations(QueryObject queryObject);
-
+        public Task<List<Folder>?> GetAllWithoutAssociations(QueryObject queryObject);
         public Task<Folder?> GetOneWithMedia(string id);
 
 

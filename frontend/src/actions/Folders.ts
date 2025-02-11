@@ -5,9 +5,12 @@ import { axiosGlobal } from '@/lib/axios';
 import { Folder } from '@/types';
 import axios from 'axios';
 
-export async function GetFolder() {
+export async function GetFolder(token?: string) {
     const res = await axiosGlobal.get<Partial<Folder>[]>(
-        'folder/get-all?IsParent=true'
+        'folder/get-all?IsParent=true',
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
     );
 
     return res.data;

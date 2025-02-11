@@ -26,7 +26,13 @@ export default function ImageModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger className={className}>{children}</DialogTrigger>
+            <DialogTrigger
+                onDoubleClick={() => setIsOpen(true)}
+                onClick={() => {}}
+                className={className}
+            >
+                {children}
+            </DialogTrigger>
             <DialogContent className="max-w-screen h-screen border-none w-full bg-white-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-100">
                 <DialogHeader className="flex flex-row gap-8 w-screen">
                     <DialogTitle className="text-2xl gap-4 flex items-center flex-row truncate  w-full overflow-hidden text-ellipsis whitespace-nowrap">
