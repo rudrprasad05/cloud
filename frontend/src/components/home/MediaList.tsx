@@ -1,11 +1,12 @@
+import HandleSizeCalculation from '@/services/HandleSizeCalculation';
 import { Media } from '@/types';
 import { format } from 'date-fns';
 import { FileImage, Folder, Image, Video } from 'lucide-react';
 import React from 'react';
-import LayoutCard from '../folder/LayoutCard';
-import HandleSizeCalculation from '@/services/HandleSizeCalculation';
-import Settings from '../folder/Settings';
+
 import ImageModal from '../dialog/ImageModal';
+import LayoutCard from '../folder/LayoutCard';
+import Settings from '../folder/Settings';
 
 interface IRecentList {
     media: Partial<Media>[] | undefined;
@@ -13,11 +14,7 @@ interface IRecentList {
 
 export default function MediaList({ media }: IRecentList) {
     if (!media || media.length === 0) {
-        return (
-            <div className="w-full h-48 border-dashed rounded border p-2 text-border grid place-items-center">
-                <h1>No media found</h1>
-            </div>
-        );
+        return <></>;
     }
     return (
         <div className="grid grid-cols-1 gap-4 w-full">

@@ -7,7 +7,7 @@ export default async function Home() {
     return (
         <main className="flex flex-col gap-6">
             <section>
-                <h1 className="text-2xl mb-2">Recent</h1>
+                <h1 className="text-2xl mb-2">Starred</h1>
                 <RecentList media={media} />
             </section>
         </main>

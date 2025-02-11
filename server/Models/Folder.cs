@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace server.Models
 {
-    [Index(nameof(Name), IsUnique = true)]
+    [Index(nameof(Name), nameof(UserId), IsUnique = true)]
     public class Folder : BaseModel
     {
         public string Name { get; set; } = string.Empty;

@@ -30,12 +30,14 @@ import { CreateFolder } from '@/actions/Folders';
 import { cn } from '@/lib/utils';
 import HandleImageTypeIcon from '@/services/HandleImageTypeIcon';
 import { UploadOneFile } from '@/actions/File';
+import { LoadingItem, useToastLoader } from '@/context/useToastLoader';
 
 export default function NewMediaModal() {
     const [isLoading, setIsLoading] = useState(false);
     const [file, setFile] = useState<File | undefined>();
     const [isOpen, setIsOpen] = useState(false);
     const { id: folderId } = useParams();
+    const { addLoadingItem, updateStatus, handleSetHidden } = useToastLoader();
 
     const router = useRouter();
     const form = useForm<NewFolderType>({
@@ -53,19 +55,23 @@ export default function NewMediaModal() {
         formData.append('file', file);
         formData.append('id', folderId as string);
 
-        setIsLoading(true);
+        var loadingItem: LoadingItem = {
+            displayName: file.name,
+            id: Date.now().toString(),
+            isFinished: false,
+        };
+        addLoadingItem(loadingItem);
+        handleSetHidden(false);
+        setIsOpen(false);
 
         try {
             const res = await UploadOneFile(formData);
             if (!res) throw new Error();
-            toast.success('Media Uploaded');
-            setIsOpen(false);
             router.refresh();
         } catch (error) {
             console.log(error);
-            toast.error('Error uploading media');
         }
-        setIsLoading(false);
+        updateStatus(loadingItem.id);
     }
     function HandleAfterImageSelect() {
         if (!file) {

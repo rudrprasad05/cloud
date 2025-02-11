@@ -1,6 +1,5 @@
 import axios from 'axios';
 import https from 'https';
-import { cookies } from 'next/headers';
 
 const agent = new https.Agent({
     rejectUnauthorized: false,
@@ -17,20 +16,3 @@ export const axiosGlobal = axios.create({
     httpAgent: agent,
     withCredentials: true,
 });
-
-// axiosGlobal.interceptors.request.use(
-//     async (config) => {
-//         const cookiieStore = await cookies();
-//         const token = cookiieStore.get('token');
-
-//         if (token) {
-//             config.headers.Authorization = `Bearer ${token.value}`;
-//         }
-
-//         return config;
-//     },
-//     (error) => {
-//         console.error('Request Error:', error);
-//         return Promise.reject(error);
-//     }
-// );

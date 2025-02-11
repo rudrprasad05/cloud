@@ -4,6 +4,7 @@ import { API } from '@/constants';
 import { axiosGlobal } from '@/lib/axios';
 import { Media } from '@/types';
 import axios from 'axios';
+import { GetToken } from './User';
 
 export async function GetMedia(token?: string) {
     const res = await axiosGlobal.get<Partial<Media>[]>('media/get-all', {
@@ -14,8 +15,15 @@ export async function GetMedia(token?: string) {
 }
 
 export async function GetStarMedia() {
+    const token = await GetToken();
+    if (!token) {
+        throw new Error();
+    }
     const res = await axiosGlobal.get<Partial<Media>[]>(
-        'media/get-all?IsStarred=true'
+        'media/get-all?IsStarred=true',
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
     );
 
     return res.data;

@@ -7,6 +7,9 @@ import '../globals.css';
 import { SessionProvider } from '@/context/useSession';
 import { Toaster } from '@/components/ui/sonner';
 import SearchBox from '@/components/global/SearchBox';
+import { ToastLoaderProvider } from '@/context/useToastLoader';
+import { ToastLoader } from '@/components/global/ToastLoader';
+import { SelectedItemProvider } from '@/context/useSelected';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -34,18 +37,23 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <SessionProvider>
-                    <ThemeProvider attribute="class" defaultTheme="dark">
-                        <SidebarProvider>
-                            <Navbar />
-                            <Toaster />
-                            <main className="grow w-full flex flex-col gap-2 p-8">
-                                <SearchBox />
-                                <div className="py-4 grow flex flex-col w-full">
-                                    {children}
-                                </div>
-                            </main>
-                        </SidebarProvider>
-                    </ThemeProvider>
+                    <ToastLoaderProvider>
+                        <ThemeProvider attribute="class" defaultTheme="dark">
+                            <SelectedItemProvider>
+                                <SidebarProvider>
+                                    <Navbar />
+                                    <Toaster />
+                                    <main className="relative grow w-full flex flex-col gap-2 p-8">
+                                        <SearchBox />
+                                        <div className="py-4 grow flex flex-col w-full">
+                                            {children}
+                                        </div>
+                                        <ToastLoader />
+                                    </main>
+                                </SidebarProvider>
+                            </SelectedItemProvider>
+                        </ThemeProvider>
+                    </ToastLoaderProvider>
                 </SessionProvider>
             </body>
         </html>

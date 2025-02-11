@@ -6,6 +6,7 @@ import { LoginResponse } from '@/types/schema';
 import { SignInFormType } from '@/types/zod';
 import axios from 'axios';
 import https from 'https';
+import { cookies } from 'next/headers';
 
 const agent = new https.Agent({
     rejectUnauthorized: false, // Allow self-signed cert
@@ -23,4 +24,10 @@ export async function LoginUser(data: SignInFormType): Promise<LoginResponse> {
     const res = await axiosGlobal.post<LoginResponse>('auth/login', data);
 
     return res.data;
+}
+
+export async function GetToken(): Promise<string | undefined> {
+    const a = await cookies();
+    if (!a.get('token')) return undefined;
+    return a.get('token')?.value;
 }

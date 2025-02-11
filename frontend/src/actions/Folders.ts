@@ -17,8 +17,14 @@ export async function GetFolder(token?: string) {
 }
 
 export async function GetOneFolder(id: string) {
-    const res = await axiosGlobal.get<Partial<Folder>>('folder/get-one/' + id);
-    return res.data;
+    try {
+        const res = await axiosGlobal.get<Partial<Folder>>(
+            'folder/get-one/' + id
+        );
+        return res.data;
+    } catch (error) {
+        return null;
+    }
 }
 
 export async function CreateFolder(name: string, token: string) {

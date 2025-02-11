@@ -6,6 +6,7 @@ import Navbar from '@/components/global/Navbar';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 import { SessionProvider } from '@/context/useSession';
 import { Toaster } from '@/components/ui/sonner';
+import { SelectedItemProvider } from '@/context/useSelected';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -33,10 +34,14 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <SessionProvider>
-                    <ThemeProvider attribute="class" defaultTheme="dark">
-                        <Toaster />
-                        <main className="grow min-h-screen">{children}</main>
-                    </ThemeProvider>
+                    <SelectedItemProvider>
+                        <ThemeProvider attribute="class" defaultTheme="dark">
+                            <Toaster />
+                            <main className="grow min-h-screen">
+                                {children}
+                            </main>
+                        </ThemeProvider>
+                    </SelectedItemProvider>
                 </SessionProvider>
             </body>
         </html>
