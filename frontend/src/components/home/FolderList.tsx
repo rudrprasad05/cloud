@@ -1,6 +1,6 @@
 'use client';
 
-import { SelectedItem, useSelectedItem } from '@/context/useSelected';
+import { useSelectedItem } from '@/context/useSelected';
 import { useSession } from '@/context/useSession';
 import { cn } from '@/lib/utils';
 import { Folder } from '@/types';
@@ -18,16 +18,13 @@ export default function FolderList({ folders }: IFolderList) {
     const router = useRouter();
     const { selectedItem, addSelectedItem } = useSelectedItem();
 
-    const handleClick = (id: string) => {
+    const handleClick = (folder: Folder) => {
         if (selectedItem) {
             addSelectedItem(undefined);
             return;
         }
-        var item: SelectedItem = {
-            id,
-            type: 'FILE',
-        };
-        addSelectedItem(item);
+
+        addSelectedItem(folder);
     };
 
     const handleDbClick = (id: string) => {
@@ -47,7 +44,7 @@ export default function FolderList({ folders }: IFolderList) {
             {folders.map((folder) => (
                 <div
                     onDoubleClick={() => handleDbClick(folder.id as string)}
-                    onClick={() => handleClick(folder.id as string)}
+                    onClick={() => handleClick(folder as Folder)}
                     className={cn(
                         'flex w-full cursor-pointer rounded p-4 items-center gap-4',
                         selectedItem?.id == folder.id

@@ -2,6 +2,7 @@ export type Folder = {
     id: string;
     name: string;
     parent: Folder | null;
+    parentId: string | null;
     children: Folder[];
     medias: Media[];
     user: User;

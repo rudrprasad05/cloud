@@ -93,5 +93,27 @@ namespace server.Repository
             
             return folder;
         }
+
+        public async Task<Folder?> MoveFolder(string id, string moveId)
+        {
+            var folder = await _context.Folders.FirstOrDefaultAsync((i) => i.Id == id);
+            if(folder == null)
+            {
+                return null;
+            }
+
+            if(moveId == "0")
+            {
+                folder.ParentId = null;
+            }
+            else
+            {
+                folder.ParentId = moveId;
+            }
+            await _context.SaveChangesAsync();
+            return folder;
+
+        }
+
     }
 }

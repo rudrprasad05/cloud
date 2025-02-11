@@ -33,6 +33,12 @@ export const NewFolderForm = z.object({
         .min(2, { message: 'Should have more than 2 characters' })
         .max(50, { message: 'Should have less than 50 characters' }),
 });
+export const MoveFolderForm = z.object({
+    id: z
+        .string()
+        .min(2, { message: 'Should have more than 2 characters' })
+        .max(50, { message: 'Should have less than 50 characters' }),
+});
 
 export const NewFolderWithParentForm = z.object({
     name: z
@@ -54,3 +60,4 @@ export type RegisterFormType = z.infer<typeof RegisterForm>;
 export type NewFolderType = z.infer<typeof NewFolderForm>;
 export type NewFolderWithParentType = z.infer<typeof NewFolderWithParentForm>;
 export type RenameMediaFormType = z.infer<typeof RenameMediaForm>;
+export type MoveFolderFormType = z.infer<typeof MoveFolderForm>;

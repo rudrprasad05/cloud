@@ -1,15 +1,11 @@
 'use client';
 
+import { Folder, Media } from '@/types';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-export type SelectedItem = {
-    id: string;
-    type: 'MEDIA' | 'FILE';
-};
-
 interface SelectedItemContextType {
-    selectedItem: SelectedItem | undefined;
-    addSelectedItem: (item: SelectedItem | undefined) => void;
+    selectedItem: Folder | Media | undefined;
+    addSelectedItem: (item: Folder | Media | undefined) => void;
 }
 
 const SelectedItemContext = createContext<SelectedItemContextType | undefined>(
@@ -21,9 +17,11 @@ export function SelectedItemProvider({
 }: {
     children: React.ReactNode;
 }) {
-    const [selectedItem, setSelectedItem] = useState<SelectedItem>();
+    const [selectedItem, setSelectedItem] = useState<
+        Folder | Media | undefined
+    >();
 
-    function addSelectedItem(item: SelectedItem | undefined) {
+    function addSelectedItem(item: Folder | Media | undefined) {
         setSelectedItem(item);
     }
 

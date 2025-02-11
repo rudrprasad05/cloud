@@ -26,7 +26,8 @@ namespace server.Mappers
             {
                 Id = folders.Id,
                 Name = folders.Name,
-                UserId = folders.UserId
+                UserId = folders.UserId,
+                ParentId = folders.ParentId,
             };
         }
 

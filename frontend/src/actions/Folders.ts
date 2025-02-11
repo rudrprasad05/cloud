@@ -4,10 +4,24 @@ import { API } from '@/constants';
 import { axiosGlobal } from '@/lib/axios';
 import { Folder } from '@/types';
 import axios from 'axios';
+import { GetToken } from './User';
 
-export async function GetFolder(token?: string) {
+export async function GetFolder() {
+    const token = await GetToken();
     const res = await axiosGlobal.get<Partial<Folder>[]>(
         'folder/get-all?IsParent=true',
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
+    );
+
+    return res.data;
+}
+
+export async function GetAllFolder() {
+    const token = await GetToken();
+    const res = await axiosGlobal.get<Partial<Folder>[]>(
+        'folder/get-all?IsParent=false',
         {
             headers: { Authorization: `Bearer ${token}` },
         }

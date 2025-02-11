@@ -10,6 +10,7 @@ namespace server.Models.Responses
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string UserId { get; set; } = null!;
+        public string? ParentId { get; set; } = null;
 
     }
 }

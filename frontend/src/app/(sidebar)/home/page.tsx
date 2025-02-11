@@ -10,7 +10,7 @@ export default async function Home() {
     if (!token) {
         return redirect('/');
     }
-    const folders = await GetFolder(token);
+    const folders = await GetFolder();
     const media = await GetMedia(token);
 
     return (

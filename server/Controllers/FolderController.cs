@@ -68,8 +68,24 @@ namespace server.Controllers
         public async Task<IActionResult> GetAllFolders([FromQuery] QueryObject queryObject)
         {
             var folders = await _folderRepository.GetAllWithoutAssociations(queryObject);
+            if(folders == null){
+                return BadRequest();
+            }
+
             var dtos = folders.Select(f => f.FromFolderToDTO()).ToList();
             return Ok(dtos);
+        }
+
+        [HttpGet("move")]
+        public async Task<IActionResult> MoveFolder([FromBody] MoveFolderRequest moveFolderRequest)
+        {
+            var folder = await _folderRepository.MoveFolder(moveFolderRequest.Id, moveFolderRequest.ToFolderId);
+            if(folder == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(folder);
         }
 
         [HttpGet("get-one/{id}")]

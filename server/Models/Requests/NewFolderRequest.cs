@@ -11,4 +11,10 @@ namespace server.Models.Requests
         public string? ParentId { get; set; }
 
     }
+    public class MoveFolderRequest
+    {
+        public string Id { get; set; } = null!;
+        public string ToFolderId { get; set; } = null!;
+
+    }
 }

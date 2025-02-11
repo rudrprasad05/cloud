@@ -11,6 +11,7 @@ import {
     X,
 } from 'lucide-react';
 import React from 'react';
+import MoveFolderModal from '../dialog/MoveFolderModal';
 
 export default function SelectBox() {
     const { selectedItem, addSelectedItem } = useSelectedItem();
@@ -34,7 +35,7 @@ export default function SelectBox() {
                     <Download className="h-4 w-4" />
                 </div>
                 <div className="grid place-items-center cursor-pointer transition w-6 h-6 p-1 rounded-full hover:bg-background/40">
-                    <ClipboardPaste className="h-4 w-4" />
+                    <MoveFolderModal />
                 </div>
                 <div className="grid place-items-center cursor-pointer transition w-6 h-6 p-1 rounded-full hover:bg-background/40">
                     <Trash className="h-4 w-4" />

@@ -12,6 +12,8 @@ namespace server.Interfaces
         public Task<Folder?> CreateAsync(Folder folder);
         public Task<List<Folder>?> GetAllWithoutAssociations(QueryObject queryObject);
         public Task<Folder?> GetOneWithMedia(string id);
+        public Task<Folder?> MoveFolder(string id, string moveId);
+
 
 
     }
