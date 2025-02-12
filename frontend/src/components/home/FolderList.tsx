@@ -19,7 +19,7 @@ export default function FolderList({ folders }: IFolderList) {
     const { selectedItem, addSelectedItem } = useSelectedItem();
 
     const handleClick = (folder: Folder) => {
-        if (selectedItem) {
+        if (selectedItem?.id == folder.id) {
             addSelectedItem(undefined);
             return;
         }

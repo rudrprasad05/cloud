@@ -73,7 +73,11 @@ namespace server.Repository
             {
                 folders = folders.Where(s => s.ParentId == null);
             }
-            
+
+            if(queryObject.IsStarred != null)
+            {
+                folders = folders.Where(s => s.Star == queryObject.IsStarred);
+            }
             
             var pageSize = queryObject.PageSize;
             var skipNumber = (queryObject.PageNumber - 1) * pageSize;
@@ -82,7 +86,6 @@ namespace server.Repository
             return await folders.ToListAsync();
 
         }
-
         public Task<Folder?> GetOneWithMedia(string id)
         {
             var folder = _context.Folders
@@ -93,7 +96,6 @@ namespace server.Repository
             
             return folder;
         }
-
         public async Task<Folder?> MoveFolder(string id, string moveId)
         {
             var folder = await _context.Folders.FirstOrDefaultAsync((i) => i.Id == id);
@@ -114,6 +116,32 @@ namespace server.Repository
             return folder;
 
         }
+        public async Task<Folder?> Rename(string id, string name)
+        {
+            var media = await _context.Folders.FirstOrDefaultAsync((m) => m.Id == id);
+            if(media == null)
+            {
+                return null;
+            }
+            
+            media.Name = name;
 
+            await _context.SaveChangesAsync();
+            return media;
+        }
+        public async Task<Folder?> Star(string id, bool star)
+        {
+            var media = await _context.Folders.FirstOrDefaultAsync((m) => m.Id == id);
+            if(media == null)
+            {
+                return null;
+            }
+            
+            media.Star = star;
+
+            await _context.SaveChangesAsync();
+            return media;
+        }
+    
     }
 }

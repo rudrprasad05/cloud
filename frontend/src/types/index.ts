@@ -9,6 +9,7 @@ export type Folder = {
     userId: string;
     createdAt: string;
     updatedAt: string | null;
+    star: boolean;
 };
 
 export type Media = {

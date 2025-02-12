@@ -28,6 +28,7 @@ namespace server.Mappers
                 Name = folders.Name,
                 UserId = folders.UserId,
                 ParentId = folders.ParentId,
+                Star = folders.Star
             };
         }
 

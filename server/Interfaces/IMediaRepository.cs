@@ -17,6 +17,9 @@ namespace server.Interfaces
 
         public Task<Media?> Rename(string id, string name);
 
+        public Task<Media?> MoveMedia(string id, string moveId);
+
+
         
     }
 }

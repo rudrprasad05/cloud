@@ -101,6 +101,25 @@ namespace server.Controllers
             return Ok(dto);
         }
 
+        [HttpPatch("star/{id}")]
+        public async Task<IActionResult> Star([FromRoute] string id, [FromBody] StartMediaRequest request)
+        {
+            var media = await _folderRepository.Star(id, request.Star);
+
+            return Ok(media);
+        }
+
+        [HttpPatch("rename/{id}")]
+        public async Task<IActionResult> Rename([FromRoute] string id, [FromBody] RenameMediaRequest request)
+        {
+            var media = await _folderRepository.Rename(id, request.Name);
+            if(media == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(media);
+        }
         
     }
 }

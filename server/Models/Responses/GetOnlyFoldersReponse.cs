@@ -11,6 +11,7 @@ namespace server.Models.Responses
         public string Name { get; set; } = string.Empty;
         public string UserId { get; set; } = null!;
         public string? ParentId { get; set; } = null;
+        public bool Star { get; set; } = false;
 
     }
 }

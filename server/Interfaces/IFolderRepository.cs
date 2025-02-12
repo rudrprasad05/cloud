@@ -13,6 +13,8 @@ namespace server.Interfaces
         public Task<List<Folder>?> GetAllWithoutAssociations(QueryObject queryObject);
         public Task<Folder?> GetOneWithMedia(string id);
         public Task<Folder?> MoveFolder(string id, string moveId);
+        public Task<Folder?> Star(string id, bool star);
+        public Task<Folder?> Rename(string id, string name);
 
 
 

@@ -16,5 +16,7 @@ namespace server.Models
         public List<Media> Medias { get; set; } = [];
         public User User { get; set; } = null!;
         public string UserId { get; set; } = null!;
+        public bool Star { get; set; } = false;
+
     }
 }

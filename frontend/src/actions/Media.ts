@@ -10,7 +10,6 @@ export async function GetMedia(token?: string) {
     const res = await axiosGlobal.get<Partial<Media>[]>('media/get-all', {
         headers: { Authorization: `Bearer ${token}` },
     });
-    console.log(res);
     return res.data;
 }
 

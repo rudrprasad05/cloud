@@ -72,6 +72,21 @@ namespace server.Repository
             var res = await media.ToListAsync();
             return res; 
         }
+
+        public async Task<Media?> MoveMedia(string id, string moveId)
+        {
+            var folder = await _context.Medias.FirstOrDefaultAsync((i) => i.Id == id);
+            if(folder == null)
+            {
+                return null;
+            }
+
+            folder.FolderId = moveId;
+
+            await _context.SaveChangesAsync();
+            return folder;
+        }
+
         public async Task<Media?> Rename(string id, string name)
         {
             var media = await _context.Medias.FirstOrDefaultAsync((m) => m.Id == id);

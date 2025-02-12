@@ -18,6 +18,18 @@ export async function GetFolder() {
     return res.data;
 }
 
+export async function GetStarFolder() {
+    const token = await GetToken();
+    const res = await axiosGlobal.get<Partial<Folder>[]>(
+        'folder/get-all?IsStarred=true',
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
+    );
+
+    return res.data;
+}
+
 export async function GetAllFolder() {
     const token = await GetToken();
     const res = await axiosGlobal.get<Partial<Folder>[]>(
@@ -70,5 +82,13 @@ export async function CreateFolderWithParent(
         }
     );
 
+    return res.data;
+}
+
+export async function StarFolder(tempMedia: Folder) {
+    console.log(tempMedia);
+    const res = await axiosGlobal.patch('folder/star/' + tempMedia?.id, {
+        star: tempMedia.star ? false : true,
+    });
     return res.data;
 }

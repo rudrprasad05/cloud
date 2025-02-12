@@ -5,7 +5,11 @@ import React from 'react';
 
 import LayoutCard from './LayoutCard';
 
-export default function ChildrenFolders({ folders }: { folders?: Folder[] }) {
+export default function ChildrenFolders({
+    folders,
+}: {
+    folders?: Partial<Folder>[];
+}) {
     if (!folders || folders.length === 0) {
         return null;
     }
