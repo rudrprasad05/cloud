@@ -76,16 +76,16 @@ namespace server.Controllers
             return Ok(dtos);
         }
 
-        [HttpGet("move")]
-        public async Task<IActionResult> MoveFolder([FromBody] MoveFolderRequest moveFolderRequest)
+        [HttpPost("move/{id}")]
+        public async Task<IActionResult> MoveFolder([FromRoute] string id, [FromBody] MoveFolderRequest moveFolderRequest)
         {
-            var folder = await _folderRepository.MoveFolder(moveFolderRequest.Id, moveFolderRequest.ToFolderId);
+            var folder = await _folderRepository.MoveFolder(id, moveFolderRequest.ToFolderId);
             if(folder == null)
             {
                 return BadRequest();
             }
 
-            return Ok(folder);
+            return Ok(folder.FromFolderToDTO());
         }
 
         [HttpGet("get-one/{id}")]

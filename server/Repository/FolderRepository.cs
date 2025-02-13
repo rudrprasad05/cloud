@@ -107,11 +107,18 @@ namespace server.Repository
             if(moveId == "0")
             {
                 folder.ParentId = null;
+                await _context.SaveChangesAsync();
+                return folder;
             }
-            else
+
+            var parent = await _context.Folders.FirstOrDefaultAsync((i) => i.Id == moveId);
+            if(parent == null)
             {
-                folder.ParentId = moveId;
+                return null;
             }
+            
+            folder.ParentId = parent.Id;
+            
             await _context.SaveChangesAsync();
             return folder;
 

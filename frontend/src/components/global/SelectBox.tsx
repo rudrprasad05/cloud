@@ -4,6 +4,8 @@ import { useSelectedItem } from '@/context/useSelected';
 import {
     ClipboardPaste,
     Download,
+    Edit,
+    FolderPen,
     Link,
     Move,
     Star,
@@ -65,6 +67,9 @@ export default function SelectBox() {
                 </div>
                 <div className="grid place-items-center cursor-pointer transition w-6 h-6 p-1 rounded-full hover:bg-background/40">
                     <MoveFolderModal />
+                </div>
+                <div className="grid place-items-center cursor-pointer transition w-6 h-6 p-1 rounded-full hover:bg-background/40">
+                    <FolderPen className="h-4 w-4" />
                 </div>
                 <div className="grid place-items-center cursor-pointer transition w-6 h-6 p-1 rounded-full hover:bg-background/40">
                     <Trash className="h-4 w-4" />

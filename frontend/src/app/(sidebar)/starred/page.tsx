@@ -10,9 +10,11 @@ export default async function Home() {
     return (
         <main className="flex flex-col gap-6">
             <section>
-                <h1 className="text-2xl mb-2">Starred</h1>
-                <ChildrenFolders folders={folders} />
-                <RecentList media={media} />
+                <h1 className="text-2xl">Starred</h1>
+                <div className="flex flex-col gap-2 my-2">
+                    <ChildrenFolders folders={folders} />
+                    <RecentList media={media} />
+                </div>
             </section>
         </main>
     );

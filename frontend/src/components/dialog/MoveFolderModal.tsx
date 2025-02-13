@@ -33,7 +33,7 @@ import { Button, buttonVariants } from '../ui/button';
 import { ClipboardPaste, Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '../ui/input';
-import { CreateFolder, GetFolder } from '@/actions/Folders';
+import { CreateFolder, GetFolder, MoveFolder } from '@/actions/Folders';
 import { Folder } from '@/types';
 import { RootDrive } from '@/constants';
 import { useSelectedItem } from '@/context/useSelected';
@@ -69,7 +69,8 @@ export default function MoveFolderModal() {
             if (!token) {
                 throw new Error();
             }
-            toast.success('Folder Created');
+            await MoveFolder(data.id, selectedItem?.id);
+            toast.success('Folder Moved');
             router.refresh();
         } catch (error) {
             setIsOpen(false);

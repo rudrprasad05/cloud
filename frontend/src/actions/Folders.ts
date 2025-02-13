@@ -92,3 +92,13 @@ export async function StarFolder(tempMedia: Folder) {
     });
     return res.data;
 }
+
+export async function MoveFolder(parentId: string, id?: string) {
+    if (!id) {
+        throw new Error('no id');
+    }
+    const res = await axiosGlobal.post('folder/move/' + id, {
+        ToFolderId: parentId,
+    });
+    return res.data;
+}
