@@ -102,3 +102,12 @@ export async function MoveFolder(parentId: string, id?: string) {
     });
     return res.data;
 }
+
+export async function RenameFolder(name: string, id: string) {
+    const res = await axiosGlobal.patch<Partial<Folder>[]>(
+        'folder/rename/' + id,
+        { name }
+    );
+
+    return res.data;
+}

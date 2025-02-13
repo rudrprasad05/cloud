@@ -9,7 +9,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Media } from '@/types';
+import { Folder, Media } from '@/types';
 import { FileImage, Loader2, Pen, StopCircle } from 'lucide-react';
 import Image from 'next/image';
 import {
@@ -33,6 +33,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { toast } from 'sonner';
 import { RenameMedia } from '@/actions/Media';
+import { RenameFolder } from '@/actions/Folders';
 
 export default function RenameModal({
     children,
@@ -40,8 +41,8 @@ export default function RenameModal({
     className,
 }: {
     children: ReactNode;
-    media: Partial<Media> | undefined;
-    className: string;
+    media: Partial<Media> | Partial<Folder> | undefined;
+    className?: string;
 }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +58,11 @@ export default function RenameModal({
     const onSubmit: SubmitHandler<RenameMediaFormType> = async (data) => {
         setIsLoading(true);
         try {
-            await RenameMedia(data.name, media?.id as string);
+            if ('folder' in media) {
+                await RenameMedia(data.name, media?.id as string);
+            } else {
+                await RenameFolder(data.name, media?.id as string);
+            }
             toast.success('Media Renamed');
             router.refresh();
         } catch (error) {
