@@ -31,7 +31,7 @@ namespace server.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateMedia([FromForm] string id, IFormFile file)
         {
-            var req = await _mediaRepository.CreateAsync(file, id);
+            var req = await _mediaRepository.CreateAsync(file, id, UserId);
             if(req == null)
             {
                 return BadRequest("Media not Created");
@@ -57,7 +57,7 @@ namespace server.Controllers
         [HttpPatch("star/{id}")]
         public async Task<IActionResult> Star([FromRoute] string id, [FromBody] StartMediaRequest request)
         {
-            var media = await _mediaRepository.Star(id, request.Star);
+            var media = await _mediaRepository.Star(id, request.Star, UserId);
 
             return Ok(media);
         }
@@ -65,12 +65,38 @@ namespace server.Controllers
         [HttpPatch("rename/{id}")]
         public async Task<IActionResult> Rename([FromRoute] string id, [FromBody] RenameMediaRequest request)
         {
-            var media = await _mediaRepository.Rename(id, request.Name);
+            var media = await _mediaRepository.Rename(id, request.Name, UserId);
             if(media == null)
             {
                 return BadRequest();
             }
 
+            return Ok(media);
+        }
+
+        [HttpGet("get-one/{id}")]
+        public async Task<IActionResult> GetOne([FromRoute] string id)
+        {
+            var media = await _mediaRepository.GetOne(id, UserId);
+            if(media == null)
+            {
+                return Unauthorized();
+            }
+
+            var dto = media.FromMediaToDTO();
+            return Ok(media);
+        }
+
+        [HttpDelete("recycle/{id}")]
+        public async Task<IActionResult> Recycle([FromRoute] string id)
+        {
+            var media = await _mediaRepository.GetOne(id, UserId);
+            if(media == null)
+            {
+                return Unauthorized();
+            }
+
+            var dto = media.FromMediaToDTO();
             return Ok(media);
         }
         

@@ -22,7 +22,7 @@ namespace server.Repository
             _amazonS3Service = amazonS3Service;
 
         }
-        public async Task<Media?> CreateAsync(IFormFile file, string id)
+        public async Task<Media?> CreateAsync(IFormFile file, string id, string? token)
         {
             if (file == null || id == null)
             {
@@ -63,17 +63,19 @@ namespace server.Repository
 
             var media = _context.Medias.Include(m => m.Folder).AsQueryable();
             media = media.Where(m => m.Folder.UserId == userId);
+            media = media.Where(s => s.IsDeleted.Equals(queryObject.IsDeleted));
             
             if(queryObject.IsStarred.HasValue)
             {
                 media = media.Where(s => s.Star.Equals(queryObject.IsStarred));
             }
             
+
             var res = await media.ToListAsync();
             return res; 
         }
 
-        public async Task<Media?> MoveMedia(string id, string moveId)
+        public async Task<Media?> MoveMedia(string id, string moveId, string? token)
         {
             var folder = await _context.Medias.FirstOrDefaultAsync((i) => i.Id == id);
             if(folder == null)
@@ -87,7 +89,7 @@ namespace server.Repository
             return folder;
         }
 
-        public async Task<Media?> Rename(string id, string name)
+        public async Task<Media?> Rename(string id, string name, string? token)
         {
             var media = await _context.Medias.FirstOrDefaultAsync((m) => m.Id == id);
             if(media == null)
@@ -100,7 +102,7 @@ namespace server.Repository
             await _context.SaveChangesAsync();
             return media;
         }
-        public async Task<Media?> Star(string id, bool star)
+        public async Task<Media?> Star(string id, bool star, string? token)
         {
             var media = await _context.Medias.FirstOrDefaultAsync((m) => m.Id == id);
             if(media == null)
@@ -113,5 +115,32 @@ namespace server.Repository
             await _context.SaveChangesAsync();
             return media;
         }
+
+        public async Task<Media?> GetOne(string id, string? token)
+        {
+            var mediaQ = _context.Medias.AsQueryable();
+            var media = mediaQ.FirstOrDefaultAsync(m => m.Folder.UserId == token && m.Id == id);
+            
+            if(media == null)
+            {
+                return null;
+            }
+
+            return await media;
+        }
+
+        public async Task<Media?> Recycle(string id, string? token)
+        {
+            var media = await GetOne(id, token);
+            if(media == null)
+            {
+                return null;
+            }
+
+            media.IsDeleted = !media.IsDeleted;
+            await _context.SaveChangesAsync();
+            return media;
+        }
+
     }
 }

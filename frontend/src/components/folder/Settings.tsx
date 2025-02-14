@@ -1,6 +1,14 @@
 'use client';
 
-import { Download, Edit, Pen, Share, Star, UserPlus } from 'lucide-react';
+import {
+    Download,
+    Edit,
+    Pen,
+    Share,
+    Star,
+    Trash2,
+    UserPlus,
+} from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import axios from 'axios';
@@ -10,6 +18,8 @@ import { cn } from '@/lib/utils';
 import { axiosGlobal } from '@/lib/axios';
 import { toast } from 'sonner';
 import RenameModal from '../dialog/RenameModal';
+import { HandleMediaDownload } from '@/services/HandleMediaDownload';
+import DeleteModal from '../dialog/DeleteModal';
 
 export default function Settings({
     media,
@@ -19,32 +29,6 @@ export default function Settings({
     const [tempMedia, setTempMedia] = useState<Partial<Media> | undefined>(
         media
     );
-    const handleDownload = async () => {
-        try {
-            const response = await fetch(
-                API +
-                    `media/download?fileName=${
-                        tempMedia?.source?.split('/')[
-                            tempMedia?.source?.split('/').length - 1
-                        ]
-                    }`
-            );
-
-            const blob = await response.blob();
-
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = media?.source?.split('/')[
-                media?.source?.split('/').length - 1
-            ] as string;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        } catch (error) {
-            console.error('Error downloading file:', error);
-        }
-    };
 
     const handleStar = async () => {
         setTempMedia((prev) => (prev ? { ...prev, star: !prev.star } : prev));
@@ -63,8 +47,17 @@ export default function Settings({
     };
     return (
         <div className="flex items-center gap-2 px-2">
+            <DeleteModal
+                media={media}
+                className="rounded-full hover:bg-background/50 text-white transition p-1"
+            >
+                <Trash2 className="w-4 h-4" />
+            </DeleteModal>
             <button className="rounded-full hover:bg-background/50 text-white transition p-1">
-                <Download onClick={handleDownload} className="w-4 h-4" />
+                <Download
+                    onClick={() => HandleMediaDownload(media as Media)}
+                    className="w-4 h-4"
+                />
             </button>
             <button className="rounded-full hover:bg-background/50 text-white transition p-1">
                 <Star

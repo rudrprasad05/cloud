@@ -19,5 +19,7 @@ namespace server.Models
         public string FolderId { get; set; } = null!;
         public double? Size {get; set; } = null;
         public bool Star { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
+
     }
 }

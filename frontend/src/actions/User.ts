@@ -28,6 +28,8 @@ export async function LoginUser(data: SignInFormType): Promise<LoginResponse> {
 
 export async function GetToken(): Promise<string | undefined> {
     const a = await cookies();
-    if (!a.get('token')) return undefined;
-    return a.get('token')?.value;
+    const token = a.get('token')?.value;
+
+    if (!token) return undefined;
+    return token;
 }
