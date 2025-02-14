@@ -21,6 +21,7 @@ import {
     Search,
     Settings,
     Star,
+    Trash2,
 } from 'lucide-react';
 import React from 'react';
 import { GoogleDriveSVG } from '../svg';
@@ -40,9 +41,9 @@ const items = [
         icon: Star,
     },
     {
-        title: 'Calendar',
-        url: '#',
-        icon: Calendar,
+        title: 'Bin',
+        url: '/bin',
+        icon: Trash2,
     },
     {
         title: 'Search',

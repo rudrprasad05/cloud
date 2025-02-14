@@ -1,7 +1,7 @@
 import { GetFolder, GetStarFolder } from '@/actions/Folders';
 import { GetStarMedia } from '@/actions/Media';
 import ChildrenFolders from '@/components/folder/ChildrenFolders';
-import RecentList from '@/components/home/MediaList';
+import MediaList from '@/components/home/MediaList';
 
 export default async function Home() {
     const media = await GetStarMedia();
@@ -13,7 +13,7 @@ export default async function Home() {
                 <h1 className="text-2xl">Starred</h1>
                 <div className="flex flex-col gap-2 my-2">
                     <ChildrenFolders folders={folders} />
-                    <RecentList media={media} />
+                    <MediaList media={media} />
                 </div>
             </section>
         </main>

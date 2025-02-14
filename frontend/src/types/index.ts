@@ -23,6 +23,7 @@ export type Media = {
     updatedAt: string | null;
     size?: number;
     star: boolean;
+    isDeleted: boolean;
 };
 
 type MediaType = 0 | 1;

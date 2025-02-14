@@ -90,14 +90,14 @@ namespace server.Controllers
         [HttpDelete("recycle/{id}")]
         public async Task<IActionResult> Recycle([FromRoute] string id)
         {
-            var media = await _mediaRepository.GetOne(id, UserId);
+            var media = await _mediaRepository.Recycle(id, UserId);
             if(media == null)
             {
                 return Unauthorized();
             }
 
             var dto = media.FromMediaToDTO();
-            return Ok(media);
+            return Ok(dto);
         }
         
         [HttpGet("download")]

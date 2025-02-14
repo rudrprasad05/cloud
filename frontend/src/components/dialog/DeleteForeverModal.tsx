@@ -35,7 +35,7 @@ import { toast } from 'sonner';
 import { DeleteMedia, RenameMedia } from '@/actions/Media';
 import { RenameFolder } from '@/actions/Folders';
 
-export default function DeleteModal({
+export default function DeleteForeverModal({
     children,
     media,
     className,
@@ -50,7 +50,7 @@ export default function DeleteModal({
 
     if (!media) return <StopCircle />;
 
-    const onSubmit = async () => {
+    const handleDelete = async () => {
         setIsLoading(true);
         try {
             await DeleteMedia(media.id as string);
@@ -72,11 +72,12 @@ export default function DeleteModal({
                         Delete Media
                     </DialogTitle>
                     <DialogDescription>
-                        Dont worry, itll stay in the recycle bin for 30 days
+                        This will forever delete the media. Even we wont be able
+                        to get it back
                     </DialogDescription>
                 </DialogHeader>
                 <div className="gap-2 flex flex-row">
-                    <Button onClick={() => onSubmit()}>
+                    <Button onClick={() => handleDelete()}>
                         {isLoading && <Loader2 className="animate-spin" />}
                         Delete
                     </Button>

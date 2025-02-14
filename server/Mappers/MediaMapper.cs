@@ -37,7 +37,8 @@ namespace server.Mappers
                 Name = request.Name,
                 Size = request.Size,
                 Folder = request.Folder.FromFolderToFolderName(),
-                Star = request.Star
+                Star = request.Star,
+                IsDeleted = request.IsDeleted
             };
         }
 
@@ -53,7 +54,8 @@ namespace server.Mappers
                 CreatedAt = request.CreatedAt,
                 Name = request.Name,
                 Size = request.Size,
-                Star = request.Star
+                Star = request.Star,
+                IsDeleted = request.IsDeleted
             };
         }
     }

@@ -8,7 +8,7 @@ namespace server.Models.Requests
     public class MediaQueryObject
     {
         public bool? IsStarred { get; set; } = null;
-        public bool IsDeleted { get; set; } = false;
+        public bool? IsDeleted { get; set; } = false;
 
     }
 }

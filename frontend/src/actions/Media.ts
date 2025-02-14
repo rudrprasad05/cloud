@@ -29,6 +29,21 @@ export async function GetStarMedia() {
     return res.data;
 }
 
+export async function GetDeleted() {
+    const token = await GetToken();
+    if (!token) {
+        return redirect('/');
+    }
+    const res = await axiosGlobal.get<Partial<Media>[]>(
+        'media/get-all?IsDeleted=true',
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
+    );
+
+    return res.data;
+}
+
 export async function RenameMedia(name: string, id: string) {
     const res = await axiosGlobal.patch<Partial<Media>[]>(
         'media/rename/' + id,
@@ -45,6 +60,21 @@ export async function DeleteMedia(id: string) {
     }
     const res = await axiosGlobal.delete<Partial<Media>[]>(
         'media/recycle/' + id,
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
+    );
+
+    return res.data;
+}
+
+export async function DeleteForever(id: string) {
+    const token = await GetToken();
+    if (!token) {
+        return redirect('/');
+    }
+    const res = await axiosGlobal.delete<Partial<Media>[]>(
+        'media/delete/' + id,
         {
             headers: { Authorization: `Bearer ${token}` },
         }

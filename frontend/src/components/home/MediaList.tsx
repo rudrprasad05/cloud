@@ -7,6 +7,7 @@ import React from 'react';
 import ImageModal from '../dialog/ImageModal';
 import LayoutCard from '../folder/LayoutCard';
 import Settings from '../folder/Settings';
+import DeletedMediaSettings from '../folder/DeletedMediaSettings';
 
 interface IRecentList {
     media: Partial<Media>[] | undefined;
@@ -14,8 +15,13 @@ interface IRecentList {
 
 export default function MediaList({ media }: IRecentList) {
     if (!media || media.length === 0) {
-        return <></>;
+        return (
+            <div className="my-2 w-full h-48 border-dashed rounded border p-2 text-border grid place-items-center">
+                <h1>No folders found</h1>
+            </div>
+        );
     }
+
     return (
         <div className="grid grid-cols-1 gap-4 w-full">
             {media.map((m) => (
@@ -42,7 +48,8 @@ export default function MediaList({ media }: IRecentList) {
                         </div>
                     </ImageModal>
                     <div className="p-2 col-span-2 group-hover:flex hidden flex-row-reverse">
-                        <Settings media={m} />
+                        {!m.isDeleted && <Settings media={m} />}
+                        {m.isDeleted && <DeletedMediaSettings media={m} />}
                     </div>
                 </LayoutCard>
             ))}

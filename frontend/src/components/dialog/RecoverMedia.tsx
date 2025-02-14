@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import { DeleteMedia } from '@/actions/Media';
 import {
     Dialog,
     DialogContent,
@@ -10,32 +10,13 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Folder, Media } from '@/types';
-import { FileImage, Loader2, Pen, StopCircle } from 'lucide-react';
-import Image from 'next/image';
-import {
-    NewFolderWithParentForm,
-    NewFolderWithParentType,
-    RenameMediaForm,
-    RenameMediaFormType,
-} from '@/types/zod';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
+import { Loader2, StopCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ReactNode, useState } from 'react';
 import { toast } from 'sonner';
-import { DeleteMedia, RenameMedia } from '@/actions/Media';
-import { RenameFolder } from '@/actions/Folders';
+import { Button } from '../ui/button';
 
-export default function DeleteModal({
+export default function RecoverMedia({
     children,
     media,
     className,
@@ -50,11 +31,11 @@ export default function DeleteModal({
 
     if (!media) return <StopCircle />;
 
-    const onSubmit = async () => {
+    const handleDelete = async () => {
         setIsLoading(true);
         try {
             await DeleteMedia(media.id as string);
-            toast.success('Media Deleted');
+            toast.success('Media Restored');
             router.refresh();
         } catch (error) {
             toast.error('Failed creation');
@@ -69,16 +50,16 @@ export default function DeleteModal({
             <DialogContent className="">
                 <DialogHeader className="">
                     <DialogTitle className="flex items-center text-lg gap-4">
-                        Delete Media
+                        Recover Media
                     </DialogTitle>
                     <DialogDescription>
-                        Dont worry, itll stay in the recycle bin for 30 days
+                        This will put the file back into your drive
                     </DialogDescription>
                 </DialogHeader>
                 <div className="gap-2 flex flex-row">
-                    <Button onClick={() => onSubmit()}>
+                    <Button onClick={() => handleDelete()}>
                         {isLoading && <Loader2 className="animate-spin" />}
-                        Delete
+                        Restore
                     </Button>
                     <Button
                         variant={'secondary'}
