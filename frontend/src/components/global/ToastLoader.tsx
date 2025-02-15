@@ -15,7 +15,7 @@ export function ToastLoader() {
     if (hidden) return;
     return (
         <div className="fixed right-4 bottom-4 transition rounded w-72 bg-sidebar grid place-items-center">
-            <div className="flex flex-col w-72">
+            <div className="flex flex-col w-72 max-h-40 ">
                 <div className="flex items-center justify-between px-4 py-2">
                     <h1>Uploads</h1>
                     <div className="flex items-center gap-2">
@@ -40,7 +40,7 @@ export function ToastLoader() {
                     </div>
                 </div>
                 {!collapse && (
-                    <ScrollArea className="h-40 p-2 w-full">
+                    <ScrollArea className="p-2 h-full w-full overflow-auto">
                         {items.map((item) => (
                             <div className="p-2 w-full flex justify-between items-center gap-2">
                                 <div className="flex items-center gap-2">

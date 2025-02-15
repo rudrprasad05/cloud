@@ -15,6 +15,7 @@ import {
 import { useSession } from '@/context/useSession';
 import {
     Calendar,
+    FileImage,
     Home,
     Inbox,
     Plus,
@@ -23,11 +24,17 @@ import {
     Star,
     Trash2,
 } from 'lucide-react';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
 import React from 'react';
 import { GoogleDriveSVG } from '../svg';
-import { Button } from '../ui/button';
+import { Button, buttonVariants } from '../ui/button';
 import UserIcon from './UserIcon';
 import NewFolderModal from '../dialog/NewFolderModal';
+import NewMediaModal from '../dialog/NewMediaModal';
 
 const items = [
     {
@@ -68,7 +75,28 @@ export default function Navbar() {
                     </div>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            <NewFolderModal />
+                            <Popover>
+                                <PopoverTrigger className="my-2">
+                                    <div
+                                        className={`${buttonVariants({
+                                            variant: 'default',
+                                        })} w-full text-start justify-start px-2`}
+                                    >
+                                        <Plus />
+                                        New
+                                    </div>
+                                </PopoverTrigger>
+                                <PopoverContent className="ml-2 flex flex-col gap-2">
+                                    <NewFolderModal />
+                                    <NewMediaModal>
+                                        <div className="hover:bg-secondary rounded-md w-full text-start flex items-center gap-2 px-4 py-2 text-sm">
+                                            <FileImage className="w-4 h-4" />
+                                            New File
+                                        </div>
+                                    </NewMediaModal>
+                                </PopoverContent>
+                            </Popover>
+
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>

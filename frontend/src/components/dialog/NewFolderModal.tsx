@@ -23,7 +23,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Button, buttonVariants } from '../ui/button';
-import { Loader2, Plus } from 'lucide-react';
+import { Folder, Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from '../ui/input';
 import { CreateFolder } from '@/actions/Folders';
@@ -59,13 +59,9 @@ export default function NewFolderModal() {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger>
-                <div
-                    className={`${buttonVariants({
-                        variant: 'secondary',
-                    })} w-full text-start justify-start px-2 my-2`}
-                >
-                    <Plus />
-                    New
+                <div className="hover:bg-secondary rounded-md w-full text-start flex items-center gap-2 px-4 py-2 text-sm">
+                    <Folder className="w-4 h-4" />
+                    New Folder
                 </div>
             </DialogTrigger>
             <DialogContent>

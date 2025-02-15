@@ -32,7 +32,11 @@ import HandleImageTypeIcon from '@/services/HandleImageTypeIcon';
 import { UploadOneFile } from '@/actions/File';
 import { LoadingItem, useToastLoader } from '@/context/useToastLoader';
 
-export default function NewMediaModal() {
+export default function NewMediaModal({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const [isLoading, setIsLoading] = useState(false);
     const [file, setFile] = useState<File | undefined>();
     const [isOpen, setIsOpen] = useState(false);
@@ -148,16 +152,7 @@ export default function NewMediaModal() {
     };
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger>
-                <div
-                    className={`${buttonVariants({
-                        variant: 'secondary',
-                    })} w-full text-start justify-start px-2 my-2`}
-                >
-                    <CloudUpload />
-                    Upload
-                </div>
-            </DialogTrigger>
+            <DialogTrigger>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Create a New Media Upload</DialogTitle>

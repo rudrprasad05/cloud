@@ -5,8 +5,8 @@ import ChildrenFolders from '@/components/folder/ChildrenFolders';
 import FolderMedia from '@/components/folder/FolderMedia';
 import Header from '@/components/folder/Header';
 import MediaList from '@/components/home/MediaList';
-import { Button } from '@/components/ui/button';
-import { ChevronRight, Plus } from 'lucide-react';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { ChevronRight, CloudUpload, Plus } from 'lucide-react';
 import React from 'react';
 
 interface IPage {
@@ -35,7 +35,16 @@ async function FolderData({ id }: { id: string }) {
                     {folder.name}
                 </div>
                 <div className="flex gap-2 items-center">
-                    <NewMediaModal />
+                    <NewMediaModal>
+                        <div
+                            className={`${buttonVariants({
+                                variant: 'secondary',
+                            })} w-full text-start justify-start px-2 my-2`}
+                        >
+                            <CloudUpload />
+                            Upload
+                        </div>
+                    </NewMediaModal>
                     <NewFolderWithParentModal />
                 </div>
             </div>
