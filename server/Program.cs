@@ -29,6 +29,8 @@ builder.Services.AddSingleton<IUserContextService, UserContextService>();
 
 builder.Services.AddScoped<IFolderRepository, FolderRepository>();
 builder.Services.AddScoped<IMediaRepository, MediaRepository>();
+builder.Services.AddScoped<IShareRepository, ShareRepository>();
+
 
 var app = builder.Build();
 
