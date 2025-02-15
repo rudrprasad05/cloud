@@ -10,5 +10,7 @@ namespace server.Interfaces
     {
         Task<string?> UploadFileAsync(IFormFile file);
         public Task<GetObjectResponse?> GetObjectAsync(string fileName);
+        public Task<bool> DeleteFileAsync(string fileName);
+        
     }
 }

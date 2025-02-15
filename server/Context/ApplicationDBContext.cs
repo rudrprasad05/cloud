@@ -13,6 +13,10 @@ namespace server.Context
     {
         public DbSet<Folder> Folders { get; set; }
         public DbSet<Media> Medias { get; set; }
+        public DbSet<Share> Share { get; set; }
+        public DbSet<SharedUsers> SharedUsers { get; set; }
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {

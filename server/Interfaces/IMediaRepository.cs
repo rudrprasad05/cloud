@@ -22,5 +22,7 @@ namespace server.Interfaces
         public Task<Media?> GetOne(string id, string? token);
 
         public Task<Media?> Recycle(string id, string? token);   
+        public Task<Media?> Delete(string id, string? token);   
+
     }
 }

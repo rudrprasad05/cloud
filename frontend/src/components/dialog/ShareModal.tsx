@@ -5,12 +5,13 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Folder, Media } from '@/types';
-import { FileImage, Loader2, Pen, StopCircle } from 'lucide-react';
+import { FileImage, Link2, Loader2, Lock, Pen, StopCircle } from 'lucide-react';
 import Image from 'next/image';
 import {
     NewFolderWithParentForm,
@@ -32,10 +33,10 @@ import {
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { toast } from 'sonner';
-import { DeleteForever, DeleteMedia, RenameMedia } from '@/actions/Media';
+import { DeleteMedia, RenameMedia } from '@/actions/Media';
 import { RenameFolder } from '@/actions/Folders';
 
-export default function DeleteForeverModal({
+export default function ShareModal({
     children,
     media,
     className,
@@ -50,10 +51,10 @@ export default function DeleteForeverModal({
 
     if (!media) return <StopCircle />;
 
-    const handleDelete = async () => {
+    const onSubmit = async () => {
         setIsLoading(true);
         try {
-            await DeleteForever(media.id as string);
+            await DeleteMedia(media.id as string);
             toast.success('Media Deleted');
             router.refresh();
         } catch (error) {
@@ -69,26 +70,26 @@ export default function DeleteForeverModal({
             <DialogContent className="">
                 <DialogHeader className="">
                     <DialogTitle className="flex items-center text-lg gap-4">
-                        Delete Media
+                        Share Media
                     </DialogTitle>
-                    <DialogDescription>
-                        This will forever delete the media. Even we wont be able
-                        to get it back
-                    </DialogDescription>
                 </DialogHeader>
-                <div className="gap-2 flex flex-row">
-                    <Button onClick={() => handleDelete()}>
-                        {isLoading && <Loader2 className="animate-spin" />}
-                        Delete
-                    </Button>
-                    <Button
-                        disabled={isLoading}
-                        variant={'secondary'}
-                        onClick={() => setIsOpen(false)}
-                    >
-                        Cancel
-                    </Button>
+                <div className="flex flex-col gap-2">
+                    <h1>General Access</h1>
+                    <div className="gap-2 flex flex-row items-center">
+                        <Lock />
+                        <div className="text-sm">
+                            <p>Restricted Access</p>
+                            <p>Only those with access can open this file</p>
+                        </div>
+                    </div>
                 </div>
+                <DialogFooter>
+                    <Button variant={'outline'}>
+                        <Link2 />
+                        Copy Link
+                    </Button>
+                    <Button onClick={() => setIsOpen(false)}>Done</Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

@@ -83,5 +83,36 @@ namespace server.Services
 
             return null;
         }
+
+        public async Task<bool> DeleteFileAsync(string fileName)
+        {
+            try
+            {
+                // Construct the delete request
+                var request = new DeleteObjectRequest
+                {
+                    BucketName = _bucketName,
+                    Key = "cloud/" + fileName
+                };
+
+                // Delete the object from S3
+                var response = await _s3Client.DeleteObjectAsync(request);
+
+                // Return true if the deletion was successful
+                return response.HttpStatusCode == System.Net.HttpStatusCode.NoContent;
+            }
+            catch (AmazonS3Exception ex)
+            {
+                // Handle S3 exceptions
+                Console.WriteLine($"S3 Error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Handle general errors
+                Console.WriteLine($"General Error: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

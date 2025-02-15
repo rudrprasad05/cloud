@@ -15,11 +15,15 @@ namespace server.Repository
     {
         private readonly ApplicationDbContext _context;
         private readonly IAmazonS3Service _amazonS3Service;
+        private readonly IShareRepository _shareRepository;
 
-        public MediaRepository(ApplicationDbContext context, IAmazonS3Service amazonS3Service)
+
+        public MediaRepository(ApplicationDbContext context, IAmazonS3Service amazonS3Service, IShareRepository shareRepository)
         {
             _context = context;
             _amazonS3Service = amazonS3Service;
+            _shareRepository = shareRepository;
+
 
         }
         public async Task<Media?> CreateAsync(IFormFile file, string id, string? token)
@@ -50,6 +54,8 @@ namespace server.Repository
             {
                 return null;
             }
+
+            await _shareRepository.CreateAsync(newMedia.Entity.Id);
 
             return newMedia.Entity;   
         }
@@ -142,5 +148,18 @@ namespace server.Repository
             return media;
         }
 
+        public async Task<Media?> Delete(string id, string? token)
+        {
+            var media = await GetOne(id, token);
+            if(media == null)
+            {
+                return null;
+            }
+
+            _context.Medias.Remove(media);
+            await _context.SaveChangesAsync();
+
+            return media;
+        }
     }
 }

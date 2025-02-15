@@ -86,15 +86,21 @@ namespace server.Repository
             return await folders.ToListAsync();
 
         }
-        public Task<Folder?> GetOneWithMedia(string id)
+        public async Task<Folder?> GetOneWithMedia(string id)
         {
-            var folder = _context.Folders
-                .Include(f => f.Medias)
-                .Include(f => f.Children)
+            var folderQ = _context.Folders.AsQueryable();
+            var folder = folderQ
+                .Include(f => f.Medias
+                    .Where(f => f.IsDeleted == false))
                 .FirstOrDefaultAsync(f => f.Id == id);
-                
-            
-            return folder;
+
+            if(folder == null)
+            {
+                return null;
+            }
+
+            return await folder;
+        
         }
         public async Task<Folder?> MoveFolder(string id, string moveId)
         {

@@ -17,15 +17,18 @@ namespace server.Controllers
     public class MediaController : BaseController
     {
         private readonly IMediaRepository _mediaRepository;
+        private readonly IShareRepository _shareRepository;
+
         private readonly IAmazonS3Service _amazonS3Service;
 
         private readonly ITokenService _tokenService;
 
-        public MediaController(IMediaRepository mediaRepository, IAmazonS3Service amazonS3Service, ITokenService tokenService) 
+        public MediaController(IMediaRepository mediaRepository, IAmazonS3Service amazonS3Service, ITokenService tokenService, IShareRepository shareRepository) 
         {
             _mediaRepository = mediaRepository;
             _amazonS3Service = amazonS3Service;
             _tokenService = tokenService;
+            _shareRepository = shareRepository;
         }
 
         [HttpPost("create")]
@@ -36,6 +39,7 @@ namespace server.Controllers
             {
                 return BadRequest("Media not Created");
             }
+
 
             var resp = req.FromMediaToDTO();
 
@@ -98,6 +102,26 @@ namespace server.Controllers
 
             var dto = media.FromMediaToDTO();
             return Ok(dto);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] string id)
+        {
+            var media = await _mediaRepository.Delete(id, UserId);
+            if(media == null)
+            {
+                return Unauthorized();
+            }
+
+            var fileName = media?.Source?.Split('/').LastOrDefault();
+            var deleteFromS3 = await _amazonS3Service.DeleteFileAsync(fileName ?? throw new InvalidOperationException());
+            
+            if(deleteFromS3 == true)
+            {
+                return Ok("deleted");
+            }
+
+            return BadRequest("not deleted");
         }
         
         [HttpGet("download")]

@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 import RenameModal from '../dialog/RenameModal';
 import { HandleMediaDownload } from '@/services/HandleMediaDownload';
 import DeleteModal from '../dialog/DeleteModal';
+import ShareModal from '../dialog/ShareModal';
 
 export default function Settings({
     media,
@@ -74,9 +75,12 @@ export default function Settings({
             >
                 <Pen className="w-4 h-4" />
             </RenameModal>
-            <button className="rounded-full hover:bg-background/50 text-white transition p-1">
+            <ShareModal
+                media={media}
+                className="rounded-full hover:bg-background/50 text-white transition p-1"
+            >
                 <UserPlus className="w-4 h-4" />
-            </button>
+            </ShareModal>
         </div>
     );
 }

@@ -12,5 +12,11 @@ namespace server.Constants
             IMAGE,
             VIDEO
         }
+         public enum ShareType
+        {
+            GLOBAL,
+            RESTRICTED, 
+            PRIVATE
+        }
     }
 }
