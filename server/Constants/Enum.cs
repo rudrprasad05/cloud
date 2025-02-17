@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace server.Constants
@@ -14,8 +15,13 @@ namespace server.Constants
         }
          public enum ShareType
         {
+            [JsonPropertyName("GLOBAL")]
             GLOBAL,
+            
+            [JsonPropertyName("RESTRICTED")]
             RESTRICTED, 
+            
+            [JsonPropertyName("PRIVATE")]
             PRIVATE
         }
     }

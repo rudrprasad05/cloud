@@ -16,7 +16,6 @@ export async function GetShare(id: string) {
         headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log(res);
-
+    console.log(res.data);
     return res.data;
 }
