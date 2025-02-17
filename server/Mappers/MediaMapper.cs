@@ -15,12 +15,13 @@ namespace server.Mappers
             ArgumentNullException.ThrowIfNull(request);
             return new Media
             {
+                Id = request.Id,
                 FolderId = request.FolderId,
                 Type = request.Type,
                 Source = request.Source,
                 Name = request.Name,
                 Size = request.Size,
-
+                ShareId = request.ShareId
             };
         }
 

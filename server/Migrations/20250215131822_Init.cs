@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace server.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -167,51 +167,108 @@ namespace server.Migrations
                 .Annotation("Relational:Collation", "utf8mb4_general_ci");
 
             migrationBuilder.CreateTable(
-                name: "Folder",
+                name: "Folders",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_general_ci"),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
                     ParentId = table.Column<string>(type: "varchar(255)", nullable: true, collation: "utf8mb4_general_ci"),
                     UserId = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
+                    Star = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Folder", x => x.Id);
+                    table.PrimaryKey("PK_Folders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Folder_AspNetUsers_UserId",
+                        name: "FK_Folders_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Folder_Folder_ParentId",
+                        name: "FK_Folders_Folders_ParentId",
                         column: x => x.ParentId,
-                        principalTable: "Folder",
+                        principalTable: "Folders",
                         principalColumn: "Id");
                 })
                 .Annotation("Relational:Collation", "utf8mb4_general_ci");
 
             migrationBuilder.CreateTable(
-                name: "Media",
+                name: "Medias",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
                     Type = table.Column<string>(type: "varchar(20)", nullable: false, collation: "utf8mb4_general_ci"),
                     Source = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_general_ci"),
+                    Name = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_general_ci"),
                     FolderId = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
+                    Size = table.Column<double>(type: "double", nullable: true),
+                    Star = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    ShareId = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Media", x => x.Id);
+                    table.PrimaryKey("PK_Medias", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Media_Folder_FolderId",
+                        name: "FK_Medias_Folders_FolderId",
                         column: x => x.FolderId,
-                        principalTable: "Folder",
+                        principalTable: "Folders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("Relational:Collation", "utf8mb4_general_ci");
+
+            migrationBuilder.CreateTable(
+                name: "Share",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Url = table.Column<string>(type: "longtext", nullable: false, collation: "utf8mb4_general_ci"),
+                    MediaId = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Share", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Share_Medias_MediaId",
+                        column: x => x.MediaId,
+                        principalTable: "Medias",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("Relational:Collation", "utf8mb4_general_ci");
+
+            migrationBuilder.CreateTable(
+                name: "SharedUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
+                    ShareId = table.Column<string>(type: "varchar(255)", nullable: false, collation: "utf8mb4_general_ci"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SharedUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SharedUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SharedUsers_Share_ShareId",
+                        column: x => x.ShareId,
+                        principalTable: "Share",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -222,8 +279,8 @@ namespace server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "8dc97083-49b1-4812-8679-00cf7782a9f3", null, "User", "USER" },
-                    { "c1d3dce9-d990-4368-8aab-d5a3a2e4413e", null, "Admin", "ADMIN" }
+                    { "810c04f8-a365-4532-88e4-09de1e00a8bb", null, "Admin", "ADMIN" },
+                    { "c0fd5d05-caad-4294-83a3-189c22e0f987", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -264,19 +321,41 @@ namespace server.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Folder_ParentId",
-                table: "Folder",
+                name: "IX_Folders_Name_UserId",
+                table: "Folders",
+                columns: new[] { "Name", "UserId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Folders_ParentId",
+                table: "Folders",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Folder_UserId",
-                table: "Folder",
+                name: "IX_Folders_UserId",
+                table: "Folders",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Media_FolderId",
-                table: "Media",
+                name: "IX_Medias_FolderId",
+                table: "Medias",
                 column: "FolderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Share_MediaId",
+                table: "Share",
+                column: "MediaId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SharedUsers_ShareId",
+                table: "SharedUsers",
+                column: "ShareId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SharedUsers_UserId",
+                table: "SharedUsers",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -298,13 +377,19 @@ namespace server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Media");
+                name: "SharedUsers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Folder");
+                name: "Share");
+
+            migrationBuilder.DropTable(
+                name: "Medias");
+
+            migrationBuilder.DropTable(
+                name: "Folders");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

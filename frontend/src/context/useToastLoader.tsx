@@ -18,7 +18,7 @@ interface ToastLoaderContextType {
     items: LoadingItem[];
     addLoadingItem: (item: LoadingItem) => void;
     collapse: boolean;
-    handleCollapse: () => void;
+    handleCollapse: (val?: boolean) => void;
     hidden: boolean;
     handleSetHidden: (status: boolean) => void;
     updateStatus: (id: string) => void;
@@ -37,8 +37,9 @@ export function ToastLoaderProvider({
     const [collapse, setCollapse] = useState<boolean>(false);
     const [hidden, setHidden] = useState<boolean>(true);
 
-    function handleCollapse() {
-        setCollapse((prev) => !prev);
+    function handleCollapse(val?: boolean) {
+        if (!val) setCollapse((prev) => !prev);
+        else setCollapse(val);
     }
     function handleSetHidden(status: boolean) {
         setHidden(status);

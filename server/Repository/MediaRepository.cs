@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using server.Context;
 using server.Interfaces;
 using server.Mappers;
 using server.Models;
 using server.Models.Requests;
+using static server.Constants.Enum;
 
 namespace server.Repository
 {
@@ -26,38 +28,58 @@ namespace server.Repository
 
 
         }
-        public async Task<Media?> CreateAsync(IFormFile file, string id, string? token)
+        public async Task<Media?> CreateAsync(IFormFile file, string folderId, string? token)
         {
-            if (file == null || id == null)
+            if (file == null || folderId == null)
             {
                 return null;
             }
 
-            var fileUrl = await _amazonS3Service.UploadFileAsync(file);
-
-            if(fileUrl == null)
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                return null;
+                var fileUrl = await _amazonS3Service.UploadFileAsync(file);
+                if(fileUrl == null)
+                {
+                    return null;
+                }
+
+                // Create Media
+                var media = new Media
+                {
+                    Type = MediaType.IMAGE,
+                    Source = fileUrl,
+                    FolderId = folderId,
+                    Name = file.FileName,
+                    Size = file.Length
+                };
+
+                await _context.Medias.AddAsync(media);
+                await _context.SaveChangesAsync();
+
+                // Create Share
+                var share = new Share
+                {
+                    Type = ShareType.PRIVATE,
+                    Url = $"https://share.com/{Guid.NewGuid()}",
+                    MediaId = media.Id, // FK is set here
+                    Media = media
+                };
+
+                await _context.Share.AddAsync(share);
+                await _context.SaveChangesAsync();
+
+                // Commit transaction
+                await transaction.CommitAsync();
+
+                return media;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
             }
 
-            var req = new NewMediaRequest{
-                Type = Constants.Enum.MediaType.IMAGE,
-                Source = fileUrl, 
-                FolderId = id,
-                Name = file.FileName,
-                Size = file.Length
-            };
-
-            var newMedia = await _context.Medias.AddAsync(req.MapToMedia());
-            await _context.SaveChangesAsync();
-            if (newMedia == null)
-            {
-                return null;
-            }
-
-            await _shareRepository.CreateAsync(newMedia.Entity.Id);
-
-            return newMedia.Entity;   
         }
 
         public async Task<List<Media>?> GetAll(MediaQueryObject queryObject, string? userId)

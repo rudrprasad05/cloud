@@ -48,13 +48,13 @@ namespace server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "159b73bb-5571-4e78-812b-c0024616101d",
+                            Id = "643195a9-8d04-44e6-b39f-baedcb5b0710",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "e3821077-abe4-4ff5-a09f-8fd5213c22d4",
+                            Id = "a4b893e7-65f3-4abe-a590-5847e425ad0b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -218,6 +218,9 @@ namespace server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("ShareId")
+                        .HasColumnType("longtext");
+
                     b.Property<double?>("Size")
                         .HasColumnType("double");
 
@@ -250,6 +253,10 @@ namespace server.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
+                    b.Property<string>("MediaId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -261,6 +268,9 @@ namespace server.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MediaId")
+                        .IsUnique();
 
                     b.ToTable("Share");
                 });
@@ -436,6 +446,17 @@ namespace server.Migrations
                     b.Navigation("Folder");
                 });
 
+            modelBuilder.Entity("server.Models.Share", b =>
+                {
+                    b.HasOne("server.Models.Media", "Media")
+                        .WithOne("Share")
+                        .HasForeignKey("server.Models.Share", "MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Media");
+                });
+
             modelBuilder.Entity("server.Models.SharedUsers", b =>
                 {
                     b.HasOne("server.Models.Share", "Share")
@@ -460,6 +481,11 @@ namespace server.Migrations
                     b.Navigation("Children");
 
                     b.Navigation("Medias");
+                });
+
+            modelBuilder.Entity("server.Models.Media", b =>
+                {
+                    b.Navigation("Share");
                 });
 
             modelBuilder.Entity("server.Models.Share", b =>

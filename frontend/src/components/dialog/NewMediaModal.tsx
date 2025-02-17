@@ -41,7 +41,8 @@ export default function NewMediaModal({
     const [file, setFile] = useState<File | undefined>();
     const [isOpen, setIsOpen] = useState(false);
     const { id: folderId } = useParams();
-    const { addLoadingItem, updateStatus, handleSetHidden } = useToastLoader();
+    const { addLoadingItem, updateStatus, handleSetHidden, handleCollapse } =
+        useToastLoader();
 
     const router = useRouter();
     const form = useForm<NewFolderType>({
@@ -67,6 +68,7 @@ export default function NewMediaModal({
         addLoadingItem(loadingItem);
         handleSetHidden(false);
         setIsOpen(false);
+        handleCollapse(false);
 
         try {
             const res = await UploadOneFile(formData);
@@ -75,6 +77,7 @@ export default function NewMediaModal({
         } catch (error) {
             console.log(error);
         }
+        setFile(undefined);
         updateStatus(loadingItem.id);
     }
     function HandleAfterImageSelect() {

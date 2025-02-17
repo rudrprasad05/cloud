@@ -10,6 +10,6 @@ namespace server.Interfaces
     public interface IShareRepository
     {
         public Task<Share?> CreateAsync(string id);
-        
+        public Task<Share?> GetAsync(string id);   
     }
 }

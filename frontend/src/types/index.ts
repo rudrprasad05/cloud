@@ -26,6 +26,22 @@ export type Media = {
     isDeleted: boolean;
 };
 
+export enum EShareType {
+    GLOBAL,
+    RESTRICTED,
+    PRIVATE,
+}
+
+export type SharedUsers = {};
+
+export type Share = {
+    type: EShareType;
+    url: string;
+    sharedUsers: SharedUsers[];
+    mediaId: string;
+    media: Media;
+};
+
 type MediaType = 0 | 1;
 
 type User = {};

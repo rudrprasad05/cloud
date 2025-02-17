@@ -11,8 +11,8 @@ using server.Context;
 namespace server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250210082704_Unique")]
-    partial class Unique
+    [Migration("20250215133019_Init2")]
+    partial class Init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,13 +51,13 @@ namespace server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "02a20c7f-f5f5-404b-abf7-2afe30d35558",
+                            Id = "643195a9-8d04-44e6-b39f-baedcb5b0710",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7e78a1cd-c013-498e-b3a4-5c8e1d08b889",
+                            Id = "a4b893e7-65f3-4abe-a590-5847e425ad0b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -180,6 +180,9 @@ namespace server.Migrations
                     b.Property<string>("ParentId")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<bool>("Star")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
@@ -211,8 +214,14 @@ namespace server.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ShareId")
                         .HasColumnType("longtext");
 
                     b.Property<double?>("Size")
@@ -237,6 +246,64 @@ namespace server.Migrations
                     b.HasIndex("FolderId");
 
                     b.ToTable("Medias");
+                });
+
+            modelBuilder.Entity("server.Models.Share", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("MediaId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MediaId")
+                        .IsUnique();
+
+                    b.ToTable("Share");
+                });
+
+            modelBuilder.Entity("server.Models.SharedUsers", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("ShareId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShareId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SharedUsers");
                 });
 
             modelBuilder.Entity("server.Models.User", b =>
@@ -382,6 +449,36 @@ namespace server.Migrations
                     b.Navigation("Folder");
                 });
 
+            modelBuilder.Entity("server.Models.Share", b =>
+                {
+                    b.HasOne("server.Models.Media", "Media")
+                        .WithOne("Share")
+                        .HasForeignKey("server.Models.Share", "MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Media");
+                });
+
+            modelBuilder.Entity("server.Models.SharedUsers", b =>
+                {
+                    b.HasOne("server.Models.Share", "Share")
+                        .WithMany("SharedUsers")
+                        .HasForeignKey("ShareId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("server.Models.User", "User")
+                        .WithMany("SharedUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Share");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("server.Models.Folder", b =>
                 {
                     b.Navigation("Children");
@@ -389,9 +486,21 @@ namespace server.Migrations
                     b.Navigation("Medias");
                 });
 
+            modelBuilder.Entity("server.Models.Media", b =>
+                {
+                    b.Navigation("Share");
+                });
+
+            modelBuilder.Entity("server.Models.Share", b =>
+                {
+                    b.Navigation("SharedUsers");
+                });
+
             modelBuilder.Entity("server.Models.User", b =>
                 {
                     b.Navigation("Folders");
+
+                    b.Navigation("SharedUsers");
                 });
 #pragma warning restore 612, 618
         }

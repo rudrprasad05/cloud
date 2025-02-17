@@ -30,6 +30,18 @@ namespace server.Controllers
 
             return Ok(req);
         }
+
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> GetShare([FromRoute] string id)
+        {
+            var req = await _shareRepository.GetAsync(id);
+            if(req == null)
+            {
+                return BadRequest("Share not Created");
+            }
+
+            return Ok(req);
+        }
         
     }
 }

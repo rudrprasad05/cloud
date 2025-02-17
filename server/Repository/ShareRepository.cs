@@ -25,7 +25,7 @@ namespace server.Repository
 
         public async Task<Share?> CreateAsync(string id)
         {
-            var exists = _context.Share.FirstOrDefaultAsync(i => i.MediaId == id);
+            var exists = await _context.Share.FirstOrDefaultAsync(i => i.MediaId == id);
             if(exists != null)
             {
                 return null;
@@ -41,6 +41,11 @@ namespace server.Repository
             await _context.SaveChangesAsync();
 
             return res.Entity;
+        }
+        public async Task<Share?> GetAsync(string id)
+        {
+            var exists = await _context.Share.FirstOrDefaultAsync(i => i.MediaId == id);
+            return exists ?? null;
         }
     }
 }

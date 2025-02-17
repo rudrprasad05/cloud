@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -10,7 +10,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Folder, Media } from '@/types';
+import { Folder, Media, Share } from '@/types';
 import { FileImage, Link2, Loader2, Lock, Pen, StopCircle } from 'lucide-react';
 import Image from 'next/image';
 import {
@@ -35,6 +35,8 @@ import { Input } from '../ui/input';
 import { toast } from 'sonner';
 import { DeleteMedia, RenameMedia } from '@/actions/Media';
 import { RenameFolder } from '@/actions/Folders';
+import { axiosGlobal } from '@/lib/axios';
+import { GetShare } from '@/actions/Share';
 
 export default function ShareModal({
     children,
@@ -48,6 +50,7 @@ export default function ShareModal({
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
+    const [share, setShare] = useState<Share | undefined>(undefined);
 
     if (!media) return <StopCircle />;
 
@@ -64,6 +67,14 @@ export default function ShareModal({
         setIsLoading(false);
     };
 
+    useEffect(() => {
+        const get = async () => {
+            const res = await GetShare(media.id as string);
+            setShare(res);
+        };
+        get();
+    }, []);
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger className={className}>{children}</DialogTrigger>
@@ -78,7 +89,7 @@ export default function ShareModal({
                     <div className="gap-2 flex flex-row items-center">
                         <Lock />
                         <div className="text-sm">
-                            <p>Restricted Access</p>
+                            <p>{share?.type}</p>
                             <p>Only those with access can open this file</p>
                         </div>
                     </div>

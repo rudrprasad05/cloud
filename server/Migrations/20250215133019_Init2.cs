@@ -7,7 +7,7 @@
 namespace server.Migrations
 {
     /// <inheritdoc />
-    public partial class MakeNameUnique : Migration
+    public partial class Init2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,18 +15,18 @@ namespace server.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "971e516e-ffe3-48ff-9d87-abd4af6248a6");
+                keyValue: "810c04f8-a365-4532-88e4-09de1e00a8bb");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "c4160050-1146-4787-b197-e83b95faabe8");
+                keyValue: "c0fd5d05-caad-4294-83a3-189c22e0f987");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Folders",
-                type: "varchar(255)",
-                nullable: false,
+                name: "ShareId",
+                table: "Medias",
+                type: "longtext",
+                nullable: true,
                 collation: "utf8mb4_general_ci",
                 oldClrType: typeof(string),
                 oldType: "longtext")
@@ -37,42 +37,40 @@ namespace server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1b1761d5-4212-4b20-8057-d93a1f7f7b06", null, "User", "USER" },
-                    { "40a20693-a072-4279-93c5-17c6bd87c5dd", null, "Admin", "ADMIN" }
+                    { "643195a9-8d04-44e6-b39f-baedcb5b0710", null, "Admin", "ADMIN" },
+                    { "a4b893e7-65f3-4abe-a590-5847e425ad0b", null, "User", "USER" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Folders_Name",
-                table: "Folders",
-                column: "Name",
-                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Folders_Name",
-                table: "Folders");
+            migrationBuilder.DeleteData(
+                table: "AspNetRoles",
+                keyColumn: "Id",
+                keyValue: "643195a9-8d04-44e6-b39f-baedcb5b0710");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "1b1761d5-4212-4b20-8057-d93a1f7f7b06");
+                keyValue: "a4b893e7-65f3-4abe-a590-5847e425ad0b");
 
-            migrationBuilder.DeleteData(
-                table: "AspNetRoles",
-                keyColumn: "Id",
-                keyValue: "40a20693-a072-4279-93c5-17c6bd87c5dd");
+            migrationBuilder.UpdateData(
+                table: "Medias",
+                keyColumn: "ShareId",
+                keyValue: null,
+                column: "ShareId",
+                value: "");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Folders",
+                name: "ShareId",
+                table: "Medias",
                 type: "longtext",
                 nullable: false,
                 collation: "utf8mb4_general_ci",
                 oldClrType: typeof(string),
-                oldType: "varchar(255)")
+                oldType: "longtext",
+                oldNullable: true)
                 .OldAnnotation("Relational:Collation", "utf8mb4_general_ci");
 
             migrationBuilder.InsertData(
@@ -80,8 +78,8 @@ namespace server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "971e516e-ffe3-48ff-9d87-abd4af6248a6", null, "Admin", "ADMIN" },
-                    { "c4160050-1146-4787-b197-e83b95faabe8", null, "User", "USER" }
+                    { "810c04f8-a365-4532-88e4-09de1e00a8bb", null, "Admin", "ADMIN" },
+                    { "c0fd5d05-caad-4294-83a3-189c22e0f987", null, "User", "USER" }
                 });
         }
     }
