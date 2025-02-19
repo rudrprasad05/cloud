@@ -47,5 +47,38 @@ namespace server.Repository
             var exists = await _context.Share.FirstOrDefaultAsync(i => i.MediaId == id);
             return exists ?? null;
         }
+
+        public async Task<Share?> GetAsyncWithMedia(string id)
+        {
+            var exists = await _context.Share.Include(f => f.Media).FirstOrDefaultAsync(i => i.Id == id);
+            return exists ?? null;
+        }
+
+        public async Task<Share?> UpdateAsync(string id, UpdateShareRequest value)
+        {
+            var model = await _context.Share.FirstOrDefaultAsync(i => i.Id == id);
+            if(model == null)
+            {
+                return null;
+            }
+
+            switch (value.Value.ToLower())
+            {
+                case "global": 
+                    model.Type = ShareType.GLOBAL;
+                    break;
+                case "restricted": 
+                    model.Type = ShareType.RESTRICTED;
+                    break;
+                case "private": 
+                    model.Type = ShareType.PRIVATE;
+                    break;
+                default:
+                    Console.WriteLine("Error");
+                    break;
+            }
+            await _context.SaveChangesAsync();
+            return model;
+        }
     }
 }

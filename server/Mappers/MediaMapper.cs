@@ -59,5 +59,22 @@ namespace server.Mappers
                 IsDeleted = request.IsDeleted
             };
         }
+
+        public static Media FromMediaToMediaWithoutShare(this Media request)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+            return new Media
+            {
+                Id = request.Id,
+                FolderId = request.FolderId,
+                Type = request.Type,
+                Source = request.Source,
+                CreatedAt = request.CreatedAt,
+                Name = request.Name,
+                Size = request.Size,
+                Star = request.Star,
+                IsDeleted = request.IsDeleted
+            };
+        }
     }
 }

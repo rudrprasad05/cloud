@@ -16,6 +16,37 @@ export async function GetShare(id: string) {
         headers: { Authorization: `Bearer ${token}` },
     });
 
+    console.log('share', res.data);
+    return res.data;
+}
+
+export async function GetShareWithMedia(id: string) {
+    const token = await GetToken();
+    if (!token) {
+        return redirect('/');
+    }
+    const res = await axiosGlobal.get<Share>('share/get-with-media/' + id, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+    console.log('share', res.data);
+    return res.data;
+}
+
+export async function UpdateShare(id: string, val: string) {
+    console.log(id);
+    const token = await GetToken();
+    if (!token) {
+        return redirect('/');
+    }
+    const res = await axiosGlobal.patch<Share>(
+        'share/update/' + id,
+        { value: val },
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
+    );
+
     console.log(res.data);
     return res.data;
 }
