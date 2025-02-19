@@ -86,7 +86,7 @@ export async function DeleteForever(id: string) {
 export async function GetOne(id: string): Promise<Partial<Media>> {
     try {
         const token = await GetToken();
-        console.log('token', token);
+
         if (!token || token == '' || token == undefined) {
             return redirect('/errors/403');
         }

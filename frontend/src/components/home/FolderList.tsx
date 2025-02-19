@@ -43,6 +43,7 @@ export default function FolderList({ folders }: IFolderList) {
         <div className="grid grid-cols-3 gap-4 w-full">
             {folders.map((folder) => (
                 <div
+                    key={folder.id}
                     onDoubleClick={() => handleDbClick(folder.id as string)}
                     onClick={() => handleClick(folder as Folder)}
                     className={cn(

@@ -16,7 +16,6 @@ export async function GetShare(id: string) {
         headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log('share', res.data);
     return res.data;
 }
 
@@ -30,7 +29,6 @@ export async function GetShareWithMedia(id: string) {
             headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log('share', res.data);
         return res.data;
     } catch (error) {
         return null;
@@ -38,7 +36,6 @@ export async function GetShareWithMedia(id: string) {
 }
 
 export async function UpdateShare(id: string, val: string) {
-    console.log(id);
     const token = await GetToken();
     if (!token) {
         return redirect('/');
@@ -51,6 +48,5 @@ export async function UpdateShare(id: string, val: string) {
         }
     );
 
-    console.log(res.data);
     return res.data;
 }

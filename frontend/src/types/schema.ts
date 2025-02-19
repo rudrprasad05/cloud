@@ -4,3 +4,8 @@ export type LoginResponse = {
     email: string;
     token: string;
 };
+
+export type NewSharedUserReques = {
+    userId: string;
+    shareId: string;
+};

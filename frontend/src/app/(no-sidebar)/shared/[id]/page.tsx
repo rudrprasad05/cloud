@@ -3,6 +3,7 @@ import MediaSettings from '@/components/media/MediaSettings';
 import React from 'react';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
+import { CreateSharedUser } from '@/actions/SharedUsers';
 
 interface IPageProps {
     params: {
@@ -20,7 +21,7 @@ export default async function page({ params, searchParams }: IPageProps) {
 
 const SharePage = async ({ id }: { id: string }) => {
     const media = await GetShareWithMedia(id);
-    console.log(media);
+    const create = await CreateSharedUser(id);
 
     if (!media) {
         return redirect('/errors/403');

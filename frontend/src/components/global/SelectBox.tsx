@@ -38,7 +38,6 @@ export default function SelectBox() {
                 selectedItem?.star && toast.success('Media was unstarred');
             }
         } catch (error) {
-            console.log('errpe', error);
             toast.error('Media could not be starred');
             router.refresh();
             return;

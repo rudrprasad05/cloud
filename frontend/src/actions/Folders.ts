@@ -86,7 +86,6 @@ export async function CreateFolderWithParent(
 }
 
 export async function StarFolder(tempMedia: Folder) {
-    console.log(tempMedia);
     const res = await axiosGlobal.patch('folder/star/' + tempMedia?.id, {
         star: tempMedia.star ? false : true,
     });

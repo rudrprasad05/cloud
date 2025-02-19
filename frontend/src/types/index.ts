@@ -26,7 +26,13 @@ export type Media = {
     isDeleted: boolean;
 };
 
-export type SharedUsers = {};
+export type SharedUsers = {
+    id: string;
+    user: User;
+    share: Share;
+    shareId: string;
+    userId: string;
+};
 
 export type Share = {
     id: string;

@@ -74,9 +74,7 @@ export default function NewMediaModal({
             const res = await UploadOneFile(formData);
             if (!res) throw new Error();
             router.refresh();
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
         setFile(undefined);
         updateStatus(loadingItem.id);
     }

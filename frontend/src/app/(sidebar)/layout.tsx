@@ -4,6 +4,7 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import Navbar from '@/components/global/Navbar';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 import '../globals.css';
+
 import { SessionProvider } from '@/context/useSession';
 import { Toaster } from '@/components/ui/sonner';
 import SearchBox from '@/components/global/SearchBox';

@@ -23,6 +23,7 @@ import {
     Settings,
     Star,
     Trash2,
+    UsersRound,
 } from 'lucide-react';
 import {
     Popover,
@@ -46,6 +47,11 @@ const items = [
         title: 'Starred',
         url: '/starred',
         icon: Star,
+    },
+    {
+        title: 'Shared',
+        url: '/shared',
+        icon: UsersRound,
     },
     {
         title: 'Bin',

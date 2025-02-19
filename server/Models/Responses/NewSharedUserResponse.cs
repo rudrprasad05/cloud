@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace server.Models
+namespace server.Models.Responses
 {
-    public class SharedUsers : BaseModel
+    public class NewSharedUserResponse
     {
-        public User User { get; set; } = null!;
-        public Share Share { get; set; } = null!;
         public string UserId { get; set; } = null!;
         public string ShareId { get; set; } = null!;
-
     }
 }

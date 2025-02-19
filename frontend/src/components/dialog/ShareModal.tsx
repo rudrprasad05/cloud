@@ -91,7 +91,6 @@ export default function ShareModal({
     const get = async () => {
         const res = await GetShare(media.id as string);
         setShare(res);
-        console.log(res);
     };
 
     useEffect(() => {
