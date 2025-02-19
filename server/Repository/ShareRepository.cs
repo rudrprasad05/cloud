@@ -50,8 +50,17 @@ namespace server.Repository
 
         public async Task<Share?> GetAsyncWithMedia(string id)
         {
-            var exists = await _context.Share.Include(f => f.Media).FirstOrDefaultAsync(i => i.Id == id);
-            return exists ?? null;
+            var share = await _context.Share.Include(f => f.Media).FirstOrDefaultAsync(i => i.Id == id);
+            if(share == null)
+            {
+                return null;
+            }
+            
+            if(share.Type == ShareType.PRIVATE)
+            {
+                return null;
+            }
+            return share ;
         }
 
         public async Task<Share?> UpdateAsync(string id, UpdateShareRequest value)

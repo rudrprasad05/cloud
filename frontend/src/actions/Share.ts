@@ -25,12 +25,16 @@ export async function GetShareWithMedia(id: string) {
     if (!token) {
         return redirect('/');
     }
-    const res = await axiosGlobal.get<Share>('share/get-with-media/' + id, {
-        headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+        const res = await axiosGlobal.get<Share>('share/get-with-media/' + id, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
 
-    console.log('share', res.data);
-    return res.data;
+        console.log('share', res.data);
+        return res.data;
+    } catch (error) {
+        return null;
+    }
 }
 
 export async function UpdateShare(id: string, val: string) {

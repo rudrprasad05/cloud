@@ -15,11 +15,7 @@ interface IRecentList {
 
 export default function MediaList({ media }: IRecentList) {
     if (!media || media.length === 0) {
-        return (
-            <div className="my-2 w-full h-48 border-dashed rounded border p-2 text-border grid place-items-center">
-                <h1>No folders found</h1>
-            </div>
-        );
+        return <></>;
     }
 
     return (

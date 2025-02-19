@@ -39,7 +39,7 @@ import NewMediaModal from '../dialog/NewMediaModal';
 const items = [
     {
         title: 'Home',
-        url: '/home',
+        url: '/my-cloud',
         icon: Home,
     },
     {

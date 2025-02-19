@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using server.Interfaces;
+using server.Mappers;
 using server.Models;
 using server.Models.Requests;
 using server.Models.Responses;
@@ -19,12 +20,16 @@ namespace server.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IFolderRepository _folderRepository;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
+
+        public AuthController(IFolderRepository folderRepository, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _folderRepository = folderRepository;
+
         }
 
         [HttpPost("register")]
@@ -37,7 +42,12 @@ namespace server.Controllers
 
                 var user = new User { UserName = model.Username, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                
+
+                var request = new NewFolderRequest {Name="home", ParentId=null};
+                var dto = request.MapToFolder();
+                dto.UserId = user.Id;
+                var newFolder = await _folderRepository.CreateAsync(dto);
+
                 if (result.Succeeded)
                 {
                     var role = await _userManager.AddToRoleAsync(user, "User");

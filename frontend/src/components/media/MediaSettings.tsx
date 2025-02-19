@@ -6,7 +6,13 @@ import { Download, FileImage, Globe, Printer } from 'lucide-react';
 import React from 'react';
 import { Button } from '../ui/button';
 
-export default function MediaSettings({ media }: { media: Partial<Media> }) {
+export default function MediaSettings({
+    media,
+    showShare = true,
+}: {
+    media: Partial<Media>;
+    showShare?: boolean;
+}) {
     const handleDownload = async () => {
         try {
             const response = await fetch(
@@ -54,10 +60,12 @@ export default function MediaSettings({ media }: { media: Partial<Media> }) {
                 >
                     <Download />
                 </Button>
-                <Button>
-                    <Globe />
-                    Share
-                </Button>
+                {showShare && (
+                    <Button>
+                        <Globe />
+                        Share
+                    </Button>
+                )}
             </div>
         </div>
     );

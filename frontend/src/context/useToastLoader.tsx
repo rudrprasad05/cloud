@@ -38,7 +38,7 @@ export function ToastLoaderProvider({
     const [hidden, setHidden] = useState<boolean>(true);
 
     function handleCollapse(val?: boolean) {
-        if (!val) setCollapse((prev) => !prev);
+        if (val == undefined) setCollapse((prev) => !prev);
         else setCollapse(val);
     }
     function handleSetHidden(status: boolean) {
