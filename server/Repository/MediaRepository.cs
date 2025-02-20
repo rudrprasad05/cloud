@@ -25,9 +25,14 @@ namespace server.Repository
             _context = context;
             _amazonS3Service = amazonS3Service;
             _shareRepository = shareRepository;
-
-
         }
+        public async Task<double> SumStorage(string userId)
+        {
+            return await _context.Medias
+                .Where(m => m.Folder.UserId == userId && m.Size.HasValue)
+                .SumAsync(m => m.Size ?? 0);
+        }
+
         public async Task<Media?> CreateAsync(IFormFile file, string folderId, string? token)
         {
             if (file == null || folderId == null)

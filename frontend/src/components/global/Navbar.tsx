@@ -15,6 +15,7 @@ import {
 import { useSession } from '@/context/useSession';
 import {
     Calendar,
+    Cloud,
     FileImage,
     Home,
     Inbox,
@@ -30,12 +31,14 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleDriveSVG } from '../svg';
 import { Button, buttonVariants } from '../ui/button';
 import UserIcon from './UserIcon';
 import NewFolderModal from '../dialog/NewFolderModal';
 import NewMediaModal from '../dialog/NewMediaModal';
+import { axiosGlobal } from '@/lib/axios';
+import { cn } from '@/lib/utils';
 
 const items = [
     {
@@ -49,7 +52,7 @@ const items = [
         icon: Star,
     },
     {
-        title: 'Shared',
+        title: 'Shared With Me',
         url: '/shared',
         icon: UsersRound,
     },
@@ -72,6 +75,14 @@ const items = [
 
 export default function Navbar() {
     const { user } = useSession();
+    const [sum, setsum] = useState(0);
+    useEffect(() => {
+        const get = async () => {
+            const res = await axiosGlobal.get('media/sum');
+            setsum(res.data);
+        };
+        get();
+    }, [user]);
     return (
         <Sidebar>
             <SidebarContent>
@@ -113,9 +124,46 @@ export default function Navbar() {
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
+                            <div>
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton asChild>
+                                        <a href={'storage'}>
+                                            <Cloud />
+                                            <span>Storage</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                                <div className="flex flex-col w-full items-center gap-2 p-2">
+                                    <div className="w-full flex flex-col gap-1">
+                                        <div className="text-xs text-gray-500">
+                                            {sum} of 10GB used
+                                        </div>
+                                        <div className="h-2 bg-gray-200 relative rounded-full w-full">
+                                            <div
+                                                style={{
+                                                    width: `${
+                                                        (sum / 10) * 100
+                                                    }%`,
+                                                }}
+                                                className={cn(
+                                                    `h-full absolute left-0 top-0  bg-primary rounded-full`
+                                                )}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        className="w-full"
+                                    >
+                                        Upgrade
+                                    </Button>
+                                </div>
+                            </div>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
+                <SidebarFooter className="mt-auto"></SidebarFooter>
             </SidebarContent>
         </Sidebar>
     );

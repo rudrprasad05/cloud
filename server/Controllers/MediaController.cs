@@ -47,6 +47,14 @@ namespace server.Controllers
             return Ok(resp);
         }
 
+        [HttpPost("sum")]
+        public async Task<IActionResult> Sum()
+        {
+            var req = await _mediaRepository.SumStorage(UserId ?? "");
+
+            return Ok(req);
+        }
+
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll([FromQuery] MediaQueryObject queryObject)
         {
