@@ -9,11 +9,14 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("api/upload")]
-    public class UploadController : ControllerBase
+    public class UploadController : BaseController
     {
         private readonly IAmazonS3Service _amazonS3Service;
 
-        public UploadController(IAmazonS3Service amazonS3Service)
+        public UploadController(IAmazonS3Service amazonS3Service, 
+            IConfiguration configuration, 
+            ITokenService tokenService
+        ) : base(configuration, tokenService)
         {
             _amazonS3Service = amazonS3Service;
         }

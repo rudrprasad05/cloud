@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Resend;
 using server.Config;
 using server.Context;
 using server.Interfaces;
@@ -21,18 +22,23 @@ builder.Services.AddControllers();
 builder.Services.AddDatabaseContext(builder.Configuration);
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddIdentityService();
+builder.Services.Configure<ResendClientOptions>( o =>
+{
+    o.ApiToken = builder.Configuration["Resend:API"]!;
+} );
 
 builder.Services.AddSingleton<IAmazonS3Service, AmazonS3Service>();
 builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddSingleton<IUserContextService, UserContextService>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 
-
+builder.Services.AddTransient<IResend, ResendClient>();
 builder.Services.AddScoped<IFolderRepository, FolderRepository>();
 builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 builder.Services.AddScoped<IShareRepository, ShareRepository>();
 builder.Services.AddScoped<IShareUserRepository, SharedUserRepository>();
 
-
+builder.Services.AddHttpClient(); 
 
 var app = builder.Build();
 

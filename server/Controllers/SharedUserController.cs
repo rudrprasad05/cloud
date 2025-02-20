@@ -15,7 +15,10 @@ namespace server.Controllers
     {
         private readonly IShareUserRepository _sharedUserRepository;
 
-        public SharedUserController(IShareUserRepository shareRepository)
+        public SharedUserController(IShareUserRepository shareRepository, 
+            IConfiguration configuration, 
+            ITokenService tokenService
+        ) : base(configuration, tokenService)
         {
             _sharedUserRepository = shareRepository;
         }

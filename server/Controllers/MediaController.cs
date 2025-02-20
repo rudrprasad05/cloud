@@ -18,16 +18,17 @@ namespace server.Controllers
     {
         private readonly IMediaRepository _mediaRepository;
         private readonly IShareRepository _shareRepository;
-
         private readonly IAmazonS3Service _amazonS3Service;
 
-        private readonly ITokenService _tokenService;
-
-        public MediaController(IMediaRepository mediaRepository, IAmazonS3Service amazonS3Service, ITokenService tokenService, IShareRepository shareRepository) 
+        public MediaController(IMediaRepository mediaRepository,
+            IAmazonS3Service amazonS3Service, 
+            IShareRepository shareRepository,
+            IConfiguration configuration, 
+            ITokenService tokenService
+        ) : base(configuration, tokenService)
         {
             _mediaRepository = mediaRepository;
             _amazonS3Service = amazonS3Service;
-            _tokenService = tokenService;
             _shareRepository = shareRepository;
         }
 

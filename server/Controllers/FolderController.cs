@@ -11,17 +11,16 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("api/folder")]
-    public class FolderController : ControllerBase
+    public class FolderController : BaseController
     {
-        IFolderRepository _folderRepository;
-        ITokenService _tokenService;
+        private readonly IFolderRepository _folderRepository;
 
-
-        public FolderController(IFolderRepository folderRepository, ITokenService tokenService) 
+        public FolderController(IFolderRepository folderRepository, 
+            ITokenService tokenService, 
+            IConfiguration configuration
+        ) : base(configuration, tokenService)
         {
             _folderRepository = folderRepository;
-            _tokenService = tokenService;
-
         }
 
         [HttpPost("create")]

@@ -4,32 +4,59 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Resend;
 using server.Interfaces;
 using server.Mappers;
 using server.Models;
 using server.Models.Requests;
 using server.Models.Responses;
+using server.Services;
 
 namespace server.Controllers
 {
     [AllowAnonymous]
     [ApiController]
     [Route("api/auth")]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly ITokenService _tokenService;
+        private readonly IEmailService _emailService;
         private readonly IFolderRepository _folderRepository;
 
 
-        public AuthController(IFolderRepository folderRepository, UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
+        public AuthController(IEmailService emailService, 
+            IFolderRepository folderRepository, 
+            UserManager<User> userManager, 
+            SignInManager<User> signInManager, 
+            IConfiguration configuration, 
+            ITokenService tokenService
+        ) : base(configuration, tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _tokenService = tokenService;
+            _emailService = emailService;
             _folderRepository = folderRepository;
+        }
 
+        [HttpPost("confirm-email/{id}")]
+        [ProducesResponseType(typeof(string), 200)]
+        public async Task<IActionResult> ConfirmEmail([FromRoute] string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return Unauthorized("Invalud username");
+            }
+
+            if(user.EmailConfirmed)
+            {
+                return Ok("Email already confirmed");
+            }
+            
+            user.EmailConfirmed = true;
+            await _userManager.UpdateAsync(user);
+            return Ok("Email confirmed");
         }
 
         [HttpPost("register")]
@@ -63,6 +90,14 @@ namespace server.Controllers
                         };
 
                         Response.Cookies.Append("token", token, cookieOptions);
+                        var link = _configuration["FrontEnd:Url"] + "confirm-email?token=" + user.Id;
+                        var content = await _emailService.GenerateHTMLContent(user.UserName, link);
+                        var sendEmail = await _emailService.SendEmail(user.Email, "Welcome to your Cloud", content);
+                        if(!sendEmail)
+                        {
+                            return BadRequest("Email not sent");
+                        }
+
                         return Ok(
                             new LoginResponse
                             {
@@ -174,6 +209,8 @@ namespace server.Controllers
                 return Unauthorized(new { message = "Invalid or expired token" });
             }
         }
+
+      
     
     }
 }

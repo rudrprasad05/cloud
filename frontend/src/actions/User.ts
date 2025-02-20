@@ -26,6 +26,16 @@ export async function LoginUser(data: SignInFormType): Promise<LoginResponse> {
     return res.data;
 }
 
+export async function ConfirmEmail(token: string): Promise<boolean> {
+    try {
+        const res = await axiosGlobal.post('auth/confirm-email/' + token);
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
 export async function GetToken(): Promise<string | undefined> {
     const a = await cookies();
     const token = a.get('token')?.value;
