@@ -47,7 +47,7 @@ namespace server.Controllers
             return Ok(resp);
         }
 
-        [HttpPost("sum")]
+        [HttpGet("sum")]
         public async Task<IActionResult> Sum()
         {
             var req = await _mediaRepository.SumStorage(UserId ?? "");

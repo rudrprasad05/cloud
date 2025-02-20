@@ -39,6 +39,13 @@ import NewFolderModal from '../dialog/NewFolderModal';
 import NewMediaModal from '../dialog/NewMediaModal';
 import { axiosGlobal } from '@/lib/axios';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { headers } from 'next/headers';
+import { SumMedia } from '@/actions/Media';
+import {
+    HandleSizeConversion,
+    HandleSizeConversionNumber,
+} from '@/services/HandleSizeCalculation';
 
 const items = [
     {
@@ -76,10 +83,17 @@ const items = [
 export default function Navbar() {
     const { user } = useSession();
     const [sum, setsum] = useState(0);
+    const [maxStorage, setMaxStorage] = useState(10);
+    const [numInGb, setNumInGb] = useState<number>();
+
     useEffect(() => {
         const get = async () => {
-            const res = await axiosGlobal.get('media/sum');
-            setsum(res.data);
+            const res = await SumMedia();
+            console.log(res);
+            setsum(res);
+            setNumInGb(() =>
+                HandleSizeConversionNumber({ size: sum, name: 'GB' })
+            );
         };
         get();
     }, [user]);
@@ -117,53 +131,58 @@ export default function Navbar() {
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
-                                        <a href={item.url}>
+                                        <Link href={item.url}>
                                             <item.icon />
                                             <span>{item.title}</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
-                            <div>
-                                <SidebarMenuItem>
-                                    <SidebarMenuButton asChild>
-                                        <a href={'storage'}>
-                                            <Cloud />
-                                            <span>Storage</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                                <div className="flex flex-col w-full items-center gap-2 p-2">
-                                    <div className="w-full flex flex-col gap-1">
-                                        <div className="text-xs text-gray-500">
-                                            {sum} of 10GB used
-                                        </div>
-                                        <div className="h-2 bg-gray-200 relative rounded-full w-full">
-                                            <div
-                                                style={{
-                                                    width: `${
-                                                        (sum / 10) * 100
-                                                    }%`,
-                                                }}
-                                                className={cn(
-                                                    `h-full absolute left-0 top-0  bg-primary rounded-full`
-                                                )}
-                                            ></div>
-                                        </div>
-                                    </div>
-                                    <Button
-                                        variant="secondary"
-                                        size="sm"
-                                        className="w-full"
-                                    >
-                                        Upgrade
-                                    </Button>
-                                </div>
-                            </div>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
-                <SidebarFooter className="mt-auto"></SidebarFooter>
+                <SidebarFooter className="mt-auto">
+                    <div>
+                        <SidebarMenuButton asChild>
+                            <Link href={'/storage'}>
+                                <Cloud />
+                                <span>Storage</span>
+                            </Link>
+                        </SidebarMenuButton>
+
+                        <div className="flex flex-col w-full items-center gap-2 p-2">
+                            <div className="w-full flex flex-col gap-1">
+                                <div className="text-xs text-gray-500">
+                                    <HandleSizeConversion
+                                        size={sum}
+                                        name="GB"
+                                    />{' '}
+                                    of {maxStorage} GB used
+                                </div>
+                                <div className="h-2 bg-gray-200 relative rounded-full w-full">
+                                    <div
+                                        style={{
+                                            width: `${
+                                                (numInGb ?? 0 / maxStorage) *
+                                                100
+                                            }%`,
+                                        }}
+                                        className={cn(
+                                            `h-full absolute left-0 top-0  bg-primary rounded-full`
+                                        )}
+                                    ></div>
+                                </div>
+                            </div>
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                className="w-full"
+                            >
+                                Upgrade
+                            </Button>
+                        </div>
+                    </div>
+                </SidebarFooter>
             </SidebarContent>
         </Sidebar>
     );

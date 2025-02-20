@@ -1,9 +1,10 @@
-import React from 'react';
-import MediaList from '@/components/home/MediaList';
 import { GetAllSharedById } from '@/actions/SharedUsers';
+import MediaList from '@/components/home/MediaList';
+import React from 'react';
 
 export default async function Home() {
     const media = await GetAllSharedById();
+
     if (media.length == 0) {
         return (
             <main className="flex flex-col gap-6">

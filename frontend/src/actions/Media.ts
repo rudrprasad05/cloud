@@ -29,6 +29,18 @@ export async function GetStarMedia() {
     return res.data;
 }
 
+export async function SumMedia() {
+    const token = await GetToken();
+    if (!token) {
+        return redirect('/');
+    }
+    const res = await axiosGlobal.get<number>('media/sum', {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return res.data;
+}
+
 export async function GetDeleted() {
     const token = await GetToken();
     if (!token) {
