@@ -66,6 +66,23 @@ namespace server.Repository
             return mediaList;
         }
 
+        public async Task<List<User>?> GetUsersAsync()
+        {
+            var userId = _userContext.GetUserId();
+            if(userId == null)
+            {
+                return null;
+            }
+
+            var userList = await _context.SharedUsers
+                .Include(su => su.Share.Media.Folder.User)
+                .Where(su => su.UserId == userId)
+                .Select(su => su.Share.Media.Folder.User)
+                .ToListAsync();
+            
+            return userList;
+        }
+
         public Task<Folder?> Rename(string id, string name)
         {
             throw new NotImplementedException();

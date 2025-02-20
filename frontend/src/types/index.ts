@@ -45,4 +45,8 @@ export type Share = {
 
 type MediaType = 0 | 1;
 
-type User = {};
+export type User = {
+    id: string;
+    email: string;
+    username: string;
+};

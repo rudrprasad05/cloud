@@ -50,5 +50,19 @@ namespace server.Controllers
 
             return Ok(dto);
         }
+
+        [HttpGet("get-users")]
+        public async Task<IActionResult> GetSharedUsers()
+        {
+            var req = await _sharedUserRepository.GetUsersAsync();
+            if(req == null)
+            {
+                return BadRequest("Share not Created");
+            }
+
+            var dto = req.Select(s => s.MapToUserWithEmailDTO());
+
+            return Ok(dto);
+        }
     }
 }

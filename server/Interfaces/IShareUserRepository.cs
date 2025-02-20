@@ -16,6 +16,7 @@ namespace server.Interfaces
         /// <returns>SharedUser | null</returns>
         public Task<SharedUsers?> CreateAsync(NewSharedUserRequest newSharedUser);
         public Task<List<Media>?> GetAsync();  
+        public Task<List<User>?> GetUsersAsync();  
         public Task<Folder?> Star(string id, bool star);
         public Task<Folder?> Rename(string id, string name);
 
