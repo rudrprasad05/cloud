@@ -86,20 +86,48 @@ namespace server.Repository
             return await folders.ToListAsync();
 
         }
-        public async Task<Folder?> GetOneWithMedia(string id)
+        public async Task<Folder?> GetOneWithMedia(QueryObject queryObject, string id)
         {
-            var folderQ = _context.Folders.AsQueryable();
-            var folder = folderQ
-                .Include(f => f.Medias
-                    .Where(f => f.IsDeleted == false))
-                .FirstOrDefaultAsync(f => f.Id == id);
+            var folderQ = _context.Folders
+                .Include(f => f.Medias.Where(m => !m.IsDeleted))
+                    .ThenInclude(m => m.Share) // Include Share
+                        .ThenInclude(s => s.SharedUsers) // Include SharedUsers
+                            .ThenInclude(su => su.User) // Include User
+                .Where(f => f.Id == id)
+                .AsQueryable();
 
-            if(folder == null)
+            if (!string.IsNullOrWhiteSpace(queryObject.SharedUsername))
             {
-                return null;
+                var normalizedUsername = queryObject.SharedUsername.Normalize();
+                
+                folderQ = folderQ.Where(f => f.Medias
+                    .Any(m => m.Share != null && m.Share.SharedUsers
+                        .Any(s => s.User.NormalizedUserName == normalizedUsername)));
             }
 
-            return await folder;
+            return await folderQ.FirstOrDefaultAsync();
+            /*
+            var folderQ = _context.Folders
+                .Include(f => f.Medias)
+                    .ThenInclude(m => m.Share)
+                        .ThenInclude(s => s.SharedUsers)
+                            .ThenInclude(su => su.User) 
+                .AsQueryable();
+
+            folderQ = folderQ.Where(f => f.Id == id);
+            folderQ = folderQ.Where(f => f.Medias.Any(m => m.IsDeleted == false));
+
+            if(!string.IsNullOrWhiteSpace(queryObject.SharedUsername))
+            {
+                folderQ = folderQ
+                    .Where(f => f.Medias
+                    .Any(m => m.Share.SharedUsers
+                    .Any(s => s.User.NormalizedUserName == queryObject.SharedUsername.Normalize())));
+            }
+
+            var res = await folderQ.FirstOrDefaultAsync();
+            return res; 
+            */
         
         }
         public async Task<Folder?> MoveFolder(string id, string moveId)

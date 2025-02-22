@@ -33,11 +33,15 @@ import {
     Lock,
     StopCircle,
 } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '../ui/button';
 import { FRONTEND } from '@/constants';
+import { useSession } from '@/context/useSession';
+import { ComboboxDemo } from '../share/AddNewPeopleSearchCombo';
 
 const ShareValues = [
     { name: 'Global' },
@@ -58,6 +62,7 @@ export default function ShareModal({
     const [isOpen, setIsOpen] = useState(false);
     const [copied, setCopied] = useState(false);
     const router = useRouter();
+    const { user } = useSession();
     const [share, setShare] = useState<Share | undefined>(undefined);
     const [tooltipVal, setTooltipVal] = useState<string>('loading');
 
@@ -163,6 +168,30 @@ export default function ShareModal({
                     </DialogTitle>
                 </DialogHeader>
                 <div className="flex flex-col gap-2">
+                    {(share?.type as number) == 1 && (
+                        <div>
+                            <ComboboxDemo />
+                            <h1>People with Access</h1>
+
+                            <div
+                                key={user?.email}
+                                className="flex items-center gap-4 w-full my-2"
+                            >
+                                <Avatar>
+                                    <AvatarImage src="" />
+                                    <AvatarFallback>
+                                        {user?.username?.slice(0, 2) || 'AZ'}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className="flex flex-col">
+                                    <h1 className="">{user?.username}</h1>
+                                    <p className="text-sm text-muted-foreground/70">
+                                        {user?.email}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <h1>General Access</h1>
                     <DisplayCorrectShare type={share?.type as number}>
                         <Select

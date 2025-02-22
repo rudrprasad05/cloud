@@ -88,9 +88,9 @@ namespace server.Controllers
         }
 
         [HttpGet("get-one/{id}")]
-        public async Task<IActionResult> GetOneFolder([FromRoute] string id)
+        public async Task<IActionResult> GetOneFolder([FromRoute] string id, [FromQuery] QueryObject queryObject)
         {
-            var folder = await _folderRepository.GetOneWithMedia(id);
+            var folder = await _folderRepository.GetOneWithMedia(queryObject, id);
             if (folder == null)
             {
                 return NotFound();
