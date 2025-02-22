@@ -25,6 +25,29 @@ export async function CreateSharedUser(sharedId: string) {
     }
 }
 
+export async function CreateSharedUserWithUserIdShareId(
+    userId: string,
+    sharedId: string
+) {
+    const token = await GetToken();
+    if (!token) {
+        return redirect('/');
+    }
+    try {
+        const res = await axiosGlobal.post(
+            'shared-user/create-with-user-id',
+            { shareId: sharedId, userId: userId },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+
+        return res;
+    } catch (error) {
+        return null;
+    }
+}
+
 export async function GetAllSharedById() {
     const token = await GetToken();
     if (!token) {
@@ -32,6 +55,22 @@ export async function GetAllSharedById() {
     }
     try {
         const res = await axiosGlobal.get('shared-user/get', {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+
+        return res.data;
+    } catch (error) {
+        return null;
+    }
+}
+
+export async function GetSharedBySharedId(id: string) {
+    const token = await GetToken();
+    if (!token) {
+        return redirect('/');
+    }
+    try {
+        const res = await axiosGlobal.get('shared-user/get/' + id, {
             headers: { Authorization: `Bearer ${token}` },
         });
 

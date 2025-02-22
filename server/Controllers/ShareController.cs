@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using server.Interfaces;
 using server.Mappers;
+using server.Models;
 using server.Models.Requests;
 
 namespace server.Controllers
@@ -14,13 +16,18 @@ namespace server.Controllers
     public class ShareController : BaseController
     {
         private readonly IShareRepository _shareRepository;
+        private readonly UserManager<User> _userManager;
+
 
         public ShareController(IShareRepository shareRepository, 
             IConfiguration configuration, 
-            ITokenService tokenService
+            ITokenService tokenService,
+            UserManager<User> userManager
         ) : base(configuration, tokenService)
         {
             _shareRepository = shareRepository;
+            _userManager = userManager;
+
         }
 
         [HttpPost("create/{id}")]

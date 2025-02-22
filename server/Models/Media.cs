@@ -20,8 +20,8 @@ namespace server.Models
         public double? Size {get; set; } = null;
         public bool Star { get; set; } = false;
         public bool IsDeleted { get; set; } = false;
-        public string ShareId { get; set; } = null!;
-        public Share Share { get; set; } = null!;
+        public string? ShareId { get; set; } = null;
+        public Share? Share { get; set; } = null;
 
     }
 }

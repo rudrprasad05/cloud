@@ -23,7 +23,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Folder, Media, Share } from '@/types';
+import { Folder, Media, Share, User } from '@/types';
 import {
     Check,
     Globe2,
@@ -42,6 +42,7 @@ import { Button } from '../ui/button';
 import { FRONTEND } from '@/constants';
 import { useSession } from '@/context/useSession';
 import { ComboboxDemo } from '../share/AddNewPeopleSearchCombo';
+import { GetSharedBySharedId } from '@/actions/SharedUsers';
 
 const ShareValues = [
     { name: 'Global' },
@@ -64,6 +65,10 @@ export default function ShareModal({
     const router = useRouter();
     const { user } = useSession();
     const [share, setShare] = useState<Share | undefined>(undefined);
+    const [presharedUsers, setPresharedUsers] = useState<User[] | undefined>(
+        undefined
+    );
+
     const [tooltipVal, setTooltipVal] = useState<string>('loading');
 
     if (!media) return <StopCircle />;
@@ -95,7 +100,10 @@ export default function ShareModal({
 
     const get = async () => {
         const res = await GetShare(media.id as string);
+        const preSharedUsersGet = await GetSharedBySharedId(res.id as string);
+        console.log(preSharedUsersGet);
         setShare(res);
+        setPresharedUsers(preSharedUsersGet);
     };
 
     useEffect(() => {
@@ -170,7 +178,7 @@ export default function ShareModal({
                 <div className="flex flex-col gap-2">
                     {(share?.type as number) == 1 && (
                         <div>
-                            <ComboboxDemo />
+                            <ComboboxDemo share={share} />
                             <h1>People with Access</h1>
 
                             <div
@@ -190,6 +198,25 @@ export default function ShareModal({
                                     </p>
                                 </div>
                             </div>
+                            {presharedUsers?.map((u) => (
+                                <div
+                                    key={u?.email}
+                                    className="flex items-center gap-4 w-full my-2"
+                                >
+                                    <Avatar>
+                                        <AvatarImage src="" />
+                                        <AvatarFallback>
+                                            {u?.username?.slice(0, 2) || 'AZ'}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex flex-col">
+                                        <h1 className="">{u?.username}</h1>
+                                        <p className="text-sm text-muted-foreground/70">
+                                            {u?.email}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     )}
                     <h1>General Access</h1>

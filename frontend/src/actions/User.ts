@@ -2,11 +2,13 @@
 
 import { API } from '@/constants';
 import { axiosGlobal } from '@/lib/axios';
+import { User } from '@/types';
 import { LoginResponse } from '@/types/schema';
 import { SignInFormType } from '@/types/zod';
 import axios from 'axios';
 import https from 'https';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const agent = new https.Agent({
     rejectUnauthorized: false, // Allow self-signed cert
@@ -42,4 +44,18 @@ export async function GetToken(): Promise<string | undefined> {
 
     if (!token) return undefined;
     return token;
+}
+
+export async function GetUserByEmail(email: string) {
+    const token = await GetToken();
+    console.log(token);
+    if (!token) {
+        return redirect('/');
+    }
+    const res = await axiosGlobal.get<Partial<User>>('user/get/' + email, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(res);
+
+    return res.data;
 }

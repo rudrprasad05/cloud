@@ -20,6 +20,16 @@ namespace server.Mappers
             };
         }
 
+        public static SharedUsers FromNewSharedUserWithIdRequestToModel(this NewSharedUserWithIdRequest request)
+        {
+            ArgumentNullException.ThrowIfNull(request);
+            return new SharedUsers
+            {
+                ShareId = request.ShareId,
+                UserId = request.UserId
+            };
+        }
+
         public static NewSharedUserResponse FromModelToDTO(this SharedUsers request)
         {
             ArgumentNullException.ThrowIfNull(request);

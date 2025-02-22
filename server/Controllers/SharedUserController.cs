@@ -37,6 +37,20 @@ namespace server.Controllers
             return Ok(dto);
         }
 
+        [HttpPost("create-with-user-id")]
+        public async Task<IActionResult> CreateWithUserId([FromBody] NewSharedUserWithIdRequest newSharedUser)
+        {
+            var req = await _sharedUserRepository.CreateWithIdAsync(newSharedUser);
+            if(req == null)
+            {
+                return BadRequest("Share not Created");
+            }
+
+            var dto = req.FromModelToDTO();
+
+            return Ok(dto);
+        }
+
         [HttpGet("get")]
         public async Task<IActionResult> GetShared()
         {
@@ -47,6 +61,19 @@ namespace server.Controllers
             }
 
             var dto = req.Select(s => s.FromMediaToDTO());
+
+            return Ok(dto);
+        }
+
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> GetSharedBySharedId(string id)
+        {
+            var req = await _sharedUserRepository.GetUsersByShareIdAsync(id);
+            if(req == null)
+            {
+                return BadRequest("Share not Created");
+            }
+            var dto = req.Select(s => s.MapToUserWithEmailDTO());
 
             return Ok(dto);
         }

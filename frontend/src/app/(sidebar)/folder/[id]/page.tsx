@@ -20,7 +20,7 @@ export default async function page({ params }: IPage) {
 
 async function FolderData({ id }: { id: string }) {
     const folder = await GetOneFolder(id);
-    console.log(folder);
+
     if (!folder) {
         return (
             <div className="flex flex-col gap-2 grow">

@@ -83,6 +83,24 @@ namespace server.Repository
             return userList;
         }
 
+        public async Task<SharedUsers?> CreateWithIdAsync(NewSharedUserWithIdRequest newSharedUser)
+        {
+            var exists = await _context.SharedUsers.FirstOrDefaultAsync(f => f.UserId == newSharedUser.UserId && f.ShareId == newSharedUser.ShareId);
+            if(exists != null)
+            {
+                return exists;
+            }
+            
+            var model = newSharedUser.FromNewSharedUserWithIdRequestToModel();
+            var create = await _context.SharedUsers.AddAsync(model);
+            if(create == null)
+            {
+                return null;
+            }
+            await _context.SaveChangesAsync();
+
+            return create.Entity;
+        }
         public Task<Folder?> Rename(string id, string name)
         {
             throw new NotImplementedException();
@@ -91,6 +109,16 @@ namespace server.Repository
         public Task<Folder?> Star(string id, bool star)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<User>?> GetUsersByShareIdAsync(string shareId)
+        {
+            var userList = await _context.SharedUsers
+                .Include(su => su.User)
+                .Where(su => su.ShareId == shareId)
+                .Select(su => su.User)
+                .ToListAsync();
+            return userList;
         }
     }
 }
