@@ -52,7 +52,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
             };
             setUser(tempUser);
             toast.success('Successfully logged in');
-            router.push(redirect || '/my-cloud');
+            router.push(redirect || '/cloud/my-cloud');
         } catch (error) {
             console.error('Login failed:', error);
             throw new Error('Invalid credentials');
@@ -75,7 +75,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
             };
             setUser(tempUser);
             toast.success('Successfully registered');
-            router.push(redirect || '/my-cloud');
+            router.push(redirect || '/cloud/my-cloud');
         } catch (error) {
             console.error('Login failed:', error);
             throw new Error('Invalid credentials');

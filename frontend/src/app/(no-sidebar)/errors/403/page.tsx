@@ -8,12 +8,12 @@ export default function page() {
     const [countdown, setCountdown] = useState(3);
 
     useEffect(() => {
-        router.prefetch('/my-cloud');
+        router.prefetch('/cloud/my-cloud');
         const timer = setInterval(() => {
             setCountdown((prev) => prev - 1);
         }, 1000);
         const redirectTimer = setTimeout(() => {
-            router.push('/my-cloud');
+            router.push('/cloud/my-cloud');
         }, 3000);
         return () => {
             clearInterval(timer);

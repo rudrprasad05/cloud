@@ -28,7 +28,7 @@ export default function ChildrenFolders({
     };
 
     const handleDbClick = (id: string) => {
-        router.push(`/folder/${id}`);
+        router.push(`/cloud/folder/${id}`);
     };
     if (!folders || folders.length === 0) {
         return null;
