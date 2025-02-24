@@ -72,7 +72,9 @@ export default function SelectBox() {
                 </div>
                 <div className="grid place-items-center cursor-pointer transition w-6 h-6 p-1 rounded-full hover:bg-background/40">
                     <ToolTipGlobal text="Move">
-                        <MoveFolderModal />
+                        <MoveFolderModal>
+                            <ClipboardPaste className="h-4 w-4" />
+                        </MoveFolderModal>
                     </ToolTipGlobal>
                 </div>
                 <div className="grid place-items-center cursor-pointer transition w-6 h-6 p-1 rounded-full hover:bg-background/40">

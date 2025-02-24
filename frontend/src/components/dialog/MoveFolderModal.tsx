@@ -38,7 +38,11 @@ import { Folder } from '@/types';
 import { RootDrive } from '@/constants';
 import { useSelectedItem } from '@/context/useSelected';
 
-export default function MoveFolderModal() {
+export default function MoveFolderModal({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [folders, setFolders] = useState<Partial<Folder>[] | undefined>();
@@ -81,9 +85,7 @@ export default function MoveFolderModal() {
     };
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger>
-                <ClipboardPaste className="h-4 w-4" />
-            </DialogTrigger>
+            <DialogTrigger>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Create a New Folder</DialogTitle>

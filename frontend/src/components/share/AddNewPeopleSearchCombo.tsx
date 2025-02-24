@@ -44,7 +44,6 @@ export function ComboboxDemo({ share }: { share: Partial<Share> | undefined }) {
         const get = async () => {
             const res = await GetSharedUsers();
             setSharedUsers(res);
-            console.log(res);
         };
         get();
     }, []);

@@ -11,7 +11,7 @@ namespace server.Config
     {
         public static void AddDatabaseContext(this IServiceCollection services, IConfiguration configuration)
         {
-            var conn = configuration.GetConnectionString("Linux") ?? throw new InvalidOperationException("Invlaid");
+            var conn = configuration.GetConnectionString("LocalConnection") ?? throw new InvalidOperationException("Invlaid");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
                     conn,

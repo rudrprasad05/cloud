@@ -50,22 +50,22 @@ import {
 const items = [
     {
         title: 'Home',
-        url: '/my-cloud',
+        url: '/cloud/my-cloud',
         icon: Home,
     },
     {
         title: 'Starred',
-        url: '/starred',
+        url: '/cloud/starred',
         icon: Star,
     },
     {
         title: 'Shared With Me',
-        url: '/shared',
+        url: '/cloud/shared',
         icon: UsersRound,
     },
     {
         title: 'Bin',
-        url: '/bin',
+        url: '/cloud/bin',
         icon: Trash2,
     },
     {

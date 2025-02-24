@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function middleware(req: NextRequest) {
     const token = req.cookies.get('token')?.value;
 
-    console.log(token);
-
     if (!token) {
         return NextResponse.redirect(new URL('/', req.url));
     }
@@ -19,7 +17,6 @@ export async function middleware(req: NextRequest) {
                 },
             }
         );
-        console.log(res);
 
         if (!res.ok) {
             return NextResponse.redirect(new URL('/', req.url));
