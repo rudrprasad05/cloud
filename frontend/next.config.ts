@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
         appIsrStatus: false,
     },
     images: {
-        domains: ['mctechfiji.s3.amazonaws.com'], // Add your domain here
+        domains: ['bucket.procyonfiji.com'], // Add your domain here
     },
 };
 

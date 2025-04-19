@@ -169,7 +169,7 @@ export default function ShareModal({
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger className={className}>{children}</DialogTrigger>
-            <DialogContent className="">
+            <DialogContent className="" aria-description="content">
                 <DialogHeader className="">
                     <DialogTitle className="flex items-center text-lg gap-4">
                         Share Media

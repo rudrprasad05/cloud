@@ -15,16 +15,26 @@ namespace server.Services
     {
         private readonly IAmazonS3 _s3Client;
         private readonly string _bucketName;
+        private readonly string _serviceUrl;
 
         public AmazonS3Service(IConfiguration configuration)
         {
             // Initialize the S3 client
-            var awsOptions = configuration.GetSection("AWS:S3");
+            var awsOptions = configuration.GetSection("AWS:MINIO");
             var accessKey = awsOptions["AccessKey"];
             var secretKey = awsOptions["SecretKey"];
             var region = RegionEndpoint.GetBySystemName(awsOptions["Region"]);
+            _serviceUrl = awsOptions["ServiceURL"] ?? throw new InvalidOperationException("service URl");
 
-            _s3Client = new AmazonS3Client(accessKey, secretKey, region);
+            var config = new AmazonS3Config
+            {
+                RegionEndpoint = region,
+                ServiceURL = _serviceUrl,
+                ForcePathStyle = true // Important for MinIO
+            };
+
+
+            _s3Client = new AmazonS3Client(accessKey, secretKey, config);
             _bucketName = awsOptions["BucketName"] ?? throw new InvalidOperationException("bucket name");
         }
 
@@ -71,7 +81,7 @@ namespace server.Services
                         await fileTransferUtility.UploadAsync(newMemoryStream, _bucketName, fileName);
 
                         // Return the file URL
-                        return $"https://{_bucketName}.s3.amazonaws.com/{fileName}";
+                        return $"{_serviceUrl}/{_bucketName}/{fileName}";
                     }
                 }
                 catch (AmazonS3Exception e)

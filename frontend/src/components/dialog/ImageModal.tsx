@@ -40,6 +40,8 @@ import { axiosGlobal } from '@/lib/axios';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import RenameModal from './RenameModal';
+import ShareModal from './ShareModal';
+import { cva } from 'class-variance-authority';
 
 export default function ImageModal({
     children,
@@ -109,13 +111,12 @@ export default function ImageModal({
                             <Download />
                         </Button>
                         <Popover>
-                            <PopoverPrimitive.Trigger className="">
-                                <Button
-                                    className="rounded-full h-10 w-10"
-                                    variant={'outline'}
-                                >
-                                    <EllipsisVertical />
-                                </Button>
+                            <PopoverPrimitive.Trigger
+                                className={
+                                    'rounded-full h-10 w-10 border border-solid flex items-center justify-center p-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0'
+                                }
+                            >
+                                <EllipsisVertical />
                             </PopoverPrimitive.Trigger>
                             <PopoverContent
                                 align="end"
@@ -159,11 +160,12 @@ export default function ImageModal({
                                 </RenameModal>
                             </PopoverContent>
                         </Popover>
-
-                        <Button>
-                            <Globe />
-                            Share
-                        </Button>
+                        <ShareModal media={media}>
+                            <Button>
+                                <Globe />
+                                Share
+                            </Button>
+                        </ShareModal>
                         {/* <DialogPrimitive.Close className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
                             <X className="h-4 w-4" />
                             <span className="sr-only">Close</span>
