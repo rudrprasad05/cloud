@@ -5,16 +5,12 @@ import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { CreateSharedUser } from '@/actions/SharedUsers';
 
-interface IPageProps {
-    params: {
-        id: string;
-    };
-    searchParams: {
-        [key: string]: string | string[] | undefined;
-    };
-}
+type Props = {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export default async function page({ params, searchParams }: IPageProps) {
+export default async function page({ params, searchParams }: Props) {
     const { id } = await params;
     return <SharePage id={id} />;
 }

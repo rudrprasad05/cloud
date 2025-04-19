@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -9,11 +8,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { useState } from 'react';
 
-import { NewFolderWithParentForm, NewFolderWithParentType } from '@/types/zod';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { CreateFolderWithParent } from '@/actions/Folders';
 import {
     Form,
     FormControl,
@@ -22,11 +19,14 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Button, buttonVariants } from '../ui/button';
+import { NewFolderWithParentForm, NewFolderWithParentType } from '@/types/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Plus } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { Button, buttonVariants } from '../ui/button';
 import { Input } from '../ui/input';
-import { CreateFolder, CreateFolderWithParent } from '@/actions/Folders';
 
 export default function NewFolderWithParentModal() {
     const [isLoading, setIsLoading] = useState(false);

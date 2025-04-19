@@ -1,21 +1,19 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
+import { ReactNode, useState } from 'react';
 
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent } from '@/components/ui/popover';
+import { axiosGlobal } from '@/lib/axios';
+import { cn } from '@/lib/utils';
+import { HandleMediaDownload } from '@/services/HandleMediaDownload';
 import { Media } from '@/types';
 import {
     ClipboardPaste,
@@ -26,22 +24,15 @@ import {
     Pen,
     Printer,
     SquareArrowOutUpRight,
-    SquareArrowUpRight,
     Star,
-    X,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { Button, buttonVariants } from '../ui/button';
-import { HandleMediaDownload } from '@/services/HandleMediaDownload';
-import MoveFolderModal from './MoveFolderModal';
-import { axiosGlobal } from '@/lib/axios';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import MoveFolderModal from './MoveFolderModal';
 import RenameModal from './RenameModal';
 import ShareModal from './ShareModal';
-import { cva } from 'class-variance-authority';
 
 export default function ImageModal({
     children,

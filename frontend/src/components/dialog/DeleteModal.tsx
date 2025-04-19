@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import { DeleteMedia } from '@/actions/Media';
 import {
     Dialog,
     DialogContent,
@@ -10,30 +10,11 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Folder, Media } from '@/types';
-import { FileImage, Loader2, Pen, StopCircle } from 'lucide-react';
-import Image from 'next/image';
-import {
-    NewFolderWithParentForm,
-    NewFolderWithParentType,
-    RenameMediaForm,
-    RenameMediaFormType,
-} from '@/types/zod';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
+import { Loader2, StopCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ReactNode, useState } from 'react';
 import { toast } from 'sonner';
-import { DeleteMedia, RenameMedia } from '@/actions/Media';
-import { RenameFolder } from '@/actions/Folders';
+import { Button } from '../ui/button';
 
 export default function DeleteModal({
     children,

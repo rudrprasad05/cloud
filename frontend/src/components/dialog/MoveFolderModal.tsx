@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -16,11 +15,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import React, { useEffect, useState } from 'react';
 
-import { MoveFolderForm, MoveFolderFormType } from '@/types/zod';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { GetFolder, MoveFolder } from '@/actions/Folders';
 import {
     Form,
     FormControl,
@@ -29,14 +26,16 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Button, buttonVariants } from '../ui/button';
-import { ClipboardPaste, Loader2, Plus } from 'lucide-react';
-import { toast } from 'sonner';
-import { Input } from '../ui/input';
-import { CreateFolder, GetFolder, MoveFolder } from '@/actions/Folders';
-import { Folder } from '@/types';
 import { RootDrive } from '@/constants';
 import { useSelectedItem } from '@/context/useSelected';
+import { Folder } from '@/types';
+import { MoveFolderForm, MoveFolderFormType } from '@/types/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { Button } from '../ui/button';
 
 export default function MoveFolderModal({
     children,
@@ -46,7 +45,7 @@ export default function MoveFolderModal({
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [folders, setFolders] = useState<Partial<Folder>[] | undefined>();
-    const { selectedItem, addSelectedItem } = useSelectedItem();
+    const { selectedItem } = useSelectedItem();
 
     useEffect(() => {
         const getFolder = async () => {

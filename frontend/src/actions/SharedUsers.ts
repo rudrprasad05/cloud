@@ -1,9 +1,9 @@
 'use server';
 
 import { axiosGlobal } from '@/lib/axios';
+import { User } from '@/types';
 import { redirect } from 'next/navigation';
 import { GetToken } from './User';
-import { User } from '@/types';
 
 export async function CreateSharedUser(sharedId: string) {
     const token = await GetToken();

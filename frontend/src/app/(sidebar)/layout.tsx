@@ -11,6 +11,7 @@ import SearchBox from '@/components/global/SearchBox';
 import { ToastLoaderProvider } from '@/context/useToastLoader';
 import { ToastLoader } from '@/components/global/ToastLoader';
 import { SelectedItemProvider } from '@/context/useSelected';
+import { Suspense } from 'react';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -37,25 +38,30 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <SessionProvider>
-                    <ToastLoaderProvider>
-                        <ThemeProvider attribute="class" defaultTheme="dark">
-                            <SelectedItemProvider>
-                                <SidebarProvider>
-                                    <Navbar />
-                                    <Toaster />
-                                    <main className="relative grow w-full flex flex-col gap-2 p-8">
-                                        <SearchBox />
-                                        <div className="py-4 grow flex flex-col w-full">
-                                            {children}
-                                        </div>
-                                        <ToastLoader />
-                                    </main>
-                                </SidebarProvider>
-                            </SelectedItemProvider>
-                        </ThemeProvider>
-                    </ToastLoaderProvider>
-                </SessionProvider>
+                <Suspense fallback={<>Loading...</>}>
+                    <SessionProvider>
+                        <ToastLoaderProvider>
+                            <ThemeProvider
+                                attribute="class"
+                                defaultTheme="dark"
+                            >
+                                <SelectedItemProvider>
+                                    <SidebarProvider>
+                                        <Navbar />
+                                        <Toaster />
+                                        <main className="relative grow w-full flex flex-col gap-2 p-8">
+                                            <SearchBox />
+                                            <div className="py-4 grow flex flex-col w-full">
+                                                {children}
+                                            </div>
+                                            <ToastLoader />
+                                        </main>
+                                    </SidebarProvider>
+                                </SelectedItemProvider>
+                            </ThemeProvider>
+                        </ToastLoaderProvider>
+                    </SessionProvider>
+                </Suspense>
             </body>
         </html>
     );

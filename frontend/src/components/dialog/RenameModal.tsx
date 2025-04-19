@@ -1,6 +1,7 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import { RenameFolder } from '@/actions/Folders';
+import { RenameMedia } from '@/actions/Media';
 import {
     Dialog,
     DialogContent,
@@ -9,18 +10,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Folder, Media } from '@/types';
-import { FileImage, Loader2, Pen, StopCircle } from 'lucide-react';
-import Image from 'next/image';
-import {
-    NewFolderWithParentForm,
-    NewFolderWithParentType,
-    RenameMediaForm,
-    RenameMediaFormType,
-} from '@/types/zod';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import {
     Form,
     FormControl,
@@ -29,11 +18,16 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
+import { Folder, Media } from '@/types';
+import { RenameMediaForm, RenameMediaFormType } from '@/types/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2, Pen, StopCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { ReactNode, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { toast } from 'sonner';
-import { RenameMedia } from '@/actions/Media';
-import { RenameFolder } from '@/actions/Folders';
 
 export default function RenameModal({
     children,

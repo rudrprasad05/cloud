@@ -1,11 +1,10 @@
 'use server';
 
-import { API } from '@/constants';
 import { axiosGlobal } from '@/lib/axios';
 import { Media } from '@/types';
 import axios from 'axios';
-import { GetToken } from './User';
 import { redirect } from 'next/navigation';
+import { GetToken } from './User';
 
 export async function GetMedia(token?: string) {
     const res = await axiosGlobal.get<Partial<Media>[]>('media/get-all', {

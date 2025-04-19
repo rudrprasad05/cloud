@@ -9,11 +9,12 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { ChevronRight, CloudUpload, Plus } from 'lucide-react';
 import React from 'react';
 
-interface IPage {
-    params: { id: string };
-}
+type Props = {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export default async function page({ params }: IPage) {
+export default async function page({ params }: Props) {
     const { id } = await params;
     return <FolderData id={id} />;
 }

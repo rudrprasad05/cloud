@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -9,28 +8,19 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import React, { useState } from 'react';
 
-import { NewFolderForm, NewFolderType } from '@/types/zod';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
-import { Button, buttonVariants } from '../ui/button';
-import { CloudUpload, Image, Loader2, Plus, Trash, Upload } from 'lucide-react';
-import { toast } from 'sonner';
-import { Input } from '../ui/input';
-import { CreateFolder } from '@/actions/Folders';
-import { cn } from '@/lib/utils';
-import HandleImageTypeIcon from '@/services/HandleImageTypeIcon';
 import { UploadOneFile } from '@/actions/File';
+import { CreateFolder } from '@/actions/Folders';
 import { LoadingItem, useToastLoader } from '@/context/useToastLoader';
+import { cn } from '@/lib/utils';
+import { NewFolderForm, NewFolderType } from '@/types/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Image, Loader2, Trash, Upload } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { Button } from '../ui/button';
 
 export default function NewMediaModal({
     children,

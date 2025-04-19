@@ -1,4 +1,4 @@
-import { GetFolder, GetStarFolder } from '@/actions/Folders';
+import { GetStarFolder } from '@/actions/Folders';
 import { GetStarMedia } from '@/actions/Media';
 import ChildrenFolders from '@/components/folder/ChildrenFolders';
 import MediaList from '@/components/home/MediaList';

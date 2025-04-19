@@ -1,16 +1,7 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-import {
-    RegisterForm,
-    RegisterFormType,
-    SignInForm,
-    SignInFormType,
-} from '@/types/zod';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter, useSearchParams } from 'next/navigation';
 import {
     Form,
     FormControl,
@@ -19,14 +10,16 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Input } from '../ui/input';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
-import { Button } from '../ui/button';
-import { LoginUser } from '@/actions/User';
-import { toast } from 'sonner';
-import { SetCookie } from '@/lib/cookie';
 import { useSession } from '@/context/useSession';
 import { LoginState } from '@/types/enums';
+import { RegisterForm, RegisterFormType } from '@/types/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 
 export default function Register({
     setState,

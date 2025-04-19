@@ -1,11 +1,9 @@
 'use server';
 
-import { API } from '@/constants';
 import { axiosGlobal } from '@/lib/axios';
-import { Media, Share } from '@/types';
-import axios from 'axios';
-import { GetToken } from './User';
+import { Share } from '@/types';
 import { redirect } from 'next/navigation';
+import { GetToken } from './User';
 
 export async function GetShare(id: string) {
     const token = await GetToken();

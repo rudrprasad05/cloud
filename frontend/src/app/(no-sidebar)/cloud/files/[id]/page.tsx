@@ -2,16 +2,12 @@ import { GetOne } from '@/actions/Media';
 import MediaSettings from '@/components/media/MediaSettings';
 import Image from 'next/image';
 
-interface IPageProps {
-    params: {
-        id: string;
-    };
-    searchParams: {
-        [key: string]: string | string[] | undefined;
-    };
-}
+type Props = {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export default async function page({ params, searchParams }: IPageProps) {
+export default async function Page({ params }: Props) {
     const { id } = await params;
     return <MediaPage id={id} />;
 }

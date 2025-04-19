@@ -1,9 +1,7 @@
 'use server';
 
-import { API } from '@/constants';
 import { axiosGlobal } from '@/lib/axios';
 import { Folder } from '@/types';
-import axios from 'axios';
 import { GetToken } from './User';
 
 export async function GetFolder() {

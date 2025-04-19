@@ -1,11 +1,11 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import '../globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { SelectedItemProvider } from '@/context/useSelected';
 import { SessionProvider } from '@/context/useSession';
 import { ThemeProvider } from '@/theme/ThemeProvider';
-import Head from 'next/head';
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import '../globals.css';
+import { Suspense } from 'react';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -35,16 +35,21 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <SessionProvider>
-                    <SelectedItemProvider>
-                        <ThemeProvider attribute="class" defaultTheme="dark">
-                            <Toaster />
-                            <main className="grow min-h-screen">
-                                {children}
-                            </main>
-                        </ThemeProvider>
-                    </SelectedItemProvider>
-                </SessionProvider>
+                <Suspense fallback={<>Loading...</>}>
+                    <SessionProvider>
+                        <SelectedItemProvider>
+                            <ThemeProvider
+                                attribute="class"
+                                defaultTheme="dark"
+                            >
+                                <Toaster />
+                                <main className="grow min-h-screen">
+                                    {children}
+                                </main>
+                            </ThemeProvider>
+                        </SelectedItemProvider>
+                    </SessionProvider>
+                </Suspense>
             </body>
         </html>
     );

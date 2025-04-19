@@ -1,11 +1,9 @@
 'use server';
 
-import { API } from '@/constants';
 import { axiosGlobal } from '@/lib/axios';
 import { User } from '@/types';
 import { LoginResponse } from '@/types/schema';
 import { SignInFormType } from '@/types/zod';
-import axios from 'axios';
 import https from 'https';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
